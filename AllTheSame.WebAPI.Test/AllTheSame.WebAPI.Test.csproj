@@ -1,0 +1,555 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{4405A845-59B8-4333-BBCA-18C8636C6F9D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AllTheSame.WebAPI.Test</RootNamespace>
+    <AssemblyName>AllTheSame.WebAPI.Test</AssemblyName>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.1\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Owin">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.2.2.1\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Owin, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.Owin.3.0.1\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.HttpListener, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.Owin.Host.HttpListener.3.0.1\lib\net45\Microsoft.Owin.Host.HttpListener.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Hosting">
+      <HintPath>..\packages\Microsoft.Owin.Hosting.3.0.1\lib\net45\Microsoft.Owin.Hosting.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.MicrosoftAccount">
+      <HintPath>..\packages\Microsoft.Owin.Security.MicrosoftAccount.3.0.1\lib\net45\Microsoft.Owin.Security.MicrosoftAccount.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Testing">
+      <HintPath>..\packages\Microsoft.Owin.Testing.3.0.1\lib\net45\Microsoft.Owin.Testing.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Moq, Version=4.2.1502.911, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Moq.4.2.1502.0911\lib\net40\Moq.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="RazorEngine">
+      <HintPath>..\packages\RazorEngine.3.6.6\lib\net45\RazorEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.IdentityModel" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Http.Owin, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Owin.5.2.3\lib\net45\System.Web.Http.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=4.0.0.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="TechTalk.SpecFlow, Version=1.9.0.77, Culture=neutral, PublicKeyToken=0778194805d6db41, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\SpecFlow.1.9.0\lib\net35\TechTalk.SpecFlow.dll</HintPath>
+    </Reference>
+    <Reference Include="WebActivatorEx, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7b26dc2a43f6a0d4, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebActivatorEx.2.0.6\lib\net40\WebActivatorEx.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AcceptanceTests\Features\Alert1.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Alert.feature</DependentUpon>
+    </Compile>
+    <Compile Include="AcceptanceTests\Features\AlertType.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AlertType.feature</DependentUpon>
+    </Compile>
+    <Compile Include="AcceptanceTests\Features\Appointment.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Appointment.feature</DependentUpon>
+    </Compile>
+    <Compile Include="AcceptanceTests\Features\AppointmentType.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AppointmentType.feature</DependentUpon>
+    </Compile>
+    <Compile Include="AcceptanceTests\Features\Community.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Community.feature</DependentUpon>
+    </Compile>
+    <Compile Include="AcceptanceTests\Features\CommunityAdmin.feature.cs">
+      <DependentUpon>CommunityAdmin.feature</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="AcceptanceTests\Features\Auth.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Auth.feature</DependentUpon>
+    </Compile>
+    <Compile Include="AcceptanceTests\Features\CommunityType.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CommunityType.feature</DependentUpon>
+    </Compile>
+    <Compile Include="AcceptanceTests\Features\CommunityWorker.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CommunityWorker.feature</DependentUpon>
+    </Compile>
+    <Compile Include="AcceptanceTests\Features\CommunityWork_Alert.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CommunityWork_Alert.feature</DependentUpon>
+    </Compile>
+    <Compile Include="AcceptanceTests\Features\DataSync.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSync.feature</DependentUpon>
+    </Compile>
+    <Compile Include="AcceptanceTests\Features\FamilyMember.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FamilyMember.feature</DependentUpon>
+    </Compile>
+    <Compile Include="AcceptanceTests\Features\Industry.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Industry.feature</DependentUpon>
+    </Compile>
+    <Compile Include="AcceptanceTests\Features\Kiosk.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Kiosk.feature</DependentUpon>
+    </Compile>
+    <Compile Include="AcceptanceTests\Features\KioskStatus.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>KioskStatus.feature</DependentUpon>
+    </Compile>
+    <Compile Include="AcceptanceTests\Features\Module.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Module.feature</DependentUpon>
+    </Compile>
+    <Compile Include="AcceptanceTests\Features\Organization.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Organization.feature</DependentUpon>
+    </Compile>
+    <Compile Include="AcceptanceTests\Features\OrgType.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>OrgType.feature</DependentUpon>
+    </Compile>
+    <Compile Include="AcceptanceTests\Features\Person1.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Person.feature</DependentUpon>
+    </Compile>
+    <Compile Include="AcceptanceTests\Features\Policy.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Policy.feature</DependentUpon>
+    </Compile>
+    <Compile Include="AcceptanceTests\Features\Requirement.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Requirement.feature</DependentUpon>
+    </Compile>
+    <Compile Include="AcceptanceTests\Features\RequirementType.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RequirementType.feature</DependentUpon>
+    </Compile>
+    <Compile Include="AcceptanceTests\Features\Resident.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resident.feature</DependentUpon>
+    </Compile>
+    <Compile Include="AcceptanceTests\Features\SignOut.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SignOut.feature</DependentUpon>
+    </Compile>
+    <Compile Include="AcceptanceTests\Features\User.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>User.feature</DependentUpon>
+    </Compile>
+    <Compile Include="AcceptanceTests\Features\Vendor1.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Vendor.feature</DependentUpon>
+    </Compile>
+    <Compile Include="AcceptanceTests\Features\VendorCredDocument.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>VendorCredDocument.feature</DependentUpon>
+    </Compile>
+    <Compile Include="AcceptanceTests\Features\VendorCredential.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>VendorCredential.feature</DependentUpon>
+    </Compile>
+    <Compile Include="AcceptanceTests\Features\VendorWorker.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>VendorWorker.feature</DependentUpon>
+    </Compile>
+    <Compile Include="AcceptanceTests\Features\Visit.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Visit.feature</DependentUpon>
+    </Compile>
+    <Compile Include="AcceptanceTests\Features\Visitor.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Visitor.feature</DependentUpon>
+    </Compile>
+    <Compile Include="AcceptanceTests\StepDefinitions\AlertSteps.cs" />
+    <Compile Include="AcceptanceTests\StepDefinitions\AppointmentSteps.cs" />
+    <Compile Include="AcceptanceTests\StepDefinitions\AlertTypeSteps.cs" />
+    <Compile Include="AcceptanceTests\StepDefinitions\AppointmentTypeSteps.cs" />
+    <Compile Include="AcceptanceTests\StepDefinitions\CommunityAdminSteps.cs" />
+    <Compile Include="AcceptanceTests\StepDefinitions\CommunityWorkerSteps.cs" />
+    <Compile Include="AcceptanceTests\StepDefinitions\CommunityWorker_AlertSteps.cs" />
+    <Compile Include="AcceptanceTests\StepDefinitions\CommunityTypeSteps.cs" />
+    <Compile Include="AcceptanceTests\StepDefinitions\CommunitySteps.cs" />
+    <Compile Include="AcceptanceTests\StepDefinitions\DataSyncSteps.cs" />
+    <Compile Include="AcceptanceTests\StepDefinitions\FamilyMemberSteps.cs" />
+    <Compile Include="AcceptanceTests\StepDefinitions\IndustrySteps.cs" />
+    <Compile Include="AcceptanceTests\StepDefinitions\UserSteps.cs" />
+    <Compile Include="AcceptanceTests\StepDefinitions\SignOutSteps.cs" />
+    <Compile Include="AcceptanceTests\StepDefinitions\RoleSteps.cs" />
+    <Compile Include="AcceptanceTests\StepDefinitions\ResidentSteps.cs" />
+    <Compile Include="AcceptanceTests\StepDefinitions\KioskSteps.cs" />
+    <Compile Include="AcceptanceTests\StepDefinitions\KioskStatusSteps.cs" />
+    <Compile Include="AcceptanceTests\StepDefinitions\RequirementTypeSteps.cs" />
+    <Compile Include="AcceptanceTests\StepDefinitions\RequirementSteps.cs" />
+    <Compile Include="AcceptanceTests\StepDefinitions\ModuleSteps.cs" />
+    <Compile Include="AcceptanceTests\StepDefinitions\PolicySteps.cs" />
+    <Compile Include="AcceptanceTests\StepDefinitions\OrgTypeSteps.cs" />
+    <Compile Include="AcceptanceTests\StepDefinitions\OrganizationSteps.cs" />
+    <Compile Include="AcceptanceTests\StepDefinitions\PersonSteps.cs" />
+    <Compile Include="AcceptanceTests\Features\Role.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Role.feature</DependentUpon>
+    </Compile>
+    <Compile Include="AcceptanceTests\StepDefinitions\VendorAdminSteps.cs" />
+    <Compile Include="AcceptanceTests\StepDefinitions\VendorCredDocumentSteps.cs" />
+    <Compile Include="AcceptanceTests\StepDefinitions\VendorCredentialSteps.cs" />
+    <Compile Include="AcceptanceTests\StepDefinitions\VisitorSteps.cs" />
+    <Compile Include="AcceptanceTests\StepDefinitions\VisitSteps.cs" />
+    <Compile Include="AcceptanceTests\StepDefinitions\VendorTypeSteps.cs" />
+    <Compile Include="AcceptanceTests\StepDefinitions\VendorWorkerSteps.cs" />
+    <Compile Include="AcceptanceTests\StepDefinitions\AddressSteps.cs" />
+    <Compile Include="AcceptanceTests\StepDefinitions\VendorSteps.cs" />
+    <Compile Include="AcceptanceTests\TestSetup.cs" />
+    <Compile Include="AcceptanceTests\Features\Address.feature.cs">
+      <DependentUpon>Address.feature</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="AcceptanceTests\Features\VendorAdmin.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>VendorAdmin.feature</DependentUpon>
+    </Compile>
+    <Compile Include="AcceptanceTests\Features\VendorType.feature.cs">
+      <DependentUpon>VendorType.feature</DependentUpon>
+      <SubType>Code</SubType>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="AuthenticatedTest.cs" />
+    <Compile Include="AcceptanceTests\StepDefinitions\AuthenticateSteps.cs" />
+    <Compile Include="BaseServiceTest.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestContext.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App.config">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="AcceptanceTests\Features\Alert.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Alert1.feature.cs</LastGenOutput>
+    </None>
+    <None Include="AcceptanceTests\Features\AlertType.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>AlertType.feature.cs</LastGenOutput>
+    </None>
+    <None Include="AcceptanceTests\Features\Appointment.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Appointment.feature.cs</LastGenOutput>
+    </None>
+    <None Include="AcceptanceTests\Features\AppointmentType.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>AppointmentType.feature.cs</LastGenOutput>
+    </None>
+    <None Include="AcceptanceTests\Features\Community.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Community.feature.cs</LastGenOutput>
+    </None>
+    <None Include="AcceptanceTests\Features\CommunityAdmin.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>CommunityAdmin.feature.cs</LastGenOutput>
+    </None>
+    <None Include="AcceptanceTests\Features\Auth.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Auth.feature.cs</LastGenOutput>
+    </None>
+    <None Include="AcceptanceTests\Features\Address.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Address.feature.cs</LastGenOutput>
+    </None>
+    <None Include="AcceptanceTests\Features\CommunityType.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>CommunityType.feature.cs</LastGenOutput>
+    </None>
+    <None Include="AcceptanceTests\Features\CommunityWorker.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>CommunityWorker.feature.cs</LastGenOutput>
+    </None>
+    <None Include="AcceptanceTests\Features\CommunityWork_Alert.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>CommunityWork_Alert.feature.cs</LastGenOutput>
+    </None>
+    <None Include="AcceptanceTests\Features\DataSync.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>DataSync.feature.cs</LastGenOutput>
+    </None>
+    <None Include="AcceptanceTests\Features\FamilyMember.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>FamilyMember.feature.cs</LastGenOutput>
+    </None>
+    <None Include="AcceptanceTests\Features\Industry.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Industry.feature.cs</LastGenOutput>
+    </None>
+    <None Include="AcceptanceTests\Features\Kiosk.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Kiosk.feature.cs</LastGenOutput>
+    </None>
+    <None Include="AcceptanceTests\Features\KioskStatus.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>KioskStatus.feature.cs</LastGenOutput>
+    </None>
+    <None Include="AcceptanceTests\Features\Module.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Module.feature.cs</LastGenOutput>
+    </None>
+    <None Include="AcceptanceTests\Features\Organization.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Organization.feature.cs</LastGenOutput>
+    </None>
+    <None Include="AcceptanceTests\Features\OrgType.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>OrgType.feature.cs</LastGenOutput>
+    </None>
+    <None Include="AcceptanceTests\Features\Person.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Person1.feature.cs</LastGenOutput>
+    </None>
+    <None Include="AcceptanceTests\Features\Policy.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Policy.feature.cs</LastGenOutput>
+    </None>
+    <None Include="AcceptanceTests\Features\Requirement.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Requirement.feature.cs</LastGenOutput>
+    </None>
+    <None Include="AcceptanceTests\Features\RequirementType.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>RequirementType.feature.cs</LastGenOutput>
+    </None>
+    <None Include="AcceptanceTests\Features\Resident.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Resident.feature.cs</LastGenOutput>
+    </None>
+    <None Include="AcceptanceTests\Features\SignOut.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>SignOut.feature.cs</LastGenOutput>
+    </None>
+    <None Include="AcceptanceTests\Features\User.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>User.feature.cs</LastGenOutput>
+    </None>
+    <None Include="AcceptanceTests\Features\VendorCredDocument.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>VendorCredDocument.feature.cs</LastGenOutput>
+    </None>
+    <None Include="AcceptanceTests\Features\VendorCredential.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>VendorCredential.feature.cs</LastGenOutput>
+    </None>
+    <None Include="AcceptanceTests\Features\VendorWorker.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>VendorWorker.feature.cs</LastGenOutput>
+    </None>
+    <None Include="AcceptanceTests\Features\Vendor.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Vendor1.feature.cs</LastGenOutput>
+    </None>
+    <None Include="AcceptanceTests\Features\VendorAdmin.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>VendorAdmin.feature.cs</LastGenOutput>
+    </None>
+    <None Include="AcceptanceTests\Features\VendorType.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>VendorType.feature.cs</LastGenOutput>
+    </None>
+    <None Include="AcceptanceTests\Features\Role.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Role.feature.cs</LastGenOutput>
+    </None>
+    <None Include="AcceptanceTests\Features\Visit.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Visit.feature.cs</LastGenOutput>
+    </None>
+    <None Include="AcceptanceTests\Features\Visitor.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Visitor.feature.cs</LastGenOutput>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AllTheSame.Common\AllTheSame.Common.csproj">
+      <Project>{eee77609-87e3-4437-88ff-89baab5ebe56}</Project>
+      <Name>AllTheSame.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AllTheSame.Repository\AllTheSame.Repository.csproj">
+      <Project>{78d7022d-da5b-4540-868d-978314d558ce}</Project>
+      <Name>AllTheSame.Repository</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AllTheSame.Entity.Model\AllTheSame.Entity.Model.csproj">
+      <Project>{1d72365c-ca0d-4c6c-96de-adcd0cc2fef7}</Project>
+      <Name>AllTheSame.Entity.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AllTheSame.Service\AllTheSame.Service.csproj">
+      <Project>{A0FFD14F-A856-4F8C-BE63-18919D17B1A0}</Project>
+      <Name>AllTheSame.Service</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AllTheSame.WebAPI\AllTheSame.WebAPI.csproj">
+      <Project>{E570617F-1826-4C06-BA26-1526551F92A0}</Project>
+      <Name>AllTheSame.WebAPI</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <Import Project="..\packages\AutoMapper.3.3.1\tools\AutoMapper.targets" Condition="Exists('..\packages\AutoMapper.3.3.1\tools\AutoMapper.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

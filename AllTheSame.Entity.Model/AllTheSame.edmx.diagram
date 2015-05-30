@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="fbc1f4b45e1a4499af74c0b39c5bbb17" Name="Diagram1">
+        <EntityTypeShape EntityType="AllTheSame.databaseModel.Address" Width="1.5" PointX="0.75" PointY="30" IsExpanded="true" />
+        <EntityTypeShape EntityType="AllTheSame.databaseModel.Alert" Width="1.5" PointX="12.75" PointY="31.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="AllTheSame.databaseModel.AlertType" Width="1.5" PointX="10.5" PointY="16.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="AllTheSame.databaseModel.Appointment" Width="1.5" PointX="10.5" PointY="32.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="AllTheSame.databaseModel.AppointmentType" Width="1.5" PointX="8.25" PointY="20" IsExpanded="true" />
+        <EntityTypeShape EntityType="AllTheSame.databaseModel.Community" Width="1.5" PointX="8.25" PointY="26.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="AllTheSame.databaseModel.CommunityAdmin" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AllTheSame.databaseModel.CommunityImport" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AllTheSame.databaseModel.CommunityType" Width="1.5" PointX="6" PointY="25.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AllTheSame.databaseModel.CommunityWorker" Width="1.5" PointX="5.25" PointY="37.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="AllTheSame.databaseModel.CommunityWorker_Alert" Width="1.5" PointX="10.5" PointY="38.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="AllTheSame.databaseModel.DataSync" Width="1.5" PointX="12.75" PointY="23.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="AllTheSame.databaseModel.FamilyMember" Width="1.5" PointX="8.25" PointY="37.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="AllTheSame.databaseModel.ImportErrorLog" Width="1.5" PointX="2.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AllTheSame.databaseModel.Industry" Width="1.5" PointX="0.75" PointY="26.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="AllTheSame.databaseModel.Kiosk" Width="1.5" PointX="10.5" PointY="23.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="AllTheSame.databaseModel.KioskStatus" Width="1.5" PointX="8.25" PointY="23.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="AllTheSame.databaseModel.Module" Width="1.5" PointX="3" PointY="51.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="AllTheSame.databaseModel.Organization" Width="1.5" PointX="3" PointY="28.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AllTheSame.databaseModel.OrgType" Width="1.5" PointX="0.75" PointY="35.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="AllTheSame.databaseModel.Permission" Width="1.5" PointX="5.25" PointY="50.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AllTheSame.databaseModel.Person" Width="1.5" PointX="3" PointY="35.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="AllTheSame.databaseModel.Policy" Width="1.5" PointX="10.5" PointY="28.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="AllTheSame.databaseModel.Requirement" Width="1.5" PointX="13.5" PointY="27.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="AllTheSame.databaseModel.RequirementType" Width="1.5" PointX="11.25" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AllTheSame.databaseModel.Resident" Width="1.5" PointX="5.25" PointY="32.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="AllTheSame.databaseModel.Role" Width="1.5" PointX="8.25" PointY="58.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="AllTheSame.databaseModel.Role_Permission" Width="1.5" PointX="10.5" PointY="51" IsExpanded="true" />
+        <EntityTypeShape EntityType="AllTheSame.databaseModel.SignOut" Width="1.5" PointX="12.5" PointY="42.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AllTheSame.databaseModel.User" Width="1.5" PointX="5.25" PointY="46.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="AllTheSame.databaseModel.User_Org_Permission" Width="1.5" PointX="7.5" PointY="40.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="AllTheSame.databaseModel.User_Org_Role" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AllTheSame.databaseModel.UserSession" Width="1.5" PointX="7.5" PointY="50" IsExpanded="true" />
+        <EntityTypeShape EntityType="AllTheSame.databaseModel.Vendor" Width="1.5" PointX="5.25" PointY="28.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="AllTheSame.databaseModel.Vendor_Archive" Width="1.5" PointX="4.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AllTheSame.databaseModel.VendorAdmin" Width="1.5" PointX="5.25" PointY="41.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="AllTheSame.databaseModel.VendorCredDocument" Width="1.5" PointX="9.75" PointY="45.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="AllTheSame.databaseModel.VendorCredential" Width="1.5" PointX="7.5" PointY="45" IsExpanded="true" />
+        <EntityTypeShape EntityType="AllTheSame.databaseModel.VendorImport" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AllTheSame.databaseModel.VendorType" Width="1.5" PointX="6" PointY="22.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="AllTheSame.databaseModel.VendorWorker" Width="1.5" PointX="8.25" PointY="32.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AllTheSame.databaseModel.VendorWorker_Alert" Width="1.5" PointX="15" PointY="32.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="AllTheSame.databaseModel.Visit" Width="1.5" PointX="7.5" PointY="54.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="AllTheSame.databaseModel.VisitImport" Width="1.5" PointX="2.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AllTheSame.databaseModel.Visitor" Width="1.5" PointX="5.25" PointY="58" IsExpanded="true" />
+        <AssociationConnector Association="AllTheSame.databaseModel.FK_Address_User_Billing" ManuallyRouted="false" />
+        <AssociationConnector Association="AllTheSame.databaseModel.FK_Organization_Address_Billing" ManuallyRouted="false" />
+        <AssociationConnector Association="AllTheSame.databaseModel.FK_Organization_Address_Shipping" ManuallyRouted="false" />
+        <AssociationConnector Association="AllTheSame.databaseModel.FK_User_Address_Shipping" ManuallyRouted="false" />
+        <AssociationConnector Association="AllTheSame.databaseModel.FK__CommunityWorker_Alert__Alert" ManuallyRouted="false" />
+        <AssociationConnector Association="AllTheSame.databaseModel.FK__VendorWorker_Alert__Alert" ManuallyRouted="false" />
+        <AssociationConnector Association="AllTheSame.databaseModel.FK_Alert_AlertType" ManuallyRouted="false" />
+        <AssociationConnector Association="AllTheSame.databaseModel.FK_Alert_Appointment" ManuallyRouted="false" />
+        <AssociationConnector Association="AllTheSame.databaseModel.FK_Alert_Kiosk" ManuallyRouted="false" />
+        <AssociationConnector Association="AllTheSame.databaseModel.FK_Appointment_AppointmentType" ManuallyRouted="false" />
+        <AssociationConnector Association="AllTheSame.databaseModel.FK_Appointment_Resident" ManuallyRouted="false" />
+        <AssociationConnector Association="AllTheSame.databaseModel.FK_Appointment_VendorWorker" ManuallyRouted="false" />
+        <AssociationConnector Association="AllTheSame.databaseModel.FK_Community_CommunityType" ManuallyRouted="false" />
+        <AssociationConnector Association="AllTheSame.databaseModel.FK_Community_Organization" ManuallyRouted="false" />
+        <AssociationConnector Association="AllTheSame.databaseModel.FK_CommunityWorker_Community" ManuallyRouted="false" />
+        <AssociationConnector Association="AllTheSame.databaseModel.FK_Kiosk_Community" ManuallyRouted="false" />
+        <AssociationConnector Association="AllTheSame.databaseModel.FK_Policy_Community" ManuallyRouted="false" />
+        <AssociationConnector Association="AllTheSame.databaseModel.FK_Requiremet_Community" ManuallyRouted="false" />
+        <AssociationConnector Association="AllTheSame.databaseModel.FK_Resident_Community" ManuallyRouted="false" />
+        <AssociationConnector Association="AllTheSame.databaseModel.FK__CommunityWorker_Alert__VendorWorker" ManuallyRouted="false" />
+        <AssociationConnector Association="AllTheSame.databaseModel.FK_CommunityWorker_Person" ManuallyRouted="false" />
+        <AssociationConnector Association="AllTheSame.databaseModel.FK_DataSync_Kiosk" ManuallyRouted="false" />
+        <AssociationConnector Association="AllTheSame.databaseModel.FK_FamilyMember_Person" ManuallyRouted="false" />
+        <AssociationConnector Association="AllTheSame.databaseModel.FK_FamilyMember_Resident" ManuallyRouted="false" />
+        <AssociationConnector Association="AllTheSame.databaseModel.FK__Organization_Industry" ManuallyRouted="false" />
+        <AssociationConnector Association="AllTheSame.databaseModel.FK_Kiosk_KioskStatus" ManuallyRouted="false" />
+        <AssociationConnector Association="AllTheSame.databaseModel.FK_Permission_Module" ManuallyRouted="false" />
+        <AssociationConnector Association="AllTheSame.databaseModel.FK__User_Org_Permission__Org" ManuallyRouted="false" />
+        <AssociationConnector Association="AllTheSame.databaseModel.FK_Organization_OrgType" ManuallyRouted="false" />
+        <AssociationConnector Association="AllTheSame.databaseModel.FK_Vendor_Organization" ManuallyRouted="false" />
+        <AssociationConnector Association="AllTheSame.databaseModel.FK__Role_Permission__Permisson" ManuallyRouted="false" />
+        <AssociationConnector Association="AllTheSame.databaseModel.FK__User_Org_Permission__Permission" ManuallyRouted="false" />
+        <AssociationConnector Association="AllTheSame.databaseModel.FK_Resident_Person" ManuallyRouted="false" />
+        <AssociationConnector Association="AllTheSame.databaseModel.FK_User_Person" ManuallyRouted="false" />
+        <AssociationConnector Association="AllTheSame.databaseModel.FK_Vendor_Person" ManuallyRouted="false" />
+        <AssociationConnector Association="AllTheSame.databaseModel.FK_VendorAdmin_Person" ManuallyRouted="false" />
+        <AssociationConnector Association="AllTheSame.databaseModel.FK_Visitor_Person" ManuallyRouted="false" />
+        <AssociationConnector Association="AllTheSame.databaseModel.FK_Requirement_RequirementType" ManuallyRouted="false" />
+        <AssociationConnector Association="AllTheSame.databaseModel.FK_VenderCredential_Requirement" ManuallyRouted="false" />
+        <AssociationConnector Association="AllTheSame.databaseModel.FK_SignOut_Resident" ManuallyRouted="false" />
+        <AssociationConnector Association="AllTheSame.databaseModel.FK_Visit_Resident" ManuallyRouted="false" />
+        <AssociationConnector Association="AllTheSame.databaseModel.FK__Role_Permission__Role" ManuallyRouted="false" />
+        <AssociationConnector Association="AllTheSame.databaseModel.FK_SignOut_VendorWorker" ManuallyRouted="false" />
+        <AssociationConnector Association="AllTheSame.databaseModel.FK_SignOut_Visitor" ManuallyRouted="false" />
+        <AssociationConnector Association="AllTheSame.databaseModel.FK__User_Org_Permission__User" ManuallyRouted="false" />
+        <AssociationConnector Association="AllTheSame.databaseModel.FK_UserSession_User" ManuallyRouted="false" />
+        <AssociationConnector Association="AllTheSame.databaseModel.FK_VendorCredential_User" ManuallyRouted="false" />
+        <AssociationConnector Association="AllTheSame.databaseModel.FK_VendorAdmin_Vendor" ManuallyRouted="false" />
+        <AssociationConnector Association="AllTheSame.databaseModel.FK_VendorWorker_Vendor" ManuallyRouted="false" />
+        <AssociationConnector Association="AllTheSame.databaseModel.FK_VendorCredDocuement_VendorCredential" ManuallyRouted="false" />
+        <AssociationConnector Association="AllTheSame.databaseModel.FK_VendorCredential_VendorWorker" ManuallyRouted="false" />
+        <AssociationConnector Association="AllTheSame.databaseModel.FK_VendorWorker_VendorType" ManuallyRouted="false" />
+        <AssociationConnector Association="AllTheSame.databaseModel.FK__VendorWorker_Alert__VendorWorker" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

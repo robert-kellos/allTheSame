@@ -1,0 +1,6 @@
+﻿CREATE TABLE [dbo].[KioskStatus]
+(
+	[Id] INT NOT NULL PRIMARY KEY IDENTITY, 
+    [Code] VARCHAR(50) NOT NULL, 
+    [Label] NVARCHAR(100) NULL
+)

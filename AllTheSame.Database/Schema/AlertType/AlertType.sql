@@ -1,0 +1,8 @@
+﻿CREATE TABLE [dbo].[AlertType]
+(
+	[Id] INT NOT NULL PRIMARY KEY IDENTITY, 
+    [Code] VARCHAR(50) NOT NULL, 
+    [FormatText] NVARCHAR(500) NOT NULL, 
+    [CreatedOn] DATETIME NULL DEFAULT GETUTCDATE(), 
+    [UpdatedOn] DATETIME NULL 
+)

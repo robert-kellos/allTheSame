@@ -1,0 +1,10 @@
+﻿CREATE TABLE [dbo].[Permission]
+(
+	[Id] INT NOT NULL PRIMARY KEY IDENTITY, 
+	[ModuleId] INT NOT NULL,
+    [Code] VARCHAR(50) NOT NULL,
+	[Label] NVARCHAR(100) NULL, 
+    [CreatedOn] DATETIME NULL DEFAULT GETUTCDATE(), 
+    [UpdatedOn] DATETIME NULL
+         
+)

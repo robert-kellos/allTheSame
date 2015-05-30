@@ -1,0 +1,246 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Name>AllTheSame.Database</Name>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>4.1</ProjectVersion>
+    <ProjectGuid>{6a23b1cb-c486-4b78-be10-cedf56011446}</ProjectGuid>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql120DatabaseSchemaProvider</DSP>
+    <OutputType>Database</OutputType>
+    <RootPath>
+    </RootPath>
+    <RootNamespace>AllTheSame.Database</RootNamespace>
+    <AssemblyName>AllTheSame.Database</AssemblyName>
+    <ModelCollation>1033, CI</ModelCollation>
+    <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
+    <DeployToDatabase>True</DeployToDatabase>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetLanguage>CS</TargetLanguage>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <SqlServerVerification>False</SqlServerVerification>
+    <IncludeCompositeObjects>True</IncludeCompositeObjects>
+    <TargetDatabaseSet>True</TargetDatabaseSet>
+    <GenerateCreateScript>True</GenerateCreateScript>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <RunSqlCodeAnalysis>True</RunSqlCodeAnalysis>
+    <DocumentationFile>bin\Debug\Accushield.Database.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>
+    <!-- Default to the v11.0 targets path if the targets file for the current VS version is not found -->
+    <SSDTExists Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets')">True</SSDTExists>
+    <VisualStudioVersion Condition="'$(SSDTExists)' == ''">11.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Condition="'$(SQLDBExtensionsRefPath)' != ''" Project="$(SQLDBExtensionsRefPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <ItemGroup>
+    <Folder Include="Properties" />
+    <Folder Include="Schema" />
+    <Folder Include="StoredProcs" />
+    <Folder Include="Schema\Address" />
+    <Folder Include="Schema\User" />
+    <Folder Include="Schema\Person" />
+    <Folder Include="Schema\Organization" />
+    <Folder Include="Schema\Module" />
+    <Folder Include="Schema\Permission" />
+    <Folder Include="Schema\Role" />
+    <Folder Include="Schema\Role_Permission" />
+    <Folder Include="Schema\User_Org_Permission" />
+    <Folder Include="Schema\UserSession" />
+    <Folder Include="StoredProcs\OrgOperations" />
+    <Folder Include="StoredProcs\Auth" />
+    <Folder Include="Schema\User_Org_Role" />
+    <Folder Include="Schema\Vendor" />
+    <Folder Include="Schema\VendorWorker" />
+    <Folder Include="Schema\VendorType" />
+    <Folder Include="Schema\VendorAdmin" />
+    <Folder Include="Schema\CommunityAdmin" />
+    <Folder Include="Schema\Community" />
+    <Folder Include="Schema\Resident" />
+    <Folder Include="Schema\FamilyMember" />
+    <Folder Include="Schema\OrgType" />
+    <Folder Include="Schema\Visit" />
+    <Folder Include="Schema\Visitor" />
+    <Folder Include="Schema\SignOut" />
+    <Folder Include="Schema\RequirementType" />
+    <Folder Include="Schema\Requirement" />
+    <Folder Include="Schema\VendorCredential" />
+    <Folder Include="Schema\VendorCredDocument" />
+    <Folder Include="Schema\Policy" />
+    <Folder Include="Schema\AlertType" />
+    <Folder Include="Schema\Alert" />
+    <Folder Include="Schema\Appointment" />
+    <Folder Include="Schema\AppointmentType" />
+    <Folder Include="Schema\VendorWoker_Alert" />
+    <Folder Include="Schema\CommunityWorker_Alert" />
+    <Folder Include="Schema\KioskStatus" />
+    <Folder Include="Schema\Kiosk" />
+    <Folder Include="Schema\CommunityWorker" />
+    <Folder Include="Schema\CommunityType" />
+    <Folder Include="Schema\Industry" />
+    <Folder Include="Schema\DataSync" />
+    <Folder Include="Schema\Vendor_Archive" />
+    <Folder Include="Schema\Import" />
+    <Folder Include="StoredProcs\Import" />
+    <Folder Include="Snapshots" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="Schema\Address\Address.sql" />
+    <Build Include="Schema\User\FK_User_Person.sql" />
+    <Build Include="Schema\User\User.sql" />
+    <Build Include="Schema\Person\Person.sql" />
+    <Build Include="Schema\Organization\Organization.sql" />
+    <Build Include="Schema\Organization\UI_Organization_NodeId.sql" />
+    <Build Include="Schema\Person\FK_Person_Address_Billing.sql" />
+    <Build Include="Schema\Person\FK_Person_Address_Shipping.sql" />
+    <Build Include="Schema\Module\Module.sql" />
+    <Build Include="Schema\Role\Role.sql" />
+    <Build Include="Schema\Permission\Permission.sql" />
+    <Build Include="Schema\Role_Permission\Role_Permission.sql" />
+    <Build Include="Schema\Role_Permission\FK__Role_Permission__Role.sql" />
+    <Build Include="Schema\User_Org_Permission\User_Org_Permission.sql" />
+    <Build Include="Schema\User_Org_Permission\UK__User_Org_Permission.sql" />
+    <Build Include="Schema\User_Org_Permission\FK__User_Org_Permission__Org.sql" />
+    <Build Include="Schema\Permission\FK_Permission_Module.sql" />
+    <Build Include="Schema\Role_Permission\FK__Role_Permission__Permission.sql" />
+    <Build Include="Schema\Role_Permission\UK__Role_Permission.sql" />
+    <Build Include="Schema\UserSession\UserSession.sql" />
+    <Build Include="Schema\UserSession\FK_UserSession_User.sql" />
+    <Build Include="StoredProcs\OrgOperations\spOrganizationAdd.sql" />
+    <Build Include="StoredProcs\OrgOperations\spOrganizationMoveSubTree.sql" />
+    <Build Include="StoredProcs\Auth\spGetOrgPermissions.sql" />
+    <Build Include="Schema\User_Org_Role\User_Org_Role.sql" />
+    <Build Include="Schema\User_Org_Role\UI_User_Org_Role.sql" />
+    <Build Include="Schema\Permission\UI_Permission_Code.sql" />
+    <Build Include="StoredProcs\Auth\spHasPermission.sql" />
+    <Build Include="Schema\Vendor\Vendor.sql" />
+    <Build Include="Schema\Vendor\FK_Vendor_Organization.sql" />
+    <Build Include="Schema\VendorWorker\VendorWorker.sql" />
+    <Build Include="Schema\VendorType\VendorType.sql" />
+    <Build Include="Schema\VendorWorker\FK_VendorWorker_VendorType.sql" />
+    <Build Include="Schema\VendorWorker\FK_Vendor_Person.sql" />
+    <Build Include="Schema\VendorWorker\FK_VendorWorker_Vendor.sql" />
+    <Build Include="Schema\VendorAdmin\VendorAdmin.sql" />
+    <Build Include="Schema\VendorAdmin\FK_VendorAdmin_Vendor.sql" />
+    <Build Include="Schema\VendorAdmin\FK_VendorAdmin_Person.sql" />
+    <Build Include="Schema\CommunityAdmin\CommunityAdmin.sql" />
+    <Build Include="Schema\Community\Community.sql" />
+    <Build Include="Schema\Community\FK_Community_Organization.sql" />
+    <Build Include="Schema\Resident\Resident.sql" />
+    <Build Include="Schema\Resident\FK_Resident_Community.sql" />
+    <Build Include="Schema\Resident\FK_Resident_Person.sql" />
+    <Build Include="Schema\FamilyMember\FamilyMember.sql" />
+    <Build Include="Schema\FamilyMember\FK_FamilyMember_Person.sql" />
+    <Build Include="Schema\FamilyMember\FK_FamilyMember_Resident.sql" />
+    <Build Include="Schema\OrgType\OrgType.sql" />
+    <Build Include="Schema\Organization\FK_Organization_OrgType.sql" />
+    <Build Include="Schema\Visit\Visit.sql" />
+    <Build Include="Schema\Visit\FK_Visit_Resident.sql" />
+    <Build Include="Schema\Visitor\Visitor.sql" />
+    <Build Include="Schema\Visitor\FK_Visitor_Person.sql" />
+    <Build Include="Schema\SignOut\SignOut.sql" />
+    <Build Include="Schema\SignOut\FK_SignOut_Resident.sql" />
+    <Build Include="Schema\SignOut\FK_SignOut_Visitor.sql" />
+    <Build Include="Schema\SignOut\FK_SignOut_VendorWorker.sql" />
+    <Build Include="Schema\RequirementType\RequirementType.sql" />
+    <Build Include="Schema\Requirement\Requirement.sql" />
+    <Build Include="Schema\Requirement\FK_Requirement_RequirementType.sql" />
+    <Build Include="Schema\Requirement\FK_Requiremet_Community.sql" />
+    <Build Include="Schema\VendorCredential\VendorCredential.sql" />
+    <Build Include="Schema\VendorCredential\FK_VenderCredential_Requirement.sql" />
+    <Build Include="Schema\VendorCredential\FK_VendorCredential_VendorWorker.sql" />
+    <Build Include="Schema\VendorCredential\FK_VendorCredential_User.sql" />
+    <Build Include="Schema\VendorCredDocument\VendorCredDocument.sql" />
+    <Build Include="Schema\VendorCredDocument\FK_VendorCredDocuement_VendorCredential.sql" />
+    <Build Include="Schema\Policy\Policy.sql" />
+    <Build Include="Schema\Policy\FK_Policy_Community.sql" />
+    <Build Include="Schema\AlertType\AlertType.sql" />
+    <Build Include="Schema\Alert\Alert.sql" />
+    <Build Include="Schema\Appointment\Appointment.sql" />
+    <Build Include="Schema\AppointmentType\AppointmentType.sql" />
+    <Build Include="Schema\Appointment\FK_Appointment_AppointmentType.sql" />
+    <Build Include="Schema\Appointment\FK_Appointment_Resident.sql" />
+    <Build Include="Schema\Appointment\FK_Appointment_VendorWorker.sql" />
+    <Build Include="Schema\VendorWoker_Alert\VendorWorker_Alert.sql" />
+    <Build Include="Schema\VendorWoker_Alert\FK__VendorWorker_Alert__Alert.sql" />
+    <Build Include="Schema\VendorWoker_Alert\FK__VendorWorker_Alert__VendorWorker.sql" />
+    <Build Include="Schema\VendorWoker_Alert\UI__VendorWorkerAlert__VendorWorkerId__AlertId.sql" />
+    <Build Include="Schema\CommunityWorker_Alert\CommunityWorker_Alert.sql" />
+    <Build Include="Schema\CommunityWorker_Alert\FK__CommunityWorker_Alert__Alert.sql" />
+    <Build Include="Schema\CommunityWorker_Alert\FK__CommunityWorker_Alert__CommunityWorker.sql" />
+    <Build Include="Schema\CommunityWorker_Alert\UI__CommunityWorkerAlert__CommunityWorkerId__AlertId.sql" />
+    <Build Include="Schema\KioskStatus\KioskStatus.sql" />
+    <Build Include="Schema\Kiosk\Kiosk.sql" />
+    <Build Include="Schema\Kiosk\FK_Kiosk_KioskStatus.sql" />
+    <Build Include="Schema\Kiosk\FK_Kiosk_Community.sql" />
+    <Build Include="Schema\Alert\FK_Alert_AlertType.sql" />
+    <Build Include="Schema\Alert\FK_Alert_Appointment.sql" />
+    <Build Include="Schema\Alert\FK_Alert_Kiosk.sql" />
+    <Build Include="Schema\CommunityWorker\FK_CommunityWorker_Community.sql" />
+    <Build Include="Schema\CommunityWorker\FK_CommunityWorker_Person.sql" />
+    <Build Include="Schema\CommunityWorker\CommunityWorker.sql" />
+    <Build Include="Schema\CommunityType\CommunityType.sql" />
+    <Build Include="Schema\Community\FK_Community_CommunityType.sql" />
+    <Build Include="Schema\Industry\Industry.sql" />
+    <Build Include="Schema\Organization\FK_Organization_Address_Billing.sql" />
+    <Build Include="Schema\Organization\FK_Organization_Address_Shipping.sql" />
+    <Build Include="Schema\Organization\FK_Organization_Industry.sql" />
+    <Build Include="Schema\UserSession\UI_SessionId.sql" />
+    <Build Include="Schema\DataSync\DataSync.sql" />
+    <Build Include="Schema\DataSync\FK_DataSync_Kiosk.sql" />
+    <Build Include="Schema\Vendor_Archive\Vendor_Archive.sql" />
+    <Build Include="Schema\Vendor\IN_Version.sql" />
+    <Build Include="Schema\DataSync\IN_DataSync_RowVersion.sql" />
+    <Build Include="Schema\Import\CommunityImport.sql" />
+    <Build Include="StoredProcs\Import\spImportCommunities.sql" />
+    <Build Include="Schema\Import\VendorImport.sql" />
+    <Build Include="StoredProcs\Import\spImportVendors.sql" />
+    <Build Include="StoredProcs\Import\spImportVisits.sql" />
+    <Build Include="Schema\Import\ImportErrorLog.sql" />
+    <Build Include="Schema\Import\VisitImport.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="Schema\User_Org_Permission\FK__User_Org_Permission_Permission.sql" />
+    <Build Include="Schema\User_Org_Permission\FK__User_Org_Permission_User.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="AllTheSame.Database.refactorlog" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="AllTheSame_1.Database.publish.xml" />
+    <None Include="AllTheSame_local.Database.publish.xml" />
+    <None Include="Snapshots\AllTheSame.Database_20150520_12-15-28.dacpac" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+</Project>

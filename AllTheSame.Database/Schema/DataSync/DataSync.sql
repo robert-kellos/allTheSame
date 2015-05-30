@@ -1,0 +1,9 @@
+﻿CREATE TABLE [dbo].[DataSync]
+(
+	[Id] INT NOT NULL PRIMARY KEY IDENTITY, 
+	[KioskId] INT NULL,
+    [SyncDateTime] DATETIME NOT NULL DEFAULT GETUTCDATE(), 
+    [RowVersion] ROWVERSION NOT NULL, 
+    [CreatedOn] DATETIME NULL DEFAULT GETUTCDATE(), 
+    [UpdatedOn] DATETIME NULL 
+)

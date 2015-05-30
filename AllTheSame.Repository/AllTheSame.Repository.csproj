@@ -1,0 +1,235 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{78D7022D-DA5B-4540-868D-978314D558CE}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AllTheSame.Repository</RootNamespace>
+    <AssemblyName>AllTheSame.Repository</AssemblyName>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <NuGetPackageImportStamp>03b11c56</NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\AllTheSame.Repository.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AutoMapper, Version=3.3.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.3.3.1\lib\net40\AutoMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="AutoMapper.Net4, Version=3.3.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.3.3.1\lib\net40\AutoMapper.Net4.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Extensions, Version=2.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\net45\System.Net.Http.Extensions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http.Primitives, Version=4.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\net45\System.Net.Http.Primitives.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest" />
+    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Authentication\AuthRepository.cs" />
+    <Compile Include="Authentication\IAuthRepository.cs" />
+    <Compile Include="Common\FieldSortCriteria.cs" />
+    <Compile Include="Common\GenericRepository.cs" />
+    <Compile Include="Common\IGenericRepository.cs" />
+    <Compile Include="Common\ISearchRepository.cs" />
+    <Compile Include="Common\ISortCriteria.cs" />
+    <Compile Include="Common\ISyncRepository.cs" />
+    <Compile Include="Common\IUnitOfWork.cs" />
+    <Compile Include="Common\PagedListResult.cs" />
+    <Compile Include="Common\SearchQuery.cs" />
+    <Compile Include="Common\SearchRepository.cs" />
+    <Compile Include="Common\SortDirection.cs" />
+    <Compile Include="Common\SyncRepository.cs" />
+    <Compile Include="Common\UnitOfWork.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserData\implementation\AddressRepository.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UserData\implementation\AlertRepository.cs" />
+    <Compile Include="UserData\implementation\AlertTypeRepository.cs" />
+    <Compile Include="UserData\implementation\AppointmentRepository.cs" />
+    <Compile Include="UserData\implementation\AppointmentTypeRepository.cs" />
+    <Compile Include="UserData\implementation\CommunityAdminRepository.cs" />
+    <Compile Include="UserData\implementation\CommunityRepository.cs" />
+    <Compile Include="UserData\implementation\CommunityTypeRepository.cs" />
+    <Compile Include="UserData\implementation\CommunityWorkerRepository.cs" />
+    <Compile Include="UserData\implementation\CommunityWorker_AlertRepository.cs" />
+    <Compile Include="UserData\implementation\DataSyncRepository.cs" />
+    <Compile Include="UserData\implementation\FamilyMemberRepository.cs" />
+    <Compile Include="UserData\implementation\IndustryRepository.cs" />
+    <Compile Include="UserData\implementation\KioskRepository.cs" />
+    <Compile Include="UserData\implementation\KioskStatusRepository.cs" />
+    <Compile Include="UserData\implementation\ModuleRepository.cs" />
+    <Compile Include="UserData\implementation\OrganizationRepository.cs" />
+    <Compile Include="UserData\implementation\OrgTypeRepository.cs" />
+    <Compile Include="UserData\implementation\PermissionRepository.cs" />
+    <Compile Include="UserData\implementation\PersonRepository.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UserData\implementation\PolicyRepository.cs" />
+    <Compile Include="UserData\implementation\RequirementRepository.cs" />
+    <Compile Include="UserData\implementation\RequirementTypeRepository.cs" />
+    <Compile Include="UserData\implementation\ResidentRepository.cs" />
+    <Compile Include="UserData\implementation\RoleRepository.cs" />
+    <Compile Include="UserData\implementation\Role_PermissionRepository.cs" />
+    <Compile Include="UserData\implementation\SignOutRepository.cs" />
+    <Compile Include="UserData\implementation\UserRepository.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UserData\implementation\UserSessionRepository.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UserData\implementation\User_Org_PermissionRepository.cs" />
+    <Compile Include="UserData\implementation\User_Org_RoleRepository.cs" />
+    <Compile Include="UserData\implementation\VendorAdminRepository.cs" />
+    <Compile Include="UserData\implementation\VendorCredDocumentRepository.cs" />
+    <Compile Include="UserData\implementation\VendorCredentialRepository.cs" />
+    <Compile Include="UserData\implementation\VendorRepository.cs" />
+    <Compile Include="UserData\implementation\VendorTypeRepository.cs" />
+    <Compile Include="UserData\implementation\VendorWorkerRepository.cs" />
+    <Compile Include="UserData\implementation\VendorWorker_AlertRepository.cs" />
+    <Compile Include="UserData\implementation\VisitorRepository.cs" />
+    <Compile Include="UserData\implementation\VisitRepository.cs" />
+    <Compile Include="UserData\interfaces\IAddressRepository.cs" />
+    <Compile Include="UserData\interfaces\IAlertRepository.cs" />
+    <Compile Include="UserData\interfaces\IAlertTypeRepository.cs" />
+    <Compile Include="UserData\interfaces\IAppointmentRepository.cs" />
+    <Compile Include="UserData\interfaces\IAppointmentTypeRepository.cs" />
+    <Compile Include="UserData\interfaces\ICommunityAdminRepository.cs" />
+    <Compile Include="UserData\interfaces\ICommunityRepository.cs" />
+    <Compile Include="UserData\interfaces\ICommunityTypeRepository.cs" />
+    <Compile Include="UserData\interfaces\ICommunityWorkerRepository.cs" />
+    <Compile Include="UserData\interfaces\ICommunityWorker_AlertRepository.cs" />
+    <Compile Include="UserData\interfaces\IDataSyncRepository.cs" />
+    <Compile Include="UserData\interfaces\IFamilyMemberRepository.cs" />
+    <Compile Include="UserData\interfaces\IIndustryRepository.cs" />
+    <Compile Include="UserData\interfaces\IKioskRepository.cs" />
+    <Compile Include="UserData\interfaces\IKioskStatusRepository.cs" />
+    <Compile Include="UserData\interfaces\IModuleRepository.cs" />
+    <Compile Include="UserData\interfaces\IOrganizationRepository.cs" />
+    <Compile Include="UserData\interfaces\IOrgTypeRepository .cs" />
+    <Compile Include="UserData\interfaces\IPermissionRepository.cs" />
+    <Compile Include="UserData\interfaces\IPersonRepository.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UserData\interfaces\IPolicyRepository.cs" />
+    <Compile Include="UserData\interfaces\IRequirementRepository.cs" />
+    <Compile Include="UserData\interfaces\IRequirementTypeRepository.cs" />
+    <Compile Include="UserData\interfaces\IResidentRepository.cs" />
+    <Compile Include="UserData\interfaces\IRoleRepository.cs" />
+    <Compile Include="UserData\interfaces\IRole_PermissionRepository.cs" />
+    <Compile Include="UserData\interfaces\ISignOutRepository.cs" />
+    <Compile Include="UserData\interfaces\IUserRepository.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UserData\interfaces\IUserSessionRepository.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UserData\interfaces\IUser_Org_PermissionRepository.cs" />
+    <Compile Include="UserData\interfaces\IUser_Org_RoleRepository.cs" />
+    <Compile Include="UserData\interfaces\IVendorAdminRepository.cs" />
+    <Compile Include="UserData\interfaces\IVendorCredDocumentRepository.cs" />
+    <Compile Include="UserData\interfaces\IVendorCredentialRepository.cs" />
+    <Compile Include="UserData\interfaces\IVendorRepository.cs" />
+    <Compile Include="UserData\interfaces\IVendorTypeRepository.cs" />
+    <Compile Include="UserData\interfaces\IVendorWorkerRepository.cs" />
+    <Compile Include="UserData\interfaces\IVendorWorker_AlertRepository.cs" />
+    <Compile Include="UserData\interfaces\IVisitorRepository.cs" />
+    <Compile Include="UserData\interfaces\IVisitRepository.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AllTheSame.Common\AllTheSame.Common.csproj">
+      <Project>{eee77609-87e3-4437-88ff-89baab5ebe56}</Project>
+      <Name>AllTheSame.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AllTheSame.Entity.Model\AllTheSame.Entity.Model.csproj">
+      <Project>{1d72365c-ca0d-4c6c-96de-adcd0cc2fef7}</Project>
+      <Name>AllTheSame.Entity.Model</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <Import Project="..\packages\AutoMapper.3.3.1\tools\AutoMapper.targets" Condition="Exists('..\packages\AutoMapper.3.3.1\tools\AutoMapper.targets')" />
+  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
+  <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
+    <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
+    <Error Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

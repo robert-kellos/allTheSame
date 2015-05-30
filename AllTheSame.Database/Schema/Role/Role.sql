@@ -1,0 +1,7 @@
+﻿CREATE TABLE [dbo].[Role]
+(
+	[Id] INT NOT NULL PRIMARY KEY IDENTITY, 
+    [Name] NVARCHAR(100) NULL, 
+    [CreatedOn] DATETIME NULL DEFAULT GETUTCDATE(), 
+    [UpdatedOn] DATETIME NULL 
+)

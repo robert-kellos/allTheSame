@@ -1,0 +1,9 @@
+﻿CREATE TABLE [dbo].[Vendor]
+(
+	[Id] INT NOT NULL PRIMARY KEY IDENTITY, 
+    [Name] NVARCHAR(100) NULL, 
+    [OrgId] INT NULL, 
+    [Version] ROWVERSION NOT NULL, 
+    [CreatedOn] DATETIME NULL DEFAULT GETUTCDATE(), 
+    [UpdatedOn] DATETIME NULL
+)

@@ -1,0 +1,6 @@
+﻿CREATE TABLE [dbo].[CommunityAdmin]
+(
+	[Id] INT NOT NULL PRIMARY KEY IDENTITY, 
+    [CreatedOn] DATETIME NULL DEFAULT GETUTCDATE(), 
+    [UpdatedOn] DATETIME NULL 
+)
