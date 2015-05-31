@@ -91,10 +91,7 @@ namespace AllTheSame.WebAPI.Areas.HelpPage.Models
             {
                 complexTypeModelDescription =
                     collectionModelDescription.ElementDescription as ComplexTypeModelDescription;
-                if (complexTypeModelDescription != null)
-                {
-                    return complexTypeModelDescription.Properties;
-                }
+                return complexTypeModelDescription?.Properties;
             }
 
             return null;

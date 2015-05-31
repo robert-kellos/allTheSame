@@ -625,12 +625,7 @@ namespace AllTheSame.WebAPI.Controllers
             /// <returns></returns>
             public static ExternalLoginData FromIdentity(ClaimsIdentity identity)
             {
-                if (identity == null)
-                {
-                    return null;
-                }
-
-                var providerKeyClaim = identity.FindFirst(ClaimTypes.NameIdentifier);
+                var providerKeyClaim = identity?.FindFirst(ClaimTypes.NameIdentifier);
 
                 if (providerKeyClaim == null || string.IsNullOrEmpty(providerKeyClaim.Issuer)
                     || string.IsNullOrEmpty(providerKeyClaim.Value))

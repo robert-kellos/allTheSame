@@ -197,18 +197,18 @@ namespace AllTheSame.WebAPI.Controllers.Custom
         {
             if (disposing)
             {
-                if (_vendorCredentialService != null) _vendorCredentialService.Dispose();
-                if (_industryService != null) _industryService.Dispose();
-                if (_organizationService != null) _organizationService.Dispose();
-                if (_orgTypeService != null) _orgTypeService.Dispose();
-                if (_vendorService != null) _vendorService.Dispose();
-                if (_vendorTypeService != null) _vendorTypeService.Dispose();
-                if (_vendorAdminService != null) _vendorAdminService.Dispose();
-                if (_vendorWorkerService != null) _vendorWorkerService.Dispose();
-                if (_vendorCredDocumentService != null) _vendorCredDocumentService.Dispose();
-                if (_addressService != null) _addressService.Dispose();
+                _vendorCredentialService?.Dispose();
+                _industryService?.Dispose();
+                _organizationService?.Dispose();
+                _orgTypeService?.Dispose();
+                _vendorService?.Dispose();
+                _vendorTypeService?.Dispose();
+                _vendorAdminService?.Dispose();
+                _vendorWorkerService?.Dispose();
+                _vendorCredDocumentService?.Dispose();
+                _addressService?.Dispose();
 
-                if (_context != null) _context.Dispose();
+                _context?.Dispose();
             }
 
             base.Dispose(disposing);

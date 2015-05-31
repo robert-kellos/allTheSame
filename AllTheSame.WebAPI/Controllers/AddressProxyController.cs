@@ -157,15 +157,9 @@ namespace AllTheSame.WebAPI.Controllers
         {
             if (disposing)
             {
-                if (_context != null)
-                {
-                    _context.Dispose();
-                }
+                _context?.Dispose();
 
-                if (_serviceProxy != null)
-                {
-                    _serviceProxy.Dispose();
-                }
+                _serviceProxy?.Dispose();
             }
             base.Dispose(disposing);
         }

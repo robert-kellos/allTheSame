@@ -36,9 +36,8 @@ namespace AllTheSame.WebAPI
             if (!typeof (ICustomizeSchema).IsAssignableFrom(type)) return;
 
             var instance = Activator.CreateInstance(type) as ICustomizeSchema;
-            if (instance == null) return;
 
-            var excludeProperties = instance.GetExcludeProperties();
+            var excludeProperties = instance?.GetExcludeProperties();
             if (excludeProperties == null) return;
 
             foreach (var propName in excludeProperties)
@@ -76,8 +75,8 @@ namespace AllTheSame.WebAPI
             var scopes = apiDescription.ActionDescriptor.GetFilterPipeline()
                 .Select(filterInfo => filterInfo.Instance)
                 .OfType<AuthorizeAttribute>();
-            var AllTheSameDbContext = new Entity.Model.AllTheSameDbContext();
-            IPermissionService permService = new PermissionService(new UnitOfWork(AllTheSameDbContext), new PermissionRepository(AllTheSameDbContext) );
+            var allTheSameDbContext = new Entity.Model.AllTheSameDbContext();
+            IPermissionService permService = new PermissionService(new UnitOfWork(allTheSameDbContext), new PermissionRepository(allTheSameDbContext) );
             if(operation.parameters == null) operation.parameters = new List<Parameter>();
 
             var authorizeAttributes = scopes as IList<AuthorizeAttribute> ?? scopes.ToList();

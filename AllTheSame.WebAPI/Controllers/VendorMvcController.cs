@@ -256,11 +256,9 @@ namespace AllTheSame.WebAPI.Controllers
         {
             if (_service != null && !disposing)
             {
-                if (_service != null)
-                    _service.Dispose();
+                _service?.Dispose();
 
-                if (_context != null)
-                    _context.Dispose();
+                _context?.Dispose();
             }
             base.Dispose(disposing);
         }

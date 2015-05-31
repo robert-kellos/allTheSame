@@ -93,23 +93,14 @@ namespace AllTheSame.WebAPI.Areas.HelpPage
         public virtual string GetDocumentation(HttpParameterDescriptor parameterDescriptor)
         {
             var reflectedParameterDescriptor = parameterDescriptor as ReflectedHttpParameterDescriptor;
-            if (reflectedParameterDescriptor != null)
-            {
-                var methodNode = GetMethodNode(reflectedParameterDescriptor.ActionDescriptor);
-                if (methodNode != null)
-                {
-                    var parameterName = reflectedParameterDescriptor.ParameterInfo.Name;
-                    var parameterNode =
-                        methodNode.SelectSingleNode(string.Format(CultureInfo.InvariantCulture, ParameterExpression,
-                            parameterName));
-                    if (parameterNode != null)
-                    {
-                        return parameterNode.Value.Trim();
-                    }
-                }
-            }
-
-            return null;
+            if (reflectedParameterDescriptor == null) return null;
+            var methodNode = GetMethodNode(reflectedParameterDescriptor.ActionDescriptor);
+            if (methodNode == null) return null;
+            var parameterName = reflectedParameterDescriptor.ParameterInfo.Name;
+            var parameterNode =
+                methodNode.SelectSingleNode(string.Format(CultureInfo.InvariantCulture, ParameterExpression,
+                    parameterName));
+            return parameterNode?.Value.Trim();
         }
 
         /// <summary>
@@ -194,16 +185,8 @@ namespace AllTheSame.WebAPI.Areas.HelpPage
         /// <returns></returns>
         private static string GetTagValue(XPathNavigator parentNode, string tagName)
         {
-            if (parentNode != null)
-            {
-                var node = parentNode.SelectSingleNode(tagName);
-                if (node != null)
-                {
-                    return node.Value.Trim();
-                }
-            }
-
-            return null;
+            var node = parentNode?.SelectSingleNode(tagName);
+            return node?.Value.Trim();
         }
 
         /// <summary>

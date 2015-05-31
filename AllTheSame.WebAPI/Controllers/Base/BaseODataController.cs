@@ -260,14 +260,11 @@ namespace AllTheSame.WebAPI.Controllers.Base
         {
             if (disposing)
             {
-                if (_context != null)
-                    _context.Dispose();
+                _context?.Dispose();
 
-                if (_service != null)
-                    _service.Repository.Dispose();
+                _service?.Repository.Dispose();
 
-                if (Proxy != null)
-                    Proxy.Dispose();
+                Proxy?.Dispose();
             }
             base.Dispose(disposing);
         }

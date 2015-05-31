@@ -243,13 +243,10 @@ namespace AllTheSame.WebAPI.Models
         /// </param>
         protected virtual void Dispose(bool disposing)
         {
-            if (_userService != null)
+            _userService?.Dispose();
+            if (DisposeContext && disposing)
             {
-                _userService.Dispose();
-            }
-            if (DisposeContext && disposing && Context != null)
-            {
-                Context.Dispose();
+                Context?.Dispose();
             }
             _disposed = true;
             //Context = null; don't need to set to null, breask GC.SuppressFinalize

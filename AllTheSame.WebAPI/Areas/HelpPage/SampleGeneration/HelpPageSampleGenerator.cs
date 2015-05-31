@@ -367,14 +367,8 @@ namespace AllTheSame.WebAPI.Areas.HelpPage
             }
             finally
             {
-                if (ms != null)
-                {
-                    ms.Dispose();
-                }
-                if (content != null)
-                {
-                    content.Dispose();
-                }
+                ms?.Dispose();
+                content?.Dispose();
             }
 
             return sample;
