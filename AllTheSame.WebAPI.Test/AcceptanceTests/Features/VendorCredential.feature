@@ -21,7 +21,7 @@ Scenario: Retrieve all vendorCredentials
 
 @VendorCredential 
 #C[R]UD - [Get] :: Retrieve an existing vendorCredential, by passing a vendorCredential Id
-Scenario: Retreive a vendorCredential by Id
+Scenario: Retrieve a vendorCredential by Id
 	Given the following VendorCredential GetById input
 		| Id |
 		| 2  |

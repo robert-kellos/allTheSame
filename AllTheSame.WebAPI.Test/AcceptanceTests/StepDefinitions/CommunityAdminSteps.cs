@@ -64,6 +64,239 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         #endregion Local Properties/Fields
 
         public override string Uri => "/api/CommunityAdmin";
+        
+        #region CRUD Tests
+        //
+
+        [When(@"I call the add CommunityAdmin Post api endpoint to add a CommunityAdmin it checks if exists pulls item edits it and deletes it")]
+        public void WhenICallTheAddCommunityAdminPostApiEndpointToAddACommunityAdminItChecksIfExistsPullsItemEditsItAndDeletesIt()
+        {
+            var response = default(HttpResponseMessage);
+            var error = default(AggregateException);
+
+            PostAsync(_addItem).ContinueWith(
+                t =>
+                {
+                    if (t.IsCompleted)
+                    {
+                        if (t.Result != null)
+                            response = (t.Result as HttpResponseMessage);
+                    }
+
+                    if (t.IsFaulted)
+                    {
+                        error = t.Exception;
+                        Audit.Log.Error("POST Task Exception ::", error);
+                    }
+                }
+            ).Wait();
+
+            Assert.IsNotNull(response);
+            ScenarioContext.Current[AddItemKey] = response;
+        }
+
+        [Then(@"the add result should be a CommunityAdmin Id check exists get by id edit and delete with http response returns")]
+        public void ThenTheAddResultShouldBeACommunityAdminIdCheckExistsGetByIdEditAndDeleteWithHttpResponseReturns()
+        {
+            //is the item setup
+            Assert.IsTrue(_addItem != null);
+
+            //add the item
+            var resultAdd = Add(_addItem);
+
+            //did we get a good result
+            Assert.IsTrue(resultAdd != null && resultAdd.Id > 0);
+
+            //set te returned AddID to current Get
+            _addedIdValue = resultAdd.Id;
+            _getIdValue = _addedIdValue;
+            _existsIdValue = _getIdValue;
+
+            //check that the item exists
+            var itemReturned = Exists(_existsIdValue);
+            Assert.IsNotNull(itemReturned);
+
+            //use the value used in exists check
+            _getIdValue = itemReturned.Id;
+            Assert.IsTrue(_getIdValue == _addedIdValue);
+
+            //pull the item by Id
+            var resultGet = GetById(_getIdValue);
+            Assert.IsNotNull(resultGet);
+            _getIdValue = resultGet.Id;
+            Assert.IsTrue(_getIdValue == _addedIdValue);
+
+            //Now, let's Edit the newly added item
+            _editIdValue = _getIdValue;
+            _editItem = resultGet;
+            Assert.IsTrue(_editIdValue == _addedIdValue);
+
+            //do an update
+            Update(_editIdValue, _editItem);
+
+            //pass the item just updated
+            _deletedIdValue = _editIdValue;
+            Assert.IsTrue(_deletedIdValue == _addedIdValue);
+
+            //delete this same item
+            Delete(_deletedIdValue);
+        }
+
+        private CommunityAdmin Add(CommunityAdmin item)
+        {
+            var response = default(HttpResponseMessage);
+            var error = default(AggregateException);
+
+            PostAsync(item).ContinueWith(
+                t =>
+                {
+                    if (t.IsCompleted)
+                    {
+                        if (t.Result != null)
+                            response = (t.Result as HttpResponseMessage);
+                    }
+
+                    if (t.IsFaulted)
+                    {
+                        error = t.Exception;
+                        Audit.Log.Error("POST Task Exception ::", error);
+                    }
+                }
+            ).Wait();
+
+            Assert.IsNotNull(response);
+            ScenarioContext.Current[AddItemKey] = response;
+
+            //grab the resulting added item
+            var resultAdd = PostResponse<CommunityAdmin, CommunityAdmin>(item);
+            if (resultAdd != null)
+            {
+                _addedIdValue = resultAdd.Id;
+                Assert.IsTrue(_addedIdValue > 0);
+
+                //Let's store the newly added Id in delete/edit, so we can later
+                //edit and delete this same record
+                _editIdValue = _addedIdValue;
+                _deletedIdValue = _addedIdValue;
+
+                ////validate values changed
+            }
+
+            response = (ScenarioContext.Current[AddItemKey] as HttpResponseMessage);
+
+            Assert.IsNotNull(response);
+            //Assert.IsTrue(response.StatusCode == HttpStatusCode.Created);
+
+            return resultAdd;
+        }
+
+        private CommunityAdmin Exists(int id)
+        {
+            //Check it exists
+            ScenarioContext.Current[ExistsItemKey] = GetResponseExists<bool>(id);
+
+            var resultExists = ScenarioContext.Current[ExistsItemKey];
+
+            //call manually to verify Exists returned correctly
+            var itemReturned = GetResponseById<CommunityAdmin>(id);
+
+            var truth = (itemReturned != null && itemReturned.Id == id);
+            Assert.AreEqual(truth, resultExists);
+
+            return itemReturned;
+        }
+
+        private CommunityAdmin GetById(int id)
+        {
+            ScenarioContext.Current[GetItemKey] = GetResponseById<CommunityAdmin>(id);
+
+            var resultGet = ScenarioContext.Current[GetItemKey];
+            var itemGet = (resultGet as CommunityAdmin);
+
+            Assert.IsNotNull(itemGet);
+            Assert.IsTrue(itemGet.Id == id);
+
+            return itemGet;
+        }
+
+        private void Update(int id, CommunityAdmin item)
+        {
+            var error = default(AggregateException);
+            var response = default(HttpResponseMessage);
+
+            PutAsync(item.Id, item).ContinueWith(
+                t =>
+                {
+                    if (t.IsCompleted)
+                    {
+                        if (t.Result != null)
+                            response = (t.Result as HttpResponseMessage);
+                    }
+
+                    if (t.IsFaulted)
+                    {
+                        error = t.Exception;
+                        Audit.Log.Error("PUT Task Exception ::", error);
+                    }
+                }
+            ).Wait();
+
+            Assert.IsNotNull(response);
+            ScenarioContext.Current[EditItemKey] = response;
+
+            //grab the resulting added item
+            response = (ScenarioContext.Current[EditItemKey] as HttpResponseMessage);
+            var resultEdit = PutResponse<CommunityAdmin, CommunityAdmin>(item.Id, item);
+            if (resultEdit != null)
+            {
+                Assert.IsTrue(id > 0);
+                Assert.AreEqual(id, resultEdit.Id);
+
+                //validate values changed
+                //Assert.AreEqual(item.Code, resultEdit.Code);
+            }
+
+            Assert.IsNotNull(response);
+            Assert.IsTrue(response.StatusCode == HttpStatusCode.OK);
+        }
+
+        private void Delete(int id)
+        {
+            var error = default(AggregateException);
+            var response = default(HttpResponseMessage);
+
+            //Now, let's Delete the newly added item
+            DeleteAsync(id).ContinueWith(
+                t =>
+                {
+                    if (t.IsCompleted)
+                    {
+                        if (t.Result != null)
+                            response = (t.Result as HttpResponseMessage);
+                    }
+
+                    if (t.IsFaulted)
+                    {
+                        error = t.Exception;
+                        Audit.Log.Error("POST Task Exception ::", error);
+                    }
+                }
+            ).Wait();
+
+            Assert.IsNotNull(response);
+            ScenarioContext.Current[DeleteItemKey] = response;
+
+            //grab the resulting added item
+            var deleted = GetResponseById<CommunityAdmin>(id);
+            Assert.IsNull(deleted);
+
+            response = (ScenarioContext.Current[DeleteItemKey] as HttpResponseMessage);
+
+            Assert.IsNotNull(response);
+            Assert.IsTrue(response.StatusCode == HttpStatusCode.OK);
+        }
+        //
+        #endregion CRUD Tests
 
         #region Post - add a new item by a populated item
         //

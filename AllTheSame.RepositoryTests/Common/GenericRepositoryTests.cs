@@ -1,35 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AllTheSame.Repository.Common;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using AllTheSame.Repository.UserData.interfaces;
-using AllTheSame.Repository.UserData.implementation;
+using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
-using AllTheSame.Entity.Model;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
-namespace AllTheSame.Repository.Common.Tests
+using AllTheSame.Entity.Model;
+using AllTheSame.Repository.Common;
+using AllTheSame.Repository.UserData.implementation;
+using AllTheSame.Repository.UserData.interfaces;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+namespace AllTheSame.RepositoryTests.Common
 {
     [TestClass()]
     public class GenericRepositoryTests
     {
         DbContext _context;
         IPersonRepository _personRepository;
-        IAddressRepository _addressRepository;
 
         [TestMethod()]
         public void GenericRepositoryTest()
         {
-            using (_context = new Entity.Model.AllTheSameDbContext())
+            using (_context = new AllTheSameDbContext())
             {
                 var personGenRepos1 = new GenericRepository<Person>(_context);
 
                 Assert.IsNotNull(personGenRepos1);
 
-                Assert.IsTrue(personGenRepos1 is IGenericRepository<Person>);
+                Assert.IsTrue(personGenRepos1 != null);
 
                 Assert.IsNotNull(_context);
                 Assert.IsNotNull(_context.Configuration);
@@ -44,28 +43,27 @@ namespace AllTheSame.Repository.Common.Tests
                 var list2 = personGenRepos1.GetAll().AsQueryable();//IQueryable
                 Assert.IsNotNull(list2);
 
-                int a1 = (list1.ToList().Count);
-                int a2 = (list2.ToList().Count);
+                var enumerable = list1 as IList<Person> ?? list1.ToList();
+                var a1 = (enumerable.ToList().Count);
+                var a2 = (list2.ToList().Count);
 
                 Assert.IsTrue(a1 == a2);
 
-                var b1 = (list1.ToList());
+                var b1 = (enumerable.ToList());
                 var b2 = (list2.ToList());
 
-                if (a1 > 0 && a2 > 0)
-                {
-                    Assert.IsNotNull(b1[0]);
-                    Assert.IsNotNull(b2[0]);
+                if (a1 <= 0 || a2 <= 0) return;
+                Assert.IsNotNull(b1[0]);
+                Assert.IsNotNull(b2[0]);
 
-                    var c1 = b1[0] as Person;
-                    var c2 = b2[0] as Person;
+                var c1 = b1[0];
+                var c2 = b2[0];
 
-                    Assert.IsNotNull(c1);
-                    Assert.IsNotNull(c2);
+                Assert.IsNotNull(c1);
+                Assert.IsNotNull(c2);
 
-                    Assert.IsTrue((c1 as Person).Id > 0 && (c2 as Person).Id > 0);
-                    Assert.IsTrue((c1 as Person).Id == (c2 as Person).Id);
-                }
+                Assert.IsTrue(c1.Id > 0 && c2.Id > 0);
+                Assert.IsTrue(c1.Id == c2.Id);
             }
 
         }
@@ -79,10 +77,11 @@ namespace AllTheSame.Repository.Common.Tests
 
             Assert.IsNotNull(list);
 
-            var c = list.ToList().Count;
+            var enumerable = list as IList<Person> ?? list.ToList();
+            var c = enumerable.ToList().Count;
             if (c > 0)
             {
-                var lst = list.ToList();
+                var lst = enumerable.ToList();
                 Assert.IsNotNull(lst[0]);
             }
         }
@@ -96,7 +95,7 @@ namespace AllTheSame.Repository.Common.Tests
         [TestMethod()]
         public void GetListAsyncTest()
         {
-            using (_context = new Entity.Model.AllTheSameDbContext())
+            using (_context = new AllTheSameDbContext())
             {
                 using (_personRepository = new PersonRepository(_context))
                 {
@@ -109,7 +108,7 @@ namespace AllTheSame.Repository.Common.Tests
         [TestMethod()]
         public void FindByTest()
         {
-            using (_context = new Entity.Model.AllTheSameDbContext())
+            using (_context = new AllTheSameDbContext())
             {
                 using (_personRepository = new PersonRepository(_context))
                 {
@@ -122,7 +121,7 @@ namespace AllTheSame.Repository.Common.Tests
         [TestMethod()]
         public void FindByAsyncTest()
         {
-            using (_context = new Entity.Model.AllTheSameDbContext())
+            using (_context = new AllTheSameDbContext())
             {
                 using (_personRepository = new PersonRepository(_context))
                 {
@@ -137,8 +136,7 @@ namespace AllTheSame.Repository.Common.Tests
         {
             var p1 = new Person() { FirstName = "Person1_First", LastName = "Add", Email = "person1@repos.com" };
 
-            Person item;
-            using (_context = new Entity.Model.AllTheSameDbContext())
+            using (_context = new AllTheSameDbContext())
             {
                 using (_personRepository = new PersonRepository(_context))
                 {
@@ -162,20 +160,18 @@ namespace AllTheSame.Repository.Common.Tests
 
             var pList = new List<Person>() { p1, p2, p3 };
 
-            IEnumerable<Person> list;
-            using (_context = new Entity.Model.AllTheSameDbContext())
+            using (_context = new AllTheSameDbContext())
             {
                 using (_personRepository = new PersonRepository(_context))
                 {
                     //add many
                     _personRepository.AddMany(pList.ToArray());
 
-                    list = _personRepository.GetAll();
-                    list = _personRepository.FindBy(p => p.LastName == "AddMany");
+                    var list = _personRepository.FindBy(p => p.LastName == "AddMany");
                     list = list.ToList();
 
                     var found = list.Count() >= 3;
-                    Assert.IsTrue(found == true);
+                    Assert.IsTrue(found);
                 }
             }
         }
@@ -185,8 +181,7 @@ namespace AllTheSame.Repository.Common.Tests
         {
             var p1 = new Person() { FirstName = "Person1_First", LastName = "Delete", Email = "person1@repos.com" };
 
-            Person item;
-            using (_context = new Entity.Model.AllTheSameDbContext())
+            using (_context = new AllTheSameDbContext())
             {
                 using (_personRepository = new PersonRepository(_context))
                 {
@@ -197,8 +192,8 @@ namespace AllTheSame.Repository.Common.Tests
                     Assert.IsTrue((p1.FirstName == added.FirstName && (p1.LastName == added.LastName)));
 
                     //now delete
-                    var deleted = _personRepository.Delete(added);
-                    var res = _context.SaveChanges();
+                    _personRepository.Delete(added);
+                    _context.SaveChanges();
 
                     //var found = _personRepository.FindBy(p => p.Id == deleted.Id).Count();
                     //Assert.IsTrue(found == 0);//should be missing, returning a null on find
@@ -215,8 +210,7 @@ namespace AllTheSame.Repository.Common.Tests
 
             var pList = new List<Person>() { p1, p2, p3 };
 
-            IEnumerable<Person> list;
-            using (_context = new Entity.Model.AllTheSameDbContext())
+            using (_context = new AllTheSameDbContext())
             {
                 using (_personRepository = new PersonRepository(_context))
                 {
@@ -225,14 +219,14 @@ namespace AllTheSame.Repository.Common.Tests
 
                     Thread.Sleep(2000);
 
-                    list = _personRepository.GetAll();
+                    var list = _personRepository.GetAll();
                     var initialCount = list.Count();
 
                     list = _personRepository.FindBy(p => p.LastName == "RemoveMany");
                     list = list.ToList();
 
                     var found = list.Count() >= 3;
-                    Assert.IsTrue(found == true);
+                    Assert.IsTrue(found);
 
                     _personRepository.RemoveMany(pList.ToArray());
 
@@ -248,7 +242,7 @@ namespace AllTheSame.Repository.Common.Tests
         public void EditTest()
         {
             //_context = new AllTheSameDbContext();
-            using (_context = new Entity.Model.AllTheSameDbContext())
+            using (_context = new AllTheSameDbContext())
             {
                 //_personRepository = new PersonRepository(_context);
                 using (_personRepository = new PersonRepository(_context))
@@ -291,9 +285,8 @@ namespace AllTheSame.Repository.Common.Tests
 
             var pList = new List<Person>() { p1, p2, p3 };
 
-            IEnumerable<Person> list;
             //_context = new AllTheSameDbContext();
-            using (_context = new Entity.Model.AllTheSameDbContext())
+            using (_context = new AllTheSameDbContext())
             {
                 //_personRepository = new PersonRepository(_context);
                 using (_personRepository = new PersonRepository(_context))
@@ -302,11 +295,11 @@ namespace AllTheSame.Repository.Common.Tests
                     _personRepository.UpdateMany(pList.ToArray());
 
                     //Thread.Sleep(2000);
-                    list = _personRepository.FindBy(p => (p.Id == 26 || p.Id == 27 || p.Id == 28));
+                    var list = _personRepository.FindBy(p => (p.Id == 26 || p.Id == 27 || p.Id == 28));
                     list = list.ToList();
 
                     var found = list.Count() >= 3;
-                    Assert.IsTrue(found == true);
+                    Assert.IsTrue(found);
                 }
             }
         }
@@ -314,14 +307,15 @@ namespace AllTheSame.Repository.Common.Tests
         [TestMethod()]
         public void SaveTest()
         {
-            using (_context = new Entity.Model.AllTheSameDbContext())
+            using (_context = new AllTheSameDbContext())
             {
                 using (_personRepository = new PersonRepository(_context))
                 {
                     var list = _personRepository.FindBy(w => w.Id == 2).SingleOrDefault();
                     
-                    if(list.CreatedOn == null)
+                    if(list != null && list.CreatedOn == null)
                         list.CreatedOn = DateTime.UtcNow;
+                    if (list == null) return;
                     list.UpdatedOn = DateTime.UtcNow;
 
                     _personRepository.Edit(list);
@@ -337,12 +331,11 @@ namespace AllTheSame.Repository.Common.Tests
         [TestMethod()]
         public void GetAllTest1()
         {
-            IEnumerable<Person> list;
-            using (_context = new Entity.Model.AllTheSameDbContext())
+            using (_context = new AllTheSameDbContext())
             {
                 using (_personRepository = new PersonRepository(_context))
                 {
-                    list = _personRepository.GetAll();
+                    var list = _personRepository.GetAll();
                     list = list.ToList();
                     Assert.IsNotNull(list);
                 }
@@ -352,7 +345,7 @@ namespace AllTheSame.Repository.Common.Tests
         [TestMethod()]
         public void GetAllAsyncTest()
         {
-            using (_context = new Entity.Model.AllTheSameDbContext())
+            using (_context = new AllTheSameDbContext())
             {
                 using (_personRepository = new PersonRepository(_context))
                 {
@@ -365,7 +358,7 @@ namespace AllTheSame.Repository.Common.Tests
         [TestMethod()]
         public void GetListTest()
         {
-            using (_context = new Entity.Model.AllTheSameDbContext())
+            using (_context = new AllTheSameDbContext())
             {
                 using (_personRepository = new PersonRepository(_context))
                 {
@@ -378,7 +371,7 @@ namespace AllTheSame.Repository.Common.Tests
         [TestMethod()]
         public void GetSingleTest()
         {
-            using (_context = new Entity.Model.AllTheSameDbContext())
+            using (_context = new AllTheSameDbContext())
             {
                 using (_personRepository = new PersonRepository(_context))
                 {
@@ -392,7 +385,7 @@ namespace AllTheSame.Repository.Common.Tests
         [TestMethod()]
         public void GetSingleAsyncTest()
         {
-            using (_context = new Entity.Model.AllTheSameDbContext())
+            using (_context = new AllTheSameDbContext())
             {
                 using (_personRepository = new PersonRepository(_context))
                 {
@@ -412,7 +405,7 @@ namespace AllTheSame.Repository.Common.Tests
         [TestMethod()]
         public void ValidateTest()
         {
-            using (_context = new Entity.Model.AllTheSameDbContext())
+            using (_context = new AllTheSameDbContext())
             {
                 using (_personRepository = new PersonRepository(_context))
                 {
@@ -420,24 +413,20 @@ namespace AllTheSame.Repository.Common.Tests
                     Assert.IsNotNull(item);
                     Assert.IsTrue(item.Id > 0);
 
-                    var pReposRef = (_personRepository as PersonRepository);
+                    var pReposRef = ((PersonRepository) _personRepository);
                     Assert.IsNotNull(pReposRef);
 
                     var eList = pReposRef.Validate();
                     Assert.IsNotNull(eList);
 
-                    if(eList.Count() > 0)
-                    {
-                        string errors = "";
-                        foreach(var vres in eList.ToList())
-                        {
-                            errors += vres.ErrorMessage + ", ";
-                        }
-                        errors = errors.TrimEnd(',');
-                        Debug.Print(errors);
+                    var validationResults = eList as IList<ValidationResult> ?? eList.ToList();
+                    var count = validationResults.Count();
+                    if (count <= 0) return;
+                    var errors = validationResults.ToList().Aggregate("", (current, vres) => current + (vres.ErrorMessage + ", "));
+                    errors = errors.TrimEnd(',');
+                    Debug.Print(errors);
 
-                        Assert.IsTrue(!string.IsNullOrWhiteSpace(errors));
-                    }
+                    Assert.IsTrue(!string.IsNullOrWhiteSpace(errors));
                 }
             }
         }

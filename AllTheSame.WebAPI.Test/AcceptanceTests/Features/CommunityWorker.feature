@@ -21,7 +21,7 @@ Scenario: Retrieve all communityWorkers
 
 @CommunityWorker 
 #C[R]UD - [Get] :: Retrieve an existing communityWorker, by passing a communityWorker Id
-Scenario: Retreive a communityWorker by Id
+Scenario: Retrieve a communityWorker by Id
 	Given the following CommunityWorker GetById input
 		| Id |
 		| 2  |

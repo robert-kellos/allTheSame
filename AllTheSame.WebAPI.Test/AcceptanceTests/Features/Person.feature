@@ -21,7 +21,7 @@ Scenario: Retrieve all people
 
 @Person 
 #C[R]UD - [Get] :: Retrieve an existing person, by passing a person Id
-Scenario: Retreive a person by Id
+Scenario: Retrieve a person by Id
 	Given the following Person GetById input
 		| Id |
 		| 2  |

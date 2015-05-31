@@ -21,7 +21,7 @@ Scenario: Retrieve all requirementTypes
 
 @RequirementType 
 #C[R]UD - [Get] :: Retrieve an existing requirementType, by passing a requirementType Id
-Scenario: Retreive a requirementType by Id
+Scenario: Retrieve a requirementType by Id
 	Given the following RequirementType GetById input
 		| Id |
 		| 2  |

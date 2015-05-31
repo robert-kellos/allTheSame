@@ -21,7 +21,7 @@ Scenario: Retrieve all requirements
 
 @Requirement 
 #C[R]UD - [Get] :: Retrieve an existing requirement, by passing a requirement Id
-Scenario: Retreive a requirement by Id
+Scenario: Retrieve a requirement by Id
 	Given the following Requirement GetById input
 		| Id |
 		| 2  |

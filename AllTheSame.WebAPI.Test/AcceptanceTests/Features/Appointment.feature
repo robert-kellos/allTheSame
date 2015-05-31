@@ -37,7 +37,7 @@ Scenario: Appointment--Retrieve all Appointments
 #
 #@Appointment 
 ##C[R]UD - [Get] :: Retrieve an existing appointment, by passing a appointment Id
-#Scenario: Retreive a appointment by Id
+#Scenario: Retrieve a appointment by Id
 #	Given the following Appointment GetById input
 #		| Id |
 #		| 2  |

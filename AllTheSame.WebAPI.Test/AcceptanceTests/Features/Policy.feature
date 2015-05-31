@@ -21,7 +21,7 @@ Scenario: Retrieve all policies
 
 @Policy 
 #C[R]UD - [Get] :: Retrieve an existing policy, by passing a policy Id
-Scenario: Retreive a policy by Id
+Scenario: Retrieve a policy by Id
 	Given the following Policy GetById input
 		| Id |
 		| 2  |

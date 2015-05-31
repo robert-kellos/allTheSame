@@ -21,7 +21,7 @@ Scenario: Retrieve all residents
 
 @Resident 
 #C[R]UD - [Get] :: Retrieve an existing resident, by passing a resident Id
-Scenario: Retreive a resident by Id
+Scenario: Retrieve a resident by Id
 	Given the following Resident GetById input
 		| Id |
 		| 2  |

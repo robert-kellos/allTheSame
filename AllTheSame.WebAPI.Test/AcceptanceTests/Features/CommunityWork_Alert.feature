@@ -21,7 +21,7 @@ Scenario: Retrieve all communityWorker_Alerts
 
 @CommunityWorker_Alert 
 #C[R]UD - [Get] :: Retrieve an existing communityWorker_Alert, by passing a communityWorker_Alert Id
-Scenario: Retreive a communityWorker_Alert by Id
+Scenario: Retrieve a communityWorker_Alert by Id
 	Given the following CommunityWorker_Alert GetById input
 		| Id |
 		| 2  |

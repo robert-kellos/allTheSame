@@ -19,15 +19,15 @@ Scenario: AlertType--Retrieve all AlertTypes
 	When I call the AlertType Get api endpoint
 	Then the get result should be a list of AlertTypes
 
-#@AlertType 
-##[C]RUD - [Post] :: Create a new alertType, by passing a newly populated alertType
-#Scenario: Add a alertType
-#	Given the following AlertType Add input
-#		| Code			| FormatText |
-#		| SpecFlow      | test	 |
-#	When I call the add AlertType Post api endpoint to add a alertType
-#	Then the add result should be a AlertType Id
-#
+@AlertType 
+#[C]RUD - [Post] :: Create a new alertType, by passing a newly populated alertType
+Scenario: Add a alertType
+	Given the following AlertType Add input
+		| Code			| FormatText |
+		| SpecFlow      | test	 |
+	When I call the add AlertType Post api endpoint to add a alertType
+	Then the add result should be a AlertType Id
+
 #@AlertTypes 
 ##C[R]UD - [Get] :: Retrieve all alertTypes, without passing anything
 #Scenario: Retrieve all alertTypes
@@ -37,7 +37,7 @@ Scenario: AlertType--Retrieve all AlertTypes
 #
 #@AlertType 
 ##C[R]UD - [Get] :: Retrieve an existing alertType, by passing a alertType Id
-#Scenario: Retreive a alertType by Id
+#Scenario: Retrieve a alertType by Id
 #	Given the following AlertType GetById input
 #		| Id |
 #		| 3  |

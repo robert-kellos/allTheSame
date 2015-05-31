@@ -13,8 +13,8 @@ Scenario: Address--Add, Check, GetById, Update and Delete Address
 	When I call the add Address Post api endpoint to add a Address it checks if exists pulls item edits it and deletes it
 	Then the add result should be a Address Id check exists get by id edit and delete with http response returns
 
-@Addresss 
-#C[R]UD - [Get] :: Retrieve all addresss, without passing anything
+@Addresses 
+#C[R]UD - [Get] :: Retrieve all addresses, without passing anything
 Scenario: Retrieve all addresses
 	#Given I am an authenticated user
 	When I call the Address Get api endpoint
@@ -29,8 +29,8 @@ Scenario: Retrieve all addresses
 #	When I call the add Address Post api endpoint to add a address
 #	Then the add result should be a Address Id
 #
-#@Addresss 
-##C[R]UD - [Get] :: Retrieve all addresss, without passing anything
+#@Addresses 
+##C[R]UD - [Get] :: Retrieve all addresses, without passing anything
 #Scenario: Retrieve all addresses
 #	#Given I am an authenticated user
 #	When I call the Address Get api endpoint
@@ -38,7 +38,7 @@ Scenario: Retrieve all addresses
 #
 #@Address 
 ##C[R]UD - [Get] :: Retrieve an existing address, by passing a address Id
-#Scenario: Retreive a address by Id
+#Scenario: Retrieve a address by Id
 #	Given the following Address GetById input
 #		| Id |
 #		| 2  |

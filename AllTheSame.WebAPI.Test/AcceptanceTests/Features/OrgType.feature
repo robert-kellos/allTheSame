@@ -21,7 +21,7 @@ Scenario: Retrieve all orgTypes
 
 @OrgType 
 #C[R]UD - [Get] :: Retrieve an existing orgType, by passing a orgType Id
-Scenario: Retreive a orgType by Id
+Scenario: Retrieve a orgType by Id
 	Given the following OrgType GetById input
 		| Id |
 		| 2  |

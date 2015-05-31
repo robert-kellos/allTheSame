@@ -21,7 +21,7 @@ Scenario: Retrieve all modules
 
 @Module 
 #C[R]UD - [Get] :: Retrieve an existing module, by passing a module Id
-Scenario: Retreive a module by Id
+Scenario: Retrieve a module by Id
 	Given the following Module GetById input
 		| Id |
 		| 2  |

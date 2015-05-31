@@ -21,7 +21,7 @@ Scenario: Retrieve all familyMembers
 
 @FamilyMember 
 #C[R]UD - [Get] :: Retrieve an existing familyMember, by passing a familyMember Id
-Scenario: Retreive a familyMember by Id
+Scenario: Retrieve a familyMember by Id
 	Given the following FamilyMember GetById input
 		| Id |
 		| 2  |

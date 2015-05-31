@@ -21,7 +21,7 @@ Scenario: Retrieve all organizations
 
 @Organization 
 #C[R]UD - [Get] :: Retrieve an existing organization, by passing a organization Id
-Scenario: Retreive a organization by Id
+Scenario: Retrieve a organization by Id
 	Given the following Organization GetById input
 		| Id |
 		| 2  |

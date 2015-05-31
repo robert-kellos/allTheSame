@@ -8,7 +8,7 @@
 Scenario: Alert--Add, Check, GetById, Update and Delete alert
 	Given the following Alert Add input
 		| Description | AlertTypeId |
-		| SpecFlow    | 3           |
+		| SpecFlow    | 1           |
 	When I call the add Alert Post api endpoint to add a alert it checks if exists pulls item edits it and deletes it
 	Then the add result should be a Alert Id check exists get by id edit and delete with http response returns
 
@@ -21,7 +21,7 @@ Scenario: Alert--Retrieve all alerts
 #
 #@Alert 
 ##C[R]UD - [Get] :: Retrieve an existing alert, by passing a alert Id
-#Scenario: Retreive a alert by Id
+#Scenario: Retrieve a alert by Id
 #	Given the following Alert GetById input
 #		| Id |
 #		| 3  |

@@ -6,8 +6,8 @@
     <ProjectGuid>{7BE7344C-B138-4030-A169-4DB69F4002E9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Accushield.CommonTests</RootNamespace>
-    <AssemblyName>Accushield.CommonTests</AssemblyName>
+    <RootNamespace>AllTheSame.CommonTests</RootNamespace>
+    <AssemblyName>AllTheSame.CommonTests</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>

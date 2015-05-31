@@ -21,7 +21,7 @@ Scenario: Retrieve all vendorAdmins
 
 @VendorAdmin 
 #C[R]UD - [Get] :: Retrieve an existing vendorAdmin, by passing a vendorAdmin Id
-Scenario: Retreive a vendorAdmin by Id
+Scenario: Retrieve a vendorAdmin by Id
 	Given the following VendorAdmin GetById input
 		| Id |
 		| 2  |

@@ -1,18 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using AllTheSame.Entity.Model;
 using AllTheSame.WebAPI.Controllers.Base;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using AllTheSame.Entity.Model;
-namespace AllTheSame.WebAPI.Controllers.Base.Tests
+
+namespace AllTheSame.WebAPITests.Controllers.Base
 {
     [TestClass()]
     public class BaseApiControllerTests : BaseApiController<Person>
     {
-        
-
         public void Init()
         {
             //
@@ -21,7 +17,7 @@ namespace AllTheSame.WebAPI.Controllers.Base.Tests
         [TestMethod()]
         public void GetTest()
         {
-            var list = base.Get();
+            var list = Get();
 
             Assert.IsNotNull(list);
         }
@@ -29,19 +25,19 @@ namespace AllTheSame.WebAPI.Controllers.Base.Tests
         [TestMethod()]
         public void GetByIdTest()
         {
-            var id = 3;
-            var result = base.GetById(id);
+            const int id = 3;
+            var result = GetById(id);
             Assert.IsNotNull(result);
 
-            var item = Context.Set<Person>().Where(r => r.Id == id).SingleOrDefault();
+            var item = Context.Set<Person>().SingleOrDefault(r => r.Id == id);
             Assert.IsNotNull(item);
         }
 
         [TestMethod()]
         public void PutTest()
         {
-            var id = 3;
-            var result = base.Service.FindBy(r => r.Id == id).SingleOrDefault();
+            const int id = 3;
+            var result = Service.FindBy(r => r.Id == id).SingleOrDefault();
             Assert.IsNotNull(result);
 
             var temp = new Person()
@@ -58,8 +54,8 @@ namespace AllTheSame.WebAPI.Controllers.Base.Tests
             var text = string.Format("|_{0}_", "test");
             temp.LastName = text;
 
-            base.Put(temp.Id, temp);
-            var res = base.Context.SaveChanges();
+            Put(temp.Id, temp);
+            Context?.SaveChanges();
         }
 
         [TestMethod()]
@@ -68,9 +64,8 @@ namespace AllTheSame.WebAPI.Controllers.Base.Tests
             var p1 = new Person() { FirstName = "Person1_First", LastName = "Add", Email = "person1@repos.com" };
 
             //add
-            var added = base.Post(p1);
-            var res = Context.SaveChanges();
-            //Assert.IsTrue(res > 0);
+            var added = Post(p1);
+            Context?.SaveChanges();
 
             Assert.IsNotNull(added);
             //Assert.IsTrue((p1.FirstName == added.FirstName && (p1.LastName == added.LastName)));
@@ -82,7 +77,7 @@ namespace AllTheSame.WebAPI.Controllers.Base.Tests
             var p1 = new Person() { FirstName = "Person1_First", LastName = "Delete", Email = "person1@repos.com" };
 
             //add so we can delete
-            var added = base.Post(p1);
+            var added = Post(p1);
 
             Assert.IsNotNull(added);
             //Assert.IsTrue((p1.FirstName == added.FirstName && (p1.LastName == added.LastName)));
@@ -98,10 +93,10 @@ namespace AllTheSame.WebAPI.Controllers.Base.Tests
         [TestMethod()]
         public void ExistsTest()
         {
-            var id = 2;
-            Assert.IsTrue(base.Exists(id));
-            var item = Context.Set<Person>().Where(r => r.Id == id).SingleOrDefault();
-            Assert.IsTrue(item.Id == id);
+            const int id = 2;
+            Assert.IsTrue(Exists(id));
+            var item = Context.Set<Person>().SingleOrDefault(r => r.Id == id);
+            Assert.IsTrue(item != null && item.Id == id);
         }
     }
 }

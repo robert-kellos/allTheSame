@@ -21,7 +21,7 @@ Scenario: Retrieve all visits
 
 @Visit 
 #C[R]UD - [Get] :: Retrieve an existing visit, by passing a visit Id
-Scenario: Retreive a visit by Id
+Scenario: Retrieve a visit by Id
 	Given the following Visit GetById input
 		| Id |
 		| 2  |

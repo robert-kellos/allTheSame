@@ -21,7 +21,7 @@ Scenario: Retrieve all vendorWorkers
 
 @VendorWorker 
 #C[R]UD - [Get] :: Retrieve an existing vendorWorker, by passing a vendorWorker Id
-Scenario: Retreive a vendorWorker by Id
+Scenario: Retrieve a vendorWorker by Id
 	Given the following VendorWorker GetById input
 		| Id |
 		| 2  |

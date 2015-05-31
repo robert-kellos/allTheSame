@@ -21,7 +21,7 @@ Scenario: Retrieve all signOuts
 
 @SignOut 
 #C[R]UD - [Get] :: Retrieve an existing signOut, by passing a signOut Id
-Scenario: Retreive a signOut by Id
+Scenario: Retrieve a signOut by Id
 	Given the following SignOut GetById input
 		| Id |
 		| 2  |

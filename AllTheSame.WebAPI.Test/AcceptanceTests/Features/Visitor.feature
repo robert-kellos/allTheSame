@@ -21,7 +21,7 @@ Scenario: Retrieve all visitors
 
 @Visitor 
 #C[R]UD - [Get] :: Retrieve an existing visitor, by passing a visitor Id
-Scenario: Retreive a visitor by Id
+Scenario: Retrieve a visitor by Id
 	Given the following Visitor GetById input
 		| Id |
 		| 2  |

@@ -37,7 +37,7 @@ Scenario: AppointmentType--Retrieve all AppointmentTypes
 #
 #@AppointmentType 
 ##C[R]UD - [Get] :: Retrieve an existing appointmentType, by passing a appointmentType Id
-#Scenario: Retreive a appointmentType by Id
+#Scenario: Retrieve a appointmentType by Id
 #	Given the following AppointmentType GetById input
 #		| Id |
 #		| 2  |

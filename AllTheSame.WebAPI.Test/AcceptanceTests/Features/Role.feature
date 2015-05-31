@@ -21,7 +21,7 @@ Scenario: Retrieve all roles
 
 @Role 
 #C[R]UD - [Get] :: Retrieve an existing role, by passing a role Id
-Scenario: Retreive a role by Id
+Scenario: Retrieve a role by Id
 	Given the following Role GetById input
 		| Id |
 		| 2  |

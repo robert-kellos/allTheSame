@@ -309,7 +309,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
 
                 break;
             }
-            Assert.IsNotNull(_description);;
+            Assert.IsNotNull(_description);
 
             _addItem = new Alert()
             {

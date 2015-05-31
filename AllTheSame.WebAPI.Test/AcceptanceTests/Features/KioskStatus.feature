@@ -21,7 +21,7 @@ Scenario: Retrieve all kioskStatuses
 
 @KioskStatus 
 #C[R]UD - [Get] :: Retrieve an existing kioskStatus, by passing a kioskStatus Id
-Scenario: Retreive a kioskStatus by Id
+Scenario: Retrieve a kioskStatus by Id
 	Given the following KioskStatus GetById input
 		| Id |
 		| 2  |

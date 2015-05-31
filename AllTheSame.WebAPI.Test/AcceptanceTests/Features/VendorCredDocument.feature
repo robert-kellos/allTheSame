@@ -21,7 +21,7 @@ Scenario: Retrieve all vendorCredDocuments
 
 @VendorCredDocument 
 #C[R]UD - [Get] :: Retrieve an existing vendorCredDocument, by passing a vendorCredDocument Id
-Scenario: Retreive a vendorCredDocument by Id
+Scenario: Retrieve a vendorCredDocument by Id
 	Given the following VendorCredDocument GetById input
 		| Id |
 		| 2  |

@@ -21,7 +21,7 @@ Scenario: Retrieve all industries
 
 @Industry 
 #C[R]UD - [Get] :: Retrieve an existing industry, by passing a industry Id
-Scenario: Retreive a industry by Id
+Scenario: Retrieve a industry by Id
 	Given the following Industry GetById input
 		| Id |
 		| 2  |

@@ -21,7 +21,7 @@ Scenario: Retrieve all dataSyncs
 
 @DataSync 
 #C[R]UD - [Get] :: Retrieve an existing dataSync, by passing a dataSync Id
-Scenario: Retreive a dataSync by Id
+Scenario: Retrieve a dataSync by Id
 	Given the following DataSync GetById input
 		| Id |
 		| 2  |

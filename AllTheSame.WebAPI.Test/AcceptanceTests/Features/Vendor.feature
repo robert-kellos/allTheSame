@@ -21,7 +21,7 @@ Scenario: Retrieve all vendors
 
 @Vendor 
 #C[R]UD - [Get] :: Retrieve an existing vendor, by passing a vendor Id
-Scenario: Retreive a vendor by Id
+Scenario: Retrieve a vendor by Id
 	Given the following Vendor GetById input
 		| Id |
 		| 2  |

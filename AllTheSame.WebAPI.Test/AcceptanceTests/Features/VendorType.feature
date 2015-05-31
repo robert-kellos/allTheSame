@@ -21,7 +21,7 @@ Scenario: Retrieve all vendorTypes
 
 @VendorType 
 #C[R]UD - [Get] :: Retrieve an existing vendorType, by passing a vendorType Id
-Scenario: Retreive a vendorType by Id
+Scenario: Retrieve a vendorType by Id
 	Given the following VendorType GetById input
 		| Id |
 		| 2  |

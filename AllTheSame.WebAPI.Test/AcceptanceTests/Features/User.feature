@@ -21,7 +21,7 @@ Scenario: Retrieve all users
 
 @User 
 #C[R]UD - [Get] :: Retrieve an existing user, by passing a user Id
-Scenario: Retreive a user by Id
+Scenario: Retrieve a user by Id
 	Given the following User GetById input
 		| Id |
 		| 2  |
