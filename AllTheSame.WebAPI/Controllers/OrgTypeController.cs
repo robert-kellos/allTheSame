@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Web.Http;
 using System.Web.Http.Description;
-using AllTheSame.Common.Core;
 using AllTheSame.Entity.Model;
 using AllTheSame.WebAPI.Controllers.Base;
 using AllTheSame.WebAPI.Models;
@@ -32,7 +31,7 @@ namespace AllTheSame.WebAPI.Controllers
         /// <returns>
         ///     Item a List or Array of the objects returned.
         /// </returns>
-        [ResponseType(typeof(IEnumerable<OrgType>))]
+        [ResponseType(typeof (IEnumerable<OrgType>))]
         [HttpGet]
         public override IEnumerable<OrgType> Get()
         {
@@ -47,7 +46,7 @@ namespace AllTheSame.WebAPI.Controllers
         /// <returns>
         ///     Item object returned.
         /// </returns>
-        [ResponseType(typeof(OrgType))]
+        [ResponseType(typeof (OrgType))]
         [HttpGet]
         public override IHttpActionResult GetById(long? id)
         {
@@ -63,7 +62,7 @@ namespace AllTheSame.WebAPI.Controllers
         /// <returns>
         ///     bool: success/fail in a returned wrapper.
         /// </returns>
-        [ResponseType(typeof(BoolReturnModel))]
+        [ResponseType(typeof (BoolReturnModel))]
         [HttpPut]
         public override IHttpActionResult Put(long? id, [FromBody] OrgType item)
         {
@@ -78,7 +77,7 @@ namespace AllTheSame.WebAPI.Controllers
         /// <returns>
         ///     Newly created Id in a returned wrapper.
         /// </returns>
-        [ResponseType(typeof(IdReturnModel))]
+        [ResponseType(typeof (IdReturnModel))]
         [HttpPost]
         public override IHttpActionResult Post([FromBody] OrgType item)
         {
@@ -93,7 +92,7 @@ namespace AllTheSame.WebAPI.Controllers
         /// <returns>
         ///     bool: success/fail in a returned wrapper.
         /// </returns>
-        [ResponseType(typeof(BoolReturnModel))]
+        [ResponseType(typeof (BoolReturnModel))]
         [HttpDelete]
         public override IHttpActionResult Delete(long? id)
         {
@@ -108,7 +107,7 @@ namespace AllTheSame.WebAPI.Controllers
         /// <returns></returns>
         [Route("Exists/{id}")] //--> requires a unique route
         [HttpGet]
-        [ResponseType(typeof(BoolReturnModel))]
+        [ResponseType(typeof (BoolReturnModel))]
         public override bool Exists(long? id)
         {
             return base.Exists(id);

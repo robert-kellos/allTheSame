@@ -1,27 +1,22 @@
 ﻿using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Description;
 using AllTheSame.Entity.Model;
-using AllTheSame.Repository.UserData.interfaces;
-using AllTheSame.Service;
-using AllTheSame.WebAPI.Controllers.Base;
-using AllTheSame.WebAPI.Controllers.Custom;
-using AllTheSame.WebAPI.Models;
-using AllTheSame.Service.Interfaces;
 using AllTheSame.Repository.Common;
+using AllTheSame.Repository.UserData.interfaces;
+using AllTheSame.WebAPI.Controllers.Base;
+using AllTheSame.WebAPI.Models;
 
 namespace AllTheSame.WebAPI.Controllers
 {
     /// <summary>
-    ///     PersonController to expose REST service endpoints for Person data.
+    /// PersonController to expose REST service endpoints for Person data.
     /// </summary>
     /// <note>
-    ///     Initializes a new instance of the controller for this REST service.
-    ///     The database context reference may be accessed as Context.[method]; Ex: Context.SaveChanges();
-    ///     The web service reference may be accessed as Service.[method]; Ex: Service.Get();
-    ///     The data repository reference may be accessed as Proxy.[DbSet]; Ex: Proxy.Users;
+    /// Initializes a new instance of the controller for this REST service.
+    /// The database context reference may be accessed as Context.[method]; Ex: Context.SaveChanges();
+    /// The web service reference may be accessed as Service.[method]; Ex: Service.Get();
+    /// The data repository reference may be accessed as Proxy.[DbSet]; Ex: Proxy.Users;
     /// </note>
     [RoutePrefix("api/Person")]
     //[Authorize(Roles = AppConstants.PermissionCode.ViewVendor)]
@@ -31,11 +26,31 @@ namespace AllTheSame.WebAPI.Controllers
 
         //
         //
-        Entity.Model.AllTheSameDbContext _context;
-        IPersonRepository _service;
-        IUnitOfWork _unitOfWork;
-        public PersonController() { }
+        /// <summary>
+        /// The _context
+        /// </summary>
+        private AllTheSameDbContext _context;
+        /// <summary>
+        /// The _service
+        /// </summary>
+        private IPersonRepository _service;
+        /// <summary>
+        /// The _unit of work
+        /// </summary>
+        private IUnitOfWork _unitOfWork;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PersonController"/> class.
+        /// </summary>
+        public PersonController()
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PersonController"/> class.
+        /// </summary>
+        /// <param name="unitOfWork">The unit of work.</param>
+        /// <param name="service">The service.</param>
         public PersonController(IUnitOfWork unitOfWork, IPersonRepository service)
         {
             _service = service;
@@ -43,12 +58,12 @@ namespace AllTheSame.WebAPI.Controllers
         }
 
         /// <summary>
-        ///     Get all the items, of this type, from the database.
+        /// Get all the items, of this type, from the database.
         /// </summary>
         /// <returns>
-        ///     Item a List or Array of the objects returned.
+        /// Item a List or Array of the objects returned.
         /// </returns>
-        [ResponseType(typeof(IEnumerable<Person>))]
+        [ResponseType(typeof (IEnumerable<Person>))]
         [HttpGet]
         public override IEnumerable<Person> Get()
         {
@@ -57,13 +72,13 @@ namespace AllTheSame.WebAPI.Controllers
 
         // GET: api/Person/5
         /// <summary>
-        ///     Get the item by id from the database.
+        /// Get the item by id from the database.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns>
-        ///     Item object returned.
+        /// Item object returned.
         /// </returns>
-        [ResponseType(typeof(Person))]
+        [ResponseType(typeof (Person))]
         [HttpGet]
         public override IHttpActionResult GetById(long? id)
         {
@@ -72,14 +87,14 @@ namespace AllTheSame.WebAPI.Controllers
 
         // PUT: api/Person/5
         /// <summary>
-        ///     Put the edited item in the database.
+        /// Put the edited item in the database.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <param name="item">The item.</param>
         /// <returns>
-        ///     bool: success/fail in a returned wrapper.
+        /// bool: success/fail in a returned wrapper.
         /// </returns>
-        [ResponseType(typeof(IHttpActionResult))]
+        [ResponseType(typeof (IHttpActionResult))]
         [HttpPut]
         public override IHttpActionResult Put(long? id, [FromBody] Person item)
         {
@@ -88,13 +103,13 @@ namespace AllTheSame.WebAPI.Controllers
 
         // POST: api/Person
         /// <summary>
-        ///     Post a new item into the database.
+        /// Post a new item into the database.
         /// </summary>
         /// <param name="item">The item.</param>
         /// <returns>
-        ///     Newly created Id in a returned wrapper.
+        /// Newly created Id in a returned wrapper.
         /// </returns>
-        [ResponseType(typeof(IHttpActionResult))]
+        [ResponseType(typeof (IHttpActionResult))]
         [HttpPost]
         public override IHttpActionResult Post([FromBody] Person item)
         {
@@ -103,13 +118,13 @@ namespace AllTheSame.WebAPI.Controllers
 
         // DELETE: api/Person/5
         /// <summary>
-        ///     Deletes the item from the database.
+        /// Deletes the item from the database.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns>
-        ///     bool: success/fail in a returned wrapper.
+        /// bool: success/fail in a returned wrapper.
         /// </returns>
-        [ResponseType(typeof(IHttpActionResult))]
+        [ResponseType(typeof (IHttpActionResult))]
         [HttpDelete]
         public override IHttpActionResult Delete(long? id)
         {
@@ -118,13 +133,13 @@ namespace AllTheSame.WebAPI.Controllers
 
         // GET: api/{controller}/Exists/5
         /// <summary>
-        ///     Check if the item exists.
+        /// Check if the item exists.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
         [Route("Exists/{id}")] //--> requires a unique route
         [HttpGet]
-        [ResponseType(typeof(BoolReturnModel))]
+        [ResponseType(typeof (BoolReturnModel))]
         public override bool Exists(long? id)
         {
             return base.Exists(id);

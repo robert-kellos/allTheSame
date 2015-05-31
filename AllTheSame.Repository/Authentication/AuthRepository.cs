@@ -45,13 +45,13 @@ namespace AllTheSame.Repository.Authentication
         /// <returns></returns>
         public IList<string> GetUserRoles(int? userId, int? orgId)
         {
-            var AllTheSameContext = CurrentDbContext as Entity.Model.AllTheSameDbContext;
-            if (AllTheSameContext == null)
+            var allTheSameContext = CurrentDbContext as AllTheSameDbContext;
+            if (allTheSameContext == null)
             {
-                throw new Exception("Context must be of type " + typeof (Entity.Model.AllTheSameDbContext));
+                throw new Exception("Context must be of type " + typeof (AllTheSameDbContext));
             }
-            
-            return AllTheSameContext.spGetOrgPermissions(orgId, userId).Select(spResult => spResult.Code).ToList();
+
+            return allTheSameContext.spGetOrgPermissions(orgId, userId).Select(spResult => spResult.Code).ToList();
         }
     }
 }

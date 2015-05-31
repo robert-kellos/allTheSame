@@ -1,6 +1,6 @@
-﻿using AllTheSame.Common.Logging;
-using System;
+﻿using System;
 using System.Data.Entity;
+using AllTheSame.Common.Logging;
 
 namespace AllTheSame.Repository.Common
 {
@@ -34,7 +34,7 @@ namespace AllTheSame.Repository.Common
             var result = _dbContext.SaveChanges();
 
             // Save changes with the default options
-            Audit.Log.Info(string.Format("Commit :: UnitOfWork saved changes successfully: {0}", (result==1)));
+            Audit.Log.Info(string.Format("Commit :: UnitOfWork saved changes successfully: {0}", (result == 1)));
 
             return result;
         }
@@ -57,8 +57,7 @@ namespace AllTheSame.Repository.Common
         private void Dispose(bool disposing)
         {
             if (!disposing) return;
-            if (_dbContext == null) return;
-            _dbContext.Dispose();
+            _dbContext?.Dispose();
             //- _dbContext = null; Setting to nuttl breaks GC.SuppressFinalize in DisposeMethod
         }
     }

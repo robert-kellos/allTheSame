@@ -60,12 +60,11 @@ namespace AllTheSame.WebAPI
     }
 
     /// <summary>
-    /// Adds any custom paramater information to swagger output
+    ///     Adds any custom paramater information to swagger output
     /// </summary>
     public class AddParametersFilter : IOperationFilter
     {
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="operation"></param>
         /// <param name="schemaRegistry"></param>
@@ -75,25 +74,41 @@ namespace AllTheSame.WebAPI
             var scopes = apiDescription.ActionDescriptor.GetFilterPipeline()
                 .Select(filterInfo => filterInfo.Instance)
                 .OfType<AuthorizeAttribute>();
-            var allTheSameDbContext = new Entity.Model.AllTheSameDbContext();
-            IPermissionService permService = new PermissionService(new UnitOfWork(allTheSameDbContext), new PermissionRepository(allTheSameDbContext) );
-            if(operation.parameters == null) operation.parameters = new List<Parameter>();
+            var allTheSameDbContext = new AllTheSameDbContext();
+            IPermissionService permService = new PermissionService(new UnitOfWork(allTheSameDbContext),
+                new PermissionRepository(allTheSameDbContext));
+            if (operation.parameters == null) operation.parameters = new List<Parameter>();
 
             var authorizeAttributes = scopes as IList<AuthorizeAttribute> ?? scopes.ToList();
             if (!authorizeAttributes.Any()) return;
-            
-            var parameter = new Parameter() { description = "Authorization token. Used for applying content access restrictions. Use one of the OAuth2 grants to auto-populate this value.", @in = "header", name = "Authorization", required = true, type = "string" };
+
+            var parameter = new Parameter
+            {
+                description =
+                    "Authorization token. Used for applying content access restrictions. Use one of the OAuth2 grants to auto-populate this value.",
+                @in = "header",
+                name = "Authorization",
+                required = true,
+                type = "string"
+            };
             operation.parameters.Add(parameter);
 
-            var orgParam = new Parameter() { description = "Organization ID context for this request", @in = "header", name = "orgId", required = true, type = "int" };
-            operation.parameters.Add(orgParam);               
+            var orgParam = new Parameter
+            {
+                description = "Organization ID context for this request",
+                @in = "header",
+                name = "orgId",
+                required = true,
+                type = "int"
+            };
+            operation.parameters.Add(orgParam);
 
             foreach (var scope in authorizeAttributes)
             {
                 if (string.IsNullOrWhiteSpace(scope.Roles)) continue;
 
                 var sb = new StringBuilder("Required Permission: ");
-                var roles = scope.Roles.Contains(',') ? scope.Roles.Split(',').ToList() : new List<string>() { scope.Roles };
+                var roles = scope.Roles.Contains(',') ? scope.Roles.Split(',').ToList() : new List<string> {scope.Roles};
                 for (var index = 0; index < roles.Count; index++)
                 {
                     var role = roles[index];

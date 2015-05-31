@@ -21,7 +21,7 @@ using AllTheSame.WebAPI.Models;
 namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
 {
     [Binding]
-    public class CommunityWorker_AlertSteps : BaseServiceTest//AuthenticatedTest //- Allows automatic fetching of token for each get call
+    public class CommunityWorkerAlertSteps : BaseServiceTest//AuthenticatedTest //- Allows automatic fetching of token for each get call
     {
         #region Local Properties/Fields
         //
@@ -63,10 +63,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         //
         #endregion Local Properties/Fields
 
-        public override string Uri
-        {
-            get { return "/api/CommunityWorker_Alert"; }
-        }
+        public override string Uri => "/api/CommunityWorker_Alert";
 
         #region Post - add a new item by a populated item
         //

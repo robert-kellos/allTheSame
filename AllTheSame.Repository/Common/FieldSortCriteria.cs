@@ -8,8 +8,18 @@ namespace AllTheSame.Repository.Common
     /// <typeparam name="T"></typeparam>
     public class FieldSortCriteria<T> : ISortCriteria<T>
     {
-        private string _searchField;
-        private SortDirection _sortDirection;
+        /// <summary>
+        /// Gets the search field.
+        /// </summary>
+        /// <value>
+        /// The search field.
+        /// </value>
+        public string SearchField { get; }
+
+        /// <summary>
+        ///     Direction order of sorting
+        /// </summary>
+        public SortDirection Direction { get; set; }
 
         /// <summary>
         ///     FieldSortCriteria
@@ -19,15 +29,10 @@ namespace AllTheSame.Repository.Common
         public FieldSortCriteria(string searchField, SortDirection sortDirection)
         {
             // TODO: Complete member initialization
-            _searchField = searchField;
-            _sortDirection = sortDirection;
+            SearchField = searchField;
+            Direction = sortDirection;
         }
-
-        /// <summary>
-        ///     Direction order of sorting
-        /// </summary>
-        public SortDirection Direction { get; set; }
-
+        
         /// <summary>
         ///     ApplyOrdering
         /// </summary>

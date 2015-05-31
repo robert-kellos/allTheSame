@@ -8,7 +8,7 @@ namespace AllTheSame.Service.Implementation
 {
     /// <summary>
     /// ModuleService
-    /// Uncomment _unitOfWork, _repository and Dipose area below
+    /// Uncomment _unitOfWork, _repository and Dispose area below
     /// when building custom methods for this service
     /// </summary>
     public class ModuleService : SyncEntityService<Module, IModuleRepository>, IModuleService

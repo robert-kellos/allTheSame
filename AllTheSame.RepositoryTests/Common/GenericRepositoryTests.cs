@@ -276,8 +276,8 @@ namespace AllTheSame.Repository.Common.Tests
                     Assert.IsTrue(res > 0);
 
                     //get it again
-                    var edited_item = _personRepository.GetSingle(r => r.Id == 2);
-                    Assert.IsNotNull(edited_item);
+                    var editedItem = _personRepository.GetSingle(r => r.Id == 2);
+                    Assert.IsNotNull(editedItem);
                 }
             }
         }

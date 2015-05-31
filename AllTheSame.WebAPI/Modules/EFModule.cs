@@ -9,7 +9,7 @@ namespace AllTheSame.WebAPI.Modules
     /// <summary>
     ///     EFModule
     /// </summary>
-    public class EFModule : Module
+    public class EfModule : Module
     {
         /// <summary>
         ///     Override to add registrations to the container.
@@ -26,7 +26,7 @@ namespace AllTheSame.WebAPI.Modules
             builder.RegisterModule(new ServiceModule());
             builder.RegisterModule(new RepositoryModule());
 
-            builder.RegisterType(typeof(Entity.Model.AllTheSameDbContext)).As(typeof(DbContext)).InstancePerLifetimeScope();
+            builder.RegisterType(typeof (AllTheSameDbContext)).As(typeof (DbContext)).InstancePerLifetimeScope();
             builder.RegisterType(typeof (UnitOfWork)).As(typeof (IUnitOfWork)).InstancePerRequest();
         }
     }

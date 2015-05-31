@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Web.Http;
 using System.Web.Http.Description;
-using AllTheSame.Common.Core;
 using AllTheSame.Entity.Model;
 using AllTheSame.WebAPI.Controllers.Base;
 using AllTheSame.WebAPI.Models;
@@ -32,7 +31,7 @@ namespace AllTheSame.WebAPI.Controllers
         /// <returns>
         ///     Item a List or Array of the objects returned.
         /// </returns>
-        [ResponseType(typeof(IEnumerable<VendorAdmin>))]
+        [ResponseType(typeof (IEnumerable<VendorAdmin>))]
         [HttpGet]
         public override IEnumerable<VendorAdmin> Get()
         {
@@ -47,7 +46,7 @@ namespace AllTheSame.WebAPI.Controllers
         /// <returns>
         ///     Item object returned.
         /// </returns>
-        [ResponseType(typeof(VendorAdmin))]
+        [ResponseType(typeof (VendorAdmin))]
         [HttpGet]
         public override IHttpActionResult GetById(long? id)
         {
@@ -63,7 +62,7 @@ namespace AllTheSame.WebAPI.Controllers
         /// <returns>
         ///     bool: success/fail in a returned wrapper.
         /// </returns>
-        [ResponseType(typeof(BoolReturnModel))]
+        [ResponseType(typeof (BoolReturnModel))]
         [HttpPut]
         //[Authorize(Roles = AppConstants.PermissionCode.EditVendor)]
         public override IHttpActionResult Put(long? id, [FromBody] VendorAdmin item)
@@ -79,7 +78,7 @@ namespace AllTheSame.WebAPI.Controllers
         /// <returns>
         ///     Newly created Id in a returned wrapper.
         /// </returns>
-        [ResponseType(typeof(IdReturnModel))]
+        [ResponseType(typeof (IdReturnModel))]
         [HttpPost]
         //[Authorize(Roles = AppConstants.PermissionCode.AddVendor)]
         public override IHttpActionResult Post([FromBody] VendorAdmin item)
@@ -95,7 +94,7 @@ namespace AllTheSame.WebAPI.Controllers
         /// <returns>
         ///     bool: success/fail in a returned wrapper.
         /// </returns>
-        [ResponseType(typeof(BoolReturnModel))]
+        [ResponseType(typeof (BoolReturnModel))]
         [HttpDelete]
         //[Authorize(Roles = AppConstants.PermissionCode.PurgeVendor)]
         public override IHttpActionResult Delete(long? id)
@@ -111,7 +110,7 @@ namespace AllTheSame.WebAPI.Controllers
         /// <returns></returns>
         [Route("Exists/{id}")] //--> requires a unique route
         [HttpGet]
-        [ResponseType(typeof(BoolReturnModel))]
+        [ResponseType(typeof (BoolReturnModel))]
         public override bool Exists(long? id)
         {
             return base.Exists(id);

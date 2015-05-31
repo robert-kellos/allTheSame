@@ -66,11 +66,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         //
         #endregion Local Properties/Fields
 
-        public override string Uri
-        {
-            get { return "/api/AppointmentType"; }
-        }
-
+        public override string Uri => "/api/AppointmentType";
 
         #region CRUD Tests
         //
@@ -268,13 +264,13 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             Assert.IsTrue(response.StatusCode == HttpStatusCode.OK);
         }
 
-        private void Delete(int Id)
+        private void Delete(int id)
         {
             var error = default(AggregateException);
             var response = default(HttpResponseMessage);
 
             //Now, let's Delete the newly added item
-            DeleteAsync(Id).ContinueWith(
+            DeleteAsync(id).ContinueWith(
                 t =>
                 {
                     if (t.IsCompleted)
@@ -295,7 +291,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             ScenarioContext.Current[DeleteItemKey] = response;
 
             //grab the resulting added item
-            var deleted = GetResponseById<AppointmentType>(Id);
+            var deleted = GetResponseById<AppointmentType>(id);
             Assert.IsNull(deleted);
 
             response = (ScenarioContext.Current[DeleteItemKey] as HttpResponseMessage);

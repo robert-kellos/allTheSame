@@ -11,7 +11,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using AllTheSame.Common.Core;
-using AllTheSame.Common.Extensions;
 using AllTheSame.Common.Helpers;
 using AllTheSame.Common.Interfaces.Generic;
 using AllTheSame.Common.Logging;
@@ -22,7 +21,7 @@ using log4net.Config;
 namespace AllTheSame.Service.Common
 {
     /// <summary>
-    /// EntityService
+    ///     EntityService
     /// </summary>
     /// <typeparam name="TEntity">The type of the entity.</typeparam>
     /// <typeparam name="TRepository">The type of the repository.</typeparam>
@@ -32,28 +31,27 @@ namespace AllTheSame.Service.Common
         where TRepository : class, IGenericRepository<TEntity>
     {
         /// <summary>
-        /// The _repository
+        ///     The _repository
         /// </summary>
         private readonly TRepository _repository;
 
         /// <summary>
-        /// The _unit of work
+        ///     The _unit of work
         /// </summary>
         private readonly IUnitOfWork _unitOfWork;
 
         /// <summary>
-        /// DbContext
-        /// </summary>
-        [NonSerialized]
-        private DbContext _context;
-
-        /// <summary>
-        /// DbSet
+        ///     DbSet
         /// </summary>
         protected readonly IDbSet<TEntity> CurrentDbSet;
 
         /// <summary>
-        /// Initializes a new instance of the class.
+        ///     DbContext
+        /// </summary>
+        [NonSerialized] private DbContext _context;
+
+        /// <summary>
+        ///     Initializes a new instance of the class.
         /// </summary>
         /// <param name="unitOfWork">The unit of work.</param>
         /// <param name="repository">The repository.</param>
@@ -64,18 +62,7 @@ namespace AllTheSame.Service.Common
         }
 
         /// <summary>
-        /// Gets the current database context.
-        /// </summary>
-        /// <value>
-        /// The current database context.
-        /// </value>
-        public DbContext CurrentDbContext
-        {
-            get { return _context ?? (_context = new Entity.Model.AllTheSameDbContext()); }
-        }
-
-        /// <summary>
-        /// EntityService cstr
+        ///     EntityService cstr
         /// </summary>
         public EntityService()
         {
@@ -88,18 +75,27 @@ namespace AllTheSame.Service.Common
         }
 
         /// <summary>
-        /// EntityService
+        ///     EntityService
         /// </summary>
         /// <param name="currentDbContext">The current database context.</param>
         public EntityService(DbContext currentDbContext)
         {
             _context = currentDbContext;
 
-            Audit.Log.Info(string.Format("EntityService(DbContext) :: constructor initialized context: {0}", currentDbContext)); 
+            Audit.Log.Info(string.Format("EntityService(DbContext) :: constructor initialized context: {0}",
+                currentDbContext));
         }
 
         /// <summary>
-        /// Gets objects from database with filting and paging.
+        ///     Gets the current database context.
+        /// </summary>
+        /// <value>
+        ///     The current database context.
+        /// </value>
+        public DbContext CurrentDbContext => _context ?? (_context = new AllTheSameDbContext());
+
+        /// <summary>
+        ///     Gets objects from database with filting and paging.
         /// </summary>
         /// <typeparam name="TKey"></typeparam>
         /// <param name="filter">Specified a filter</param>
@@ -110,7 +106,7 @@ namespace AllTheSame.Service.Common
         public IQueryable<TEntity> Filter<TKey>(Expression<Func<TEntity, bool>> filter,
             out int total, int index = 0, int size = 50)
         {
-            var skipCount = index * size;
+            var skipCount = index*size;
 
             var resetSet = filter != null
                 ? CurrentDbSet.Where(filter).AsQueryable()
@@ -126,15 +122,12 @@ namespace AllTheSame.Service.Common
         }
 
         /// <summary>
-        /// Count of current db table set
+        ///     Count of current db table set
         /// </summary>
-        public int Count
-        {
-            get { return CurrentDbSet != null ? CurrentDbSet.Count() : -1; }
-        }
+        public int Count => CurrentDbSet?.Count() ?? -1;
 
         /// <summary>
-        /// Adds the specified entity.
+        ///     Adds the specified entity.
         /// </summary>
         /// <param name="entity">The entity.</param>
         /// <returns></returns>
@@ -151,7 +144,7 @@ namespace AllTheSame.Service.Common
         }
 
         /// <summary>
-        /// Adds the many.
+        ///     Adds the many.
         /// </summary>
         /// <param name="items">The items.</param>
         public void AddMany(params TEntity[] items)
@@ -162,7 +155,7 @@ namespace AllTheSame.Service.Common
         }
 
         /// <summary>
-        /// Deletes the specified entity.
+        ///     Deletes the specified entity.
         /// </summary>
         /// <param name="entity">The entity.</param>
         /// <returns></returns>
@@ -179,7 +172,7 @@ namespace AllTheSame.Service.Common
         }
 
         /// <summary>
-        /// Removes the many.
+        ///     Removes the many.
         /// </summary>
         /// <param name="items">The items.</param>
         public void RemoveMany(params TEntity[] items)
@@ -190,7 +183,7 @@ namespace AllTheSame.Service.Common
         }
 
         /// <summary>
-        /// Edits the specified entity.
+        ///     Edits the specified entity.
         /// </summary>
         /// <param name="entity">The entity.</param>
         /// <exception cref="System.ArgumentNullException">entity</exception>
@@ -202,10 +195,9 @@ namespace AllTheSame.Service.Common
             _repository.Edit(entity);
             _unitOfWork.Commit();
         }
-        
 
         /// <summary>
-        /// Updates the many.
+        ///     Updates the many.
         /// </summary>
         /// <param name="items">The items.</param>
         public void UpdateMany(params TEntity[] items)
@@ -217,13 +209,10 @@ namespace AllTheSame.Service.Common
 
         /// <summary>
         /// </summary>
-        public virtual TRepository Repository
-        {
-            get { return _repository; }
-        }
+        public virtual TRepository Repository => _repository;
 
         /// <summary>
-        /// Saves this instance.
+        ///     Saves this instance.
         /// </summary>
         /// <returns></returns>
         public virtual int Save()
@@ -238,7 +227,7 @@ namespace AllTheSame.Service.Common
             catch (DbEntityValidationException ex)
             {
                 var errors = ex.EntityValidationErrors.SelectMany(
-                    x => x.ValidationErrors.Select(y => new ValidationResult(y.ErrorMessage, new[] { y.PropertyName })));
+                    x => x.ValidationErrors.Select(y => new ValidationResult(y.ErrorMessage, new[] {y.PropertyName})));
 
                 Audit.Log.Error(
                     string.Format("Validation Error(s): {0} :: {1} ",
@@ -265,7 +254,7 @@ namespace AllTheSame.Service.Common
         }
 
         /// <summary>
-        /// Gets all.
+        ///     Gets all.
         /// </summary>
         /// <returns></returns>
         public virtual IEnumerable<TEntity> GetAll()
@@ -283,7 +272,6 @@ namespace AllTheSame.Service.Common
                 list = dbSet
                     .AsNoTracking()
                     .ToList();
-
             }
             catch (SqlException sqex)
             {
@@ -308,7 +296,7 @@ namespace AllTheSame.Service.Common
         }
 
         /// <summary>
-        /// Gets all.
+        ///     Gets all.
         /// </summary>
         /// <param name="navigationProperties">The navigation properties.</param>
         /// <returns></returns>
@@ -340,7 +328,6 @@ namespace AllTheSame.Service.Common
                 list = dbSet
                     .AsNoTracking()
                     .ToList();
-
             }
             catch (SqlException sqex)
             {
@@ -365,7 +352,7 @@ namespace AllTheSame.Service.Common
         }
 
         /// <summary>
-        /// GetAll async
+        ///     GetAll async
         /// </summary>
         /// <returns></returns>
         public virtual async Task<List<TEntity>> GetAllAsync()
@@ -384,7 +371,6 @@ namespace AllTheSame.Service.Common
                 list = await dbSet
                     .AsNoTracking()
                     .ToListAsync();
-
             }
             catch (SqlException sqex)
             {
@@ -409,7 +395,7 @@ namespace AllTheSame.Service.Common
         }
 
         /// <summary>
-        /// Gets the list.
+        ///     Gets the list.
         /// </summary>
         /// <param name="where">The where.</param>
         /// <param name="navigationProperties">The navigation properties.</param>
@@ -440,7 +426,6 @@ namespace AllTheSame.Service.Common
                     .AsNoTracking()
                     .Where(where)
                     .ToList();
-
             }
             catch (SqlException sqex)
             {
@@ -465,7 +450,7 @@ namespace AllTheSame.Service.Common
         }
 
         /// <summary>
-        /// GetListAsync
+        ///     GetListAsync
         /// </summary>
         /// <param name="where">The where.</param>
         /// <param name="navigationProperties">The navigation properties.</param>
@@ -497,7 +482,6 @@ namespace AllTheSame.Service.Common
                     .Where(where)
                     .AsQueryable()
                     .ToListAsync();
-
             }
             catch (SqlException sqex)
             {
@@ -522,7 +506,7 @@ namespace AllTheSame.Service.Common
         }
 
         /// <summary>
-        /// Gets the single.
+        ///     Gets the single.
         /// </summary>
         /// <param name="where">The where.</param>
         /// <param name="navigationProperties">The navigation properties.</param>
@@ -552,7 +536,6 @@ namespace AllTheSame.Service.Common
                 item = dbSet
                     .AsNoTracking() //Don't track any changes for the selected item
                     .FirstOrDefault(where); //Apply where clause
-
             }
             catch (SqlException sqex)
             {
@@ -577,7 +560,7 @@ namespace AllTheSame.Service.Common
         }
 
         /// <summary>
-        /// Gets the single asynchronous.
+        ///     Gets the single asynchronous.
         /// </summary>
         /// <param name="where">The where.</param>
         /// <param name="navigationProperties">The navigation properties.</param>
@@ -607,7 +590,6 @@ namespace AllTheSame.Service.Common
                 item = await dbSet
                     .AsNoTracking() //Don't track any changes for the selected item
                     .FirstOrDefaultAsync(w => w.Equals(where)); //Apply where clause
-
             }
             catch (SqlException sqex)
             {
@@ -632,7 +614,7 @@ namespace AllTheSame.Service.Common
         }
 
         /// <summary>
-        /// Finds the by.
+        ///     Finds the by.
         /// </summary>
         /// <param name="where">The where.</param>
         /// <returns></returns>
@@ -670,7 +652,7 @@ namespace AllTheSame.Service.Common
         }
 
         /// <summary>
-        /// Finds the by asynchronous.
+        ///     Finds the by asynchronous.
         /// </summary>
         /// <param name="where">The where.</param>
         /// <returns></returns>
@@ -708,7 +690,7 @@ namespace AllTheSame.Service.Common
         }
 
         /// <summary>
-        /// Finds the by.
+        ///     Finds the by.
         /// </summary>
         /// <param name="where">The where.</param>
         /// <param name="include">The include.</param>
@@ -748,7 +730,7 @@ namespace AllTheSame.Service.Common
         }
 
         /// <summary>
-        /// Finds the by asynchronous.
+        ///     Finds the by asynchronous.
         /// </summary>
         /// <param name="where">The where.</param>
         /// <param name="include">The include.</param>
@@ -788,13 +770,25 @@ namespace AllTheSame.Service.Common
         }
 
         /// <summary>
-        /// This decodes the DbUpdateException. If there are any errors it can
-        /// handle then it returns a list of errors. Otherwise it returns null
-        /// which means rethrow the error as it has not been handled
+        ///     Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+
+            Audit.Log.Info(string.Format("Dispose :: CurrentDbContext Entity {0} destroyed",
+                typeof (TEntity).DeclaringType));
+        }
+
+        /// <summary>
+        ///     This decodes the DbUpdateException. If there are any errors it can
+        ///     handle then it returns a list of errors. Otherwise it returns null
+        ///     which means rethrow the error as it has not been handled
         /// </summary>
         /// <param name="dbuex">The dbuex.</param>
         /// <returns>
-        /// null if cannot handle errors, otherwise a list of errors
+        ///     null if cannot handle errors, otherwise a list of errors
         /// </returns>
         private static IEnumerable<ValidationResult> TryDecodeDbUpdateException(DbUpdateException dbuex)
         {
@@ -804,7 +798,7 @@ namespace AllTheSame.Service.Common
                     !(dbuex.InnerException.InnerException is SqlException))
                     return null;
 
-                var sqlException = (SqlException)dbuex.InnerException.InnerException;
+                var sqlException = (SqlException) dbuex.InnerException.InnerException;
                 var result = new List<ValidationResult>();
                 for (var i = 0; i < sqlException.Errors.Count; i++)
                 {
@@ -836,31 +830,13 @@ namespace AllTheSame.Service.Common
         }
 
         /// <summary>
-        /// Disposes all external resources.
+        ///     Disposes all external resources.
         /// </summary>
         /// <param name="disposing">The dispose indicator.</param>
         protected virtual void Dispose(bool disposing)
         {
-            if (disposing)
-            {
-                //if (_unitOfWork != null)
-                //    _unitOfWork.Dispose();
-
-                if (CurrentDbContext != null)
-                    CurrentDbContext.Dispose();
-            }
+            if (!disposing) return;
+            CurrentDbContext?.Dispose();
         }
-
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-
-            Audit.Log.Info(string.Format("Dispose :: CurrentDbContext Entity {0} destroyed", typeof(TEntity).DeclaringType));
-        }
-
     }
 }

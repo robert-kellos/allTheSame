@@ -46,7 +46,7 @@ namespace AllTheSame.WebAPI.Models
         /// <value>
         ///     The context.
         /// </value>
-        public DbContext Context { get; private set; }
+        public DbContext Context { get; }
 
         /// <summary>
         ///     If true will call dispose on the DbContext during Dispose
@@ -66,7 +66,7 @@ namespace AllTheSame.WebAPI.Models
             IAuthService service = new AuthService(new UnitOfWork(Context), new AuthRepository(Context));
             var sessionId = service.CreateSession(user.Id, DateTime.UtcNow.AddMinutes(20));
             //TODO: Configure Session Timeout
-            IList<Claim> list = new List<Claim> { new Claim(ClaimTypes.PrimarySid, sessionId.ToString()) };
+            IList<Claim> list = new List<Claim> {new Claim(ClaimTypes.PrimarySid, sessionId.ToString())};
 
             return Task.FromResult(list);
         }

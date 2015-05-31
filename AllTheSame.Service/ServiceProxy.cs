@@ -11,21 +11,30 @@ using AllTheSame.Service.Implementation;
 namespace AllTheSame.Service
 {
     /// <summary>
-    /// Repository
+    ///     Repository
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public class Repository<T> : GenericRepository<T> where T : class, IEntity<int>
     {
         /// <summary>
-        /// The _instance
+        ///     The _instance
         /// </summary>
         private static GenericRepository<T> _instance;
 
         /// <summary>
-        /// Gets the instance.
+        ///     Initializes a new instance of the <see cref="Repository{T}" /> class.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        public Repository(DbContext context)
+        {
+            Context = context;
+        }
+
+        /// <summary>
+        ///     Gets the instance.
         /// </summary>
         /// <value>
-        /// The instance.
+        ///     The instance.
         /// </value>
         public static GenericRepository<T> Instance
         {
@@ -35,19 +44,10 @@ namespace AllTheSame.Service
                 return _instance;
             }
         }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Repository{T}" /> class.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        public Repository(DbContext context)
-        {
-            _context = context;
-        }
     }
 
     /// <summary>
-    /// ServiceProxy
+    ///     ServiceProxy
     /// </summary>
     /// <typeparam name="TEntity">The type of the entity.</typeparam>
     /// <typeparam name="TRepository">The type of the repository.</typeparam>
@@ -55,31 +55,32 @@ namespace AllTheSame.Service
         where TEntity : class, IEntity<int> where TRepository : class, IGenericRepository<TEntity>
     {
         /// <summary>
-        /// The _repository
+        ///     The _repository
         /// </summary>
         private IGenericRepository<TEntity> _repository;
 
         /// <summary>
-        /// The _unit of work
+        ///     The _unit of work
         /// </summary>
         private IUnitOfWork _unitOfWork;
 
         /// <summary>
-        /// Initializes a new instance of the class.
+        ///     Initializes a new instance of the class.
         /// </summary>
         /// <param name="unitOfWork">The unit of work.</param>
         /// <param name="repository">The repository.</param>
-        public ServiceProxy(IUnitOfWork unitOfWork, IGenericRepository<TEntity> repository):base(unitOfWork, repository as TRepository)
+        public ServiceProxy(IUnitOfWork unitOfWork, IGenericRepository<TEntity> repository)
+            : base(unitOfWork, repository as TRepository)
         {
             _unitOfWork = unitOfWork;
             _repository = repository;
         }
 
         /// <summary>
-        /// Gets the repository.
+        ///     Gets the repository.
         /// </summary>
         /// <value>
-        /// The repository.
+        ///     The repository.
         /// </value>
         protected IGenericRepository<TEntity> CurrentRepository
         {
@@ -87,16 +88,16 @@ namespace AllTheSame.Service
             {
                 if (_repository != null) return _repository;
 
-                var AllTheSameDbContext = new Entity.Model.AllTheSameDbContext();
-                _unitOfWork = new UnitOfWork(AllTheSameDbContext);
-                _repository = new Repository<TEntity>(AllTheSameDbContext);
+                var allTheSameDbContext = new AllTheSameDbContext();
+                _unitOfWork = new UnitOfWork(allTheSameDbContext);
+                _repository = new Repository<TEntity>(allTheSameDbContext);
 
                 return _repository;
             }
         }
 
         /// <summary>
-        /// Disposes all external resources.
+        ///     Disposes all external resources.
         /// </summary>
         /// <param name="disposing">The dispose indicator.</param>
         protected override void Dispose(bool disposing)
@@ -120,90 +121,23 @@ namespace AllTheSame.Service
     }
 
     /// <summary>
-    /// ServiceProxy
+    ///     ServiceProxy
     /// </summary>
-    public class ServiceProxy : Entity.Model.AllTheSameDbContext, IUnitOfWork
+    public class ServiceProxy : AllTheSameDbContext, IUnitOfWork
     {
-        #region Local Properties
-
-        //
         /// <summary>
-        /// The _DB context
-        /// </summary>
-        private readonly Entity.Model.AllTheSameDbContext _context;
-
-        /// <summary>
-        /// The _instance
-        /// </summary>
-        private static ServiceProxy _instance;
-
-        /// <summary>
-        /// The _auth repository
-        /// </summary>
-        private static IAuthRepository _authRepository;
-
-        /// <summary>
-        /// The _auth service
-        /// </summary>
-        private static AuthService _authService;
-
-        /// <summary>
-        /// The _user repository
-        /// </summary>
-        private static IUserRepository _userRepository;
-
-        /// <summary>
-        /// The _user service
-        /// </summary>
-        private static UserService _userService;
-
-        /// <summary>
-        /// The _person repository
-        /// </summary>
-        private static IPersonRepository _personRepository;
-
-        /// <summary>
-        /// The _person service
-        /// </summary>
-        private static PersonService _personService;
-
-        /// <summary>
-        /// The _user session repository
-        /// </summary>
-        private static IUserSessionRepository _userSessionRepository;
-
-        /// <summary>
-        /// The _user session service
-        /// </summary>
-        private static UserSessionService _userSessionService;
-
-        /// <summary>
-        /// The _vendor repository
-        /// </summary>
-        private static IVendorRepository _vendorRepository;
-
-        /// <summary>
-        /// The _vendor service
-        /// </summary>
-        private static VendorService _vendorService;
-
-        //
-
-        #endregion Local Properties
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ServiceProxy" /> class.
+        ///     Initializes a new instance of the <see cref="ServiceProxy" /> class.
         /// </summary>
         public ServiceProxy()
         {
-            _context = new Entity.Model.AllTheSameDbContext();
+            _context = new AllTheSameDbContext();
         }
 
         /// <summary>
-        /// Gets the instance.
+        ///     Gets the instance.
         /// </summary>
         /// <value>
-        /// The instance.
+        ///     The instance.
         /// </value>
         public static ServiceProxy Instance
         {
@@ -215,10 +149,10 @@ namespace AllTheSame.Service
         }
 
         /// <summary>
-        /// Saves all pending changes
+        ///     Saves all pending changes
         /// </summary>
         /// <returns>
-        /// The number of objects in an Added, Modified, or Deleted state
+        ///     The number of objects in an Added, Modified, or Deleted state
         /// </returns>
         public int Commit()
         {
@@ -226,13 +160,14 @@ namespace AllTheSame.Service
         }
 
         /// <summary>
-        /// Gets the entity service.
+        ///     Gets the entity service.
         /// </summary>
         /// <typeparam name="TEntity">The type of the entity.</typeparam>
         /// <typeparam name="TRepository">The type of the repository.</typeparam>
         /// <param name="repository">The repository.</param>
         /// <returns></returns>
-        public static EntityService<TEntity, TRepository> GetServiceRefernce<TEntity, TRepository>(TRepository repository)
+        public static EntityService<TEntity, TRepository> GetServiceRefernce<TEntity, TRepository>(
+            TRepository repository)
             where TRepository : class, IGenericRepository<TEntity> where TEntity : class, IEntity<int>
         {
             var uow = new UnitOfWork(Instance._context);
@@ -241,12 +176,12 @@ namespace AllTheSame.Service
         }
 
         /// <summary>
-        /// Gets the service refernce.
+        ///     Gets the service refernce.
         /// </summary>
         /// <typeparam name="TEntity">The type of the entity.</typeparam>
         /// <param name="context">The context.</param>
         /// <returns></returns>
-        public static EntityService<TEntity, IGenericRepository<TEntity>> GetServiceRefernce<TEntity>(DbContext context) 
+        public static EntityService<TEntity, IGenericRepository<TEntity>> GetServiceRefernce<TEntity>(DbContext context)
             where TEntity : class, IEntity<int>
         {
             var uow = new UnitOfWork(context);
@@ -255,16 +190,121 @@ namespace AllTheSame.Service
             return new EntityService<TEntity, IGenericRepository<TEntity>>(uow, respository);
         }
 
+        /// <summary>
+        ///     Disposes the context. The underlying <see cref="T:System.Data.Entity.Core.Objects.ObjectContext" /> is also
+        ///     disposed if it was created
+        ///     is by this context or ownership was passed to this context when this context was created.
+        ///     The connection to the database (<see cref="T:System.Data.Common.DbConnection" /> object) is also disposed if it was
+        ///     created
+        ///     is by this context or ownership was passed to this context when this context was created.
+        /// </summary>
+        /// <param name="disposing">
+        ///     <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only
+        ///     unmanaged resources.
+        /// </param>
+        // ReSharper disable once FunctionComplexityOverflow
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                #region cleanup
+
+                //
+                _authRepository?.Dispose();
+                _authService?.Dispose();
+                _personRepository?.Dispose();
+                _personService?.Dispose();
+                _userRepository?.Dispose();
+                _userService?.Dispose();
+                _userSessionRepository?.Dispose();
+                _userSessionService?.Dispose();
+                _vendorRepository?.Dispose();
+                _vendorService?.Dispose();
+                
+                _context?.Dispose();
+                //
+
+                #endregion cleanup
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Local Properties
+
+        //
+        /// <summary>
+        ///     The _DB context
+        /// </summary>
+        private readonly AllTheSameDbContext _context;
+
+        /// <summary>
+        ///     The _instance
+        /// </summary>
+        private static ServiceProxy _instance;
+
+        /// <summary>
+        ///     The _auth repository
+        /// </summary>
+        private static IAuthRepository _authRepository;
+
+        /// <summary>
+        ///     The _auth service
+        /// </summary>
+        private static AuthService _authService;
+
+        /// <summary>
+        ///     The _user repository
+        /// </summary>
+        private static IUserRepository _userRepository;
+
+        /// <summary>
+        ///     The _user service
+        /// </summary>
+        private static UserService _userService;
+
+        /// <summary>
+        ///     The _person repository
+        /// </summary>
+        private static IPersonRepository _personRepository;
+
+        /// <summary>
+        ///     The _person service
+        /// </summary>
+        private static PersonService _personService;
+
+        /// <summary>
+        ///     The _user session repository
+        /// </summary>
+        private static IUserSessionRepository _userSessionRepository;
+
+        /// <summary>
+        ///     The _user session service
+        /// </summary>
+        private static UserSessionService _userSessionService;
+
+        /// <summary>
+        ///     The _vendor repository
+        /// </summary>
+        private static IVendorRepository _vendorRepository;
+
+        /// <summary>
+        ///     The _vendor service
+        /// </summary>
+        private static VendorService _vendorService;
+
+        //
+
+        #endregion Local Properties
 
         #region Common Repositories
 
         //
         //
         /// <summary>
-        /// Gets the authentication service proxy.
+        ///     Gets the authentication service proxy.
         /// </summary>
         /// <value>
-        /// The authentication service proxy.
+        ///     The authentication service proxy.
         /// </value>
         public static AuthService AuthServiceProxy
         {
@@ -278,10 +318,10 @@ namespace AllTheSame.Service
         }
 
         /// <summary>
-        /// Gets the user service proxy.
+        ///     Gets the user service proxy.
         /// </summary>
         /// <value>
-        /// The user service proxy.
+        ///     The user service proxy.
         /// </value>
         public static UserService UserServiceProxy
         {
@@ -295,10 +335,10 @@ namespace AllTheSame.Service
         }
 
         /// <summary>
-        /// Gets the user session service proxy.
+        ///     Gets the user session service proxy.
         /// </summary>
         /// <value>
-        /// The user session service proxy.
+        ///     The user session service proxy.
         /// </value>
         public static UserSessionService UserSessionServiceProxy
         {
@@ -312,10 +352,10 @@ namespace AllTheSame.Service
         }
 
         /// <summary>
-        /// Gets the person service proxy.
+        ///     Gets the person service proxy.
         /// </summary>
         /// <value>
-        /// The person service proxy.
+        ///     The person service proxy.
         /// </value>
         public static PersonService PersonServiceProxy
         {
@@ -329,10 +369,10 @@ namespace AllTheSame.Service
         }
 
         /// <summary>
-        /// Gets the vendor service proxy.
+        ///     Gets the vendor service proxy.
         /// </summary>
         /// <value>
-        /// The vendor service proxy.
+        ///     The vendor service proxy.
         /// </value>
         public static VendorService VendorServiceProxy
         {
@@ -349,89 +389,5 @@ namespace AllTheSame.Service
         //
 
         #endregion Common Repositories
-
-
-        /// <summary>
-        /// Disposes the context. The underlying <see cref="T:System.Data.Entity.Core.Objects.ObjectContext" /> is also disposed if it was created
-        /// is by this context or ownership was passed to this context when this context was created.
-        /// The connection to the database (<see cref="T:System.Data.Common.DbConnection" /> object) is also disposed if it was created
-        /// is by this context or ownership was passed to this context when this context was created.
-        /// </summary>
-        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                #region cleanup
-                //
-                if (_authRepository != null)
-                {
-                    _authRepository.Dispose();
-                    _authRepository = null;
-                }
-
-                if (_authService != null)
-                {
-                    _authService.Dispose();
-                    _authService = null;
-                }
-
-                if (_personRepository != null)
-                {
-                    _personRepository.Dispose();
-                    _personRepository = null;
-                }
-
-                if (_personService != null)
-                {
-                    _personService.Dispose();
-                    _personService = null;
-                }
-
-                if (_userRepository != null)
-                {
-                    _userRepository.Dispose();
-                    _userRepository = null;
-                }
-
-                if (_userService != null)
-                {
-                    _userService.Dispose();
-                    _userService = null;
-                }
-
-                if (_userSessionRepository != null)
-                {
-                    _userSessionRepository.Dispose();
-                    _userSessionRepository = null;
-                }
-
-                if (_userSessionService != null)
-                {
-                    _userSessionService.Dispose();
-                    _userSessionService = null;
-                }
-
-                if (_vendorRepository != null)
-                {
-                    _vendorRepository.Dispose();
-                    _vendorRepository = null;
-                }
-
-                if (_vendorService != null)
-                {
-                    _vendorService.Dispose();
-                    _vendorService = null;
-                }
-
-                if (_context != null)
-                {
-                    _context.Dispose();
-                }
-                //
-                #endregion cleanup
-            }
-            base.Dispose(disposing);
-        }
     }
 }

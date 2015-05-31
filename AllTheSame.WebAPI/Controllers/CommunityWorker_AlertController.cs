@@ -18,7 +18,7 @@ namespace AllTheSame.WebAPI.Controllers
     /// </note>
     [RoutePrefix("api/CommunityWorker_Alert")]
     //[Authorize(Roles = AppConstants.PermissionCode.ViewVendor)]
-    public class CommunityWorker_AlertController : BaseApiController<CommunityWorker_Alert>
+    public class CommunityWorkerAlertController : BaseApiController<CommunityWorker_Alert>
     {
         #region Common CRUD
 
@@ -31,7 +31,7 @@ namespace AllTheSame.WebAPI.Controllers
         /// <returns>
         ///     Item a List or Array of the objects returned.
         /// </returns>
-        [ResponseType(typeof(IEnumerable<CommunityWorker_Alert>))]
+        [ResponseType(typeof (IEnumerable<CommunityWorker_Alert>))]
         [HttpGet]
         public override IEnumerable<CommunityWorker_Alert> Get()
         {
@@ -46,7 +46,7 @@ namespace AllTheSame.WebAPI.Controllers
         /// <returns>
         ///     Item object returned.
         /// </returns>
-        [ResponseType(typeof(CommunityWorker_Alert))]
+        [ResponseType(typeof (CommunityWorker_Alert))]
         [HttpGet]
         public override IHttpActionResult GetById(long? id)
         {
@@ -62,7 +62,7 @@ namespace AllTheSame.WebAPI.Controllers
         /// <returns>
         ///     bool: success/fail in a returned wrapper.
         /// </returns>
-        [ResponseType(typeof(BoolReturnModel))]
+        [ResponseType(typeof (BoolReturnModel))]
         [HttpPut]
         public override IHttpActionResult Put(long? id, [FromBody] CommunityWorker_Alert item)
         {
@@ -77,7 +77,7 @@ namespace AllTheSame.WebAPI.Controllers
         /// <returns>
         ///     Newly created Id in a returned wrapper.
         /// </returns>
-        [ResponseType(typeof(IdReturnModel))]
+        [ResponseType(typeof (IdReturnModel))]
         [HttpPost]
         public override IHttpActionResult Post([FromBody] CommunityWorker_Alert item)
         {
@@ -92,7 +92,7 @@ namespace AllTheSame.WebAPI.Controllers
         /// <returns>
         ///     bool: success/fail in a returned wrapper.
         /// </returns>
-        [ResponseType(typeof(BoolReturnModel))]
+        [ResponseType(typeof (BoolReturnModel))]
         [HttpDelete]
         public override IHttpActionResult Delete(long? id)
         {
@@ -107,7 +107,7 @@ namespace AllTheSame.WebAPI.Controllers
         /// <returns></returns>
         [Route("Exists/{id}")] //--> requires a unique route
         [HttpGet]
-        [ResponseType(typeof(BoolReturnModel))]
+        [ResponseType(typeof (BoolReturnModel))]
         public override bool Exists(long? id)
         {
             return base.Exists(id);

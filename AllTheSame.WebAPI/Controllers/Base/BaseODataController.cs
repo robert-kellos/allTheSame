@@ -34,43 +34,25 @@ namespace AllTheSame.WebAPI.Controllers.Base
     //[RoutePrefix("api/{controller}")]
     //[Authorize(Roles = AppConstants.PermissionCode.ViewVendor)]
     /// <summary>
-    /// BaseODataController
+    ///     BaseODataController
     /// </summary>
     /// <typeparam name="TEntity">The type of the entity.</typeparam>
     public class BaseODataController<TEntity> : ODataController
-        where TEntity : class, IEntity<int> 
+        where TEntity : class, IEntity<int>
     {
-
-        #region Local Fields/Properties
-        //
         /// <summary>
-        /// The _context
-        /// </summary>
-        private DbContext _context;
-        /// <summary>
-        /// The _service
-        /// </summary>
-        private IEntityService<TEntity, IGenericRepository<TEntity>> _service;
-        /// <summary>
-        /// The proxy
-        /// </summary>
-        protected ServiceProxy Proxy = new ServiceProxy();
-        //
-        #endregion Local Fields/Properties
-
-        /// <summary>
-        /// Initializes a new instance of the BaseApiController TEntity.
+        ///     Initializes a new instance of the BaseApiController TEntity.
         /// </summary>
         protected BaseODataController()
         {
             if (_context == null)
-                _context = new Entity.Model.AllTheSameDbContext();
+                _context = new AllTheSameDbContext();
 
             GetServiceRefernce(_context);
         }
 
         /// <summary>
-        /// Gets the service refernce.
+        ///     Gets the service refernce.
         /// </summary>
         /// <param name="context">The context.</param>
         private void GetServiceRefernce(DbContext context)
@@ -83,6 +65,48 @@ namespace AllTheSame.WebAPI.Controllers.Base
             _service = new EntityService<TEntity, IGenericRepository<TEntity>>(uow, respository);
         }
 
+        /// <summary>
+        ///     Releases the unmanaged resources that are used by the object and, optionally, releases the managed resources.
+        /// </summary>
+        /// <param name="disposing">
+        ///     true to release both managed and unmanaged resources; false to release only unmanaged
+        ///     resources.
+        /// </param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _context?.Dispose();
+
+                _service?.Repository.Dispose();
+
+                Proxy?.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Local Fields/Properties
+
+        //
+        /// <summary>
+        ///     The _context
+        /// </summary>
+        private DbContext _context;
+
+        /// <summary>
+        ///     The _service
+        /// </summary>
+        private IEntityService<TEntity, IGenericRepository<TEntity>> _service;
+
+        /// <summary>
+        ///     The proxy
+        /// </summary>
+        protected ServiceProxy Proxy = new ServiceProxy();
+
+        //
+
+        #endregion Local Fields/Properties
+
         //
         // COMMON CRUD
         //
@@ -91,7 +115,7 @@ namespace AllTheSame.WebAPI.Controllers.Base
 
         // GET: odata/{controller}
         /// <summary>
-        /// Gets the item.
+        ///     Gets the item.
         /// </summary>
         /// <returns></returns>
         [EnableQuery]
@@ -102,7 +126,7 @@ namespace AllTheSame.WebAPI.Controllers.Base
 
         // GET: odata/{controller}(5)
         /// <summary>
-        /// Gets the item.
+        ///     Gets the item.
         /// </summary>
         /// <param name="id">The id.</param>
         /// <returns></returns>
@@ -110,12 +134,12 @@ namespace AllTheSame.WebAPI.Controllers.Base
         public virtual SingleResult<TEntity> GetById([FromODataUri] long? id)
         {
             return
-                SingleResult.Create(_service.FindBy(r=> r.Id == id).AsQueryable());
+                SingleResult.Create(_service.FindBy(r => r.Id == id).AsQueryable());
         }
 
         // PUT: odata/{controller}(5)
         /// <summary>
-        /// Puts the specified id.
+        ///     Puts the specified id.
         /// </summary>
         /// <param name="id">The id.</param>
         /// <param name="changes">The patch.</param>
@@ -157,7 +181,7 @@ namespace AllTheSame.WebAPI.Controllers.Base
 
         // POST: odata/{controller}
         /// <summary>
-        /// Posts the item by specified object.
+        ///     Posts the item by specified object.
         /// </summary>
         /// <param name="item">The item.</param>
         /// <returns></returns>
@@ -176,7 +200,7 @@ namespace AllTheSame.WebAPI.Controllers.Base
 
         // PATCH: odata/{controller}(5)
         /// <summary>
-        /// Patches the item by specified id.
+        ///     Patches the item by specified id.
         /// </summary>
         /// <param name="id">The id.</param>
         /// <param name="changes">The patch.</param>
@@ -219,7 +243,7 @@ namespace AllTheSame.WebAPI.Controllers.Base
 
         // DELETE: odata/{controller}(5)
         /// <summary>
-        /// Deletes the item by verifying by specified id.
+        ///     Deletes the item by verifying by specified id.
         /// </summary>
         /// <param name="id">The id.</param>
         /// <returns></returns>
@@ -238,7 +262,7 @@ namespace AllTheSame.WebAPI.Controllers.Base
         }
 
         /// <summary>
-        /// Checks if the item exists.
+        ///     Checks if the item exists.
         /// </summary>
         /// <param name="id">The id.</param>
         /// <returns></returns>
@@ -250,23 +274,5 @@ namespace AllTheSame.WebAPI.Controllers.Base
         //
 
         #endregion // COMMON CRUD
-
-        /// <summary>
-        /// Releases the unmanaged resources that are used by the object and, optionally, releases the managed resources.
-        /// </summary>
-        /// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged
-        /// resources.</param>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                _context?.Dispose();
-
-                _service?.Repository.Dispose();
-
-                Proxy?.Dispose();
-            }
-            base.Dispose(disposing);
-        }
     }
 }

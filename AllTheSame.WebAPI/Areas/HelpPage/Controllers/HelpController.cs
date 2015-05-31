@@ -37,7 +37,7 @@ namespace AllTheSame.WebAPI.Areas.HelpPage.Controllers
         /// <value>
         ///     The configuration.
         /// </value>
-        public HttpConfiguration Configuration { get; private set; }
+        public HttpConfiguration Configuration { get; }
 
         /// <summary>
         ///     Indexes this instance.

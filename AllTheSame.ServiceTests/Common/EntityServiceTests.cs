@@ -187,8 +187,8 @@ namespace AllTheSame.Service.Common.Tests
             //Assert.IsTrue(res > 0);
 
             //get it again
-            var edited_item = Service.GetSingle(r => r.Id == 2);
-            Assert.IsNotNull(edited_item);
+            var editedItem = Service.GetSingle(r => r.Id == 2);
+            Assert.IsNotNull(editedItem);
         }
 
         [TestMethod()]

@@ -8,7 +8,7 @@ namespace AllTheSame.Service.Implementation
 {
     /// <summary>
     /// PermissionService
-    /// Uncomment _unitOfWork, _repository and Dipose area below
+    /// Uncomment _unitOfWork, _repository and Dispose area below
     /// when building custom methods for this service
     /// </summary>
     public class PermissionService : EntityService<Permission, IPermissionRepository>, IPermissionService

@@ -4,7 +4,6 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
 using AllTheSame.Common.Core;
@@ -18,46 +17,26 @@ using AllTheSame.Service.Common;
 namespace AllTheSame.WebAPI.Controllers.Base
 {
     /// <summary>
-    /// BaseApiController
+    ///     BaseApiController
     /// </summary>
     /// <typeparam name="TEntity">The type of the entity.</typeparam>
-    public abstract class BaseApiController<TEntity> : ApiController 
-        where TEntity : class, IEntity<int> 
+    public abstract class BaseApiController<TEntity> : ApiController
+        where TEntity : class, IEntity<int>
 
     {
-        #region Local Fields/Properties
-        //
-
         /// <summary>
-        /// The _context
-        /// </summary>
-        public DbContext Context { get; private set; }
-
-        /// <summary>
-        /// The _service
-        /// </summary>
-        public IEntityService<TEntity, IGenericRepository<TEntity>> Service { get; private set; }
-
-        /// <summary>
-        /// The proxy
-        /// </summary>
-        protected ServiceProxy Proxy = new ServiceProxy();
-        //
-        #endregion Local Fields/Properties
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="BaseApiController{TEntity}" /> class.
+        ///     Initializes a new instance of the <see cref="BaseApiController{TEntity}" /> class.
         /// </summary>
         protected BaseApiController()
         {
-            if(Context == null)
-                Context = new Entity.Model.AllTheSameDbContext();
+            if (Context == null)
+                Context = new AllTheSameDbContext();
 
             GetServiceReference(Context);
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BaseApiController{TEntity}"/> class.
+        ///     Initializes a new instance of the <see cref="BaseApiController{TEntity}" /> class.
         /// </summary>
         /// <param name="context">The context.</param>
         protected BaseApiController(DbContext context)
@@ -66,7 +45,7 @@ namespace AllTheSame.WebAPI.Controllers.Base
         }
 
         /// <summary>
-        /// Gets the service refernce.
+        ///     Gets the service refernce.
         /// </summary>
         /// <param name="context">The context.</param>
         private void GetServiceReference(DbContext context)
@@ -79,6 +58,49 @@ namespace AllTheSame.WebAPI.Controllers.Base
             Service = new EntityService<TEntity, IGenericRepository<TEntity>>(uow, respository);
         }
 
+        /// <summary>
+        ///     Releases the unmanaged resources that are used by the object and, optionally, releases the managed resources.
+        /// </summary>
+        /// <param name="disposing">
+        ///     true to release both managed and unmanaged resources; false to release only unmanaged
+        ///     resources.
+        /// </param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                Context?.Dispose();
+
+                Service?.Dispose();
+
+                Proxy?.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Local Fields/Properties
+
+        //
+
+        /// <summary>
+        ///     The _context
+        /// </summary>
+        public DbContext Context { get; private set; }
+
+        /// <summary>
+        ///     The _service
+        /// </summary>
+        public IEntityService<TEntity, IGenericRepository<TEntity>> Service { get; private set; }
+
+        /// <summary>
+        ///     The proxy
+        /// </summary>
+        protected ServiceProxy Proxy = new ServiceProxy();
+
+        //
+
+        #endregion Local Fields/Properties
+
         //
         // COMMON CRUD
         //
@@ -88,7 +110,7 @@ namespace AllTheSame.WebAPI.Controllers.Base
         //
         // GET: api/{controller}/Get
         /// <summary>
-        /// Get items
+        ///     Get items
         /// </summary>
         /// <returns></returns>
         public virtual IEnumerable<TEntity> Get()
@@ -97,7 +119,7 @@ namespace AllTheSame.WebAPI.Controllers.Base
         }
 
         /// <summary>
-        /// FindByAsync
+        ///     FindByAsync
         /// </summary>
         /// <param name="where">The where.</param>
         /// <returns></returns>
@@ -108,13 +130,13 @@ namespace AllTheSame.WebAPI.Controllers.Base
 
         // GET: api/{controller}/5
         /// <summary>
-        /// Gets by id.
+        ///     Gets by id.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
         public virtual IHttpActionResult GetById(long? id)
         {
-            var item = Service.FindBy(r=>r.Id == id).SingleOrDefault();
+            var item = Service.FindBy(r => r.Id == id).SingleOrDefault();
             if (item == null)
             {
                 return NotFound();
@@ -125,12 +147,12 @@ namespace AllTheSame.WebAPI.Controllers.Base
 
         // PUT: api/{controller}/Post/5
         /// <summary>
-        /// Post via PUT.
+        ///     Post via PUT.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <param name="item">The item.</param>
         /// <returns></returns>
-        public virtual IHttpActionResult Put(long? id, [FromBody]TEntity item)
+        public virtual IHttpActionResult Put(long? id, [FromBody] TEntity item)
         {
             if (!ModelState.IsValid)
             {
@@ -155,12 +177,12 @@ namespace AllTheSame.WebAPI.Controllers.Base
                 throw;
             }
 
-            return Ok(item);// StatusCode(HttpStatusCode.OK);
+            return Ok(item); // StatusCode(HttpStatusCode.OK);
         }
 
         // POST: api/{controller}/Post
         /// <summary>
-        /// Add the item via POST.
+        ///     Add the item via POST.
         /// </summary>
         /// <param name="item">The item.</param>
         /// <returns></returns>
@@ -179,18 +201,18 @@ namespace AllTheSame.WebAPI.Controllers.Base
 
             Context.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = item.Id }, item);
+            return CreatedAtRoute("DefaultApi", new {id = item.Id}, item);
         }
 
         // DELETE: api/{controller}/Delete/5
         /// <summary>
-        /// Deletes the item.
+        ///     Deletes the item.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
         public virtual IHttpActionResult Delete(long? id)
         {
-            var item = Service.FindBy(r=>r.Id == id).SingleOrDefault();
+            var item = Service.FindBy(r => r.Id == id).SingleOrDefault();
             if (item == null)
             {
                 return NotFound();
@@ -212,36 +234,17 @@ namespace AllTheSame.WebAPI.Controllers.Base
 
         // GET: api/{controller}/Exists/5
         /// <summary>
-        /// Check if the item exists.
+        ///     Check if the item exists.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
         public virtual bool Exists(long? id)
         {
-            return Service.FindBy(r=>r.Id == id).SingleOrDefault() != null;
+            return Service.FindBy(r => r.Id == id).SingleOrDefault() != null;
         }
 
         //
 
         #endregion // COMMON CRUD
-
-
-        /// <summary>
-        /// Releases the unmanaged resources that are used by the object and, optionally, releases the managed resources.
-        /// </summary>
-        /// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged
-        /// resources.</param>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                Context?.Dispose();
-
-                Service?.Dispose();
-
-                Proxy?.Dispose();
-            }
-            base.Dispose(disposing);
-        }
     }
 }

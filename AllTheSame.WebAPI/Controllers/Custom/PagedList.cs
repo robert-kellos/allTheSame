@@ -13,9 +13,6 @@ namespace AllTheSame.WebAPI.Controllers.Custom
         /// <summary>
         ///     Singleton - Instance of PagedList {TEntity}
         /// </summary>
-        public static PagedList<TEntity> Instance
-        {
-            get { return _instance ?? (_instance = new PagedList<TEntity>()); }
-        }
+        public static PagedList<TEntity> Instance => _instance ?? (_instance = new PagedList<TEntity>());
     }
 }

@@ -11,9 +11,9 @@ namespace AllTheSame.WebAPI.Areas.HelpPage.ModelDescriptions
         public static string GetModelName(Type type)
         {
             var modelNameAttribute = type.GetCustomAttribute<ModelNameAttribute>();
-            if (modelNameAttribute != null && !string.IsNullOrEmpty(modelNameAttribute.Name))
+            if (!string.IsNullOrEmpty(modelNameAttribute?.Name))
             {
-                return modelNameAttribute.Name;
+                return modelNameAttribute?.Name;
             }
 
             var modelName = type.Name;
@@ -26,7 +26,7 @@ namespace AllTheSame.WebAPI.Areas.HelpPage.ModelDescriptions
 
                 // Trim the generic parameter counts from the name
                 genericTypeName = genericTypeName.Substring(0, genericTypeName.IndexOf('`'));
-                var argumentTypeNames = genericArguments.Select(t => GetModelName(t)).ToArray();
+                var argumentTypeNames = genericArguments.Select(GetModelName).ToArray();
                 modelName = string.Format(CultureInfo.InvariantCulture, "{0}Of{1}", genericTypeName,
                     string.Join("And", argumentTypeNames));
             }

@@ -31,7 +31,7 @@ namespace AllTheSame.WebAPI.Controllers
         /// <returns>
         ///     Item a List or Array of the objects returned.
         /// </returns>
-        [ResponseType(typeof(IEnumerable<Address>))]
+        [ResponseType(typeof (IEnumerable<Address>))]
         [HttpGet]
         public override IEnumerable<Address> Get()
         {
@@ -46,7 +46,7 @@ namespace AllTheSame.WebAPI.Controllers
         /// <returns>
         ///     Item object returned.
         /// </returns>
-        [ResponseType(typeof(Address))]
+        [ResponseType(typeof (Address))]
         [HttpGet]
         public override IHttpActionResult GetById(long? id)
         {
@@ -62,7 +62,7 @@ namespace AllTheSame.WebAPI.Controllers
         /// <returns>
         ///     bool: success/fail in a returned wrapper.
         /// </returns>
-        [ResponseType(typeof(IHttpActionResult))]
+        [ResponseType(typeof (IHttpActionResult))]
         [HttpPut]
         public override IHttpActionResult Put(long? id, [FromBody] Address item)
         {
@@ -77,7 +77,7 @@ namespace AllTheSame.WebAPI.Controllers
         /// <returns>
         ///     Newly created Id in a returned wrapper.
         /// </returns>
-        [ResponseType(typeof(IHttpActionResult))]
+        [ResponseType(typeof (IHttpActionResult))]
         [HttpPost]
         public override IHttpActionResult Post([FromBody] Address item)
         {
@@ -92,7 +92,7 @@ namespace AllTheSame.WebAPI.Controllers
         /// <returns>
         ///     bool: success/fail in a returned wrapper.
         /// </returns>
-        [ResponseType(typeof(IHttpActionResult))]
+        [ResponseType(typeof (IHttpActionResult))]
         [HttpDelete]
         public override IHttpActionResult Delete(long? id)
         {
@@ -107,7 +107,7 @@ namespace AllTheSame.WebAPI.Controllers
         /// <returns></returns>
         [Route("Exists/{id}")] //--> requires a unique route
         [HttpGet]
-        [ResponseType(typeof(BoolReturnModel))]
+        [ResponseType(typeof (BoolReturnModel))]
         public override bool Exists(long? id)
         {
             return base.Exists(id);

@@ -30,29 +30,32 @@ namespace AllTheSame.WebAPI.Controllers
     public class AccountController : BaseApiController<User>
     {
         /// <summary>
-        ///     The local login provider
+        /// The local login provider
         /// </summary>
         private const string LocalLoginProvider = "Local";
 
         /// <summary>
-        ///     The _user manager
+        /// The _user manager
         /// </summary>
         private ApplicationUserManager _userManager;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AccountController"/> class.
+        /// Initializes a new instance of the <see cref="AccountController" /> class.
         /// </summary>
         public AccountController()
         {
         }
 
-        public AccountController(Entity.Model.AllTheSameDbContext context):base(context)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AccountController" /> class.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        public AccountController(AllTheSameDbContext context) : base(context)
         {
         }
-        
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="AccountController" /> class.
+        /// Initializes a new instance of the <see cref="AccountController" /> class.
         /// </summary>
         /// <param name="userManager">The user manager.</param>
         /// <param name="accessTokenFormat">The access token format.</param>
@@ -64,10 +67,10 @@ namespace AllTheSame.WebAPI.Controllers
         }
 
         /// <summary>
-        ///     Gets the user manager.
+        /// Gets the user manager.
         /// </summary>
         /// <value>
-        ///     The user manager.
+        /// The user manager.
         /// </value>
         public ApplicationUserManager UserManager
         {
@@ -76,16 +79,16 @@ namespace AllTheSame.WebAPI.Controllers
         }
 
         /// <summary>
-        ///     Gets the access token format.
+        /// Gets the access token format.
         /// </summary>
         /// <value>
-        ///     The access token format.
+        /// The access token format.
         /// </value>
-        public ISecureDataFormat<AuthenticationTicket> AccessTokenFormat { get; private set; }
+        public ISecureDataFormat<AuthenticationTicket> AccessTokenFormat { get; }
 
         // GET api/Account/UserInfo
         /// <summary>
-        ///     Gets the user information.
+        /// Gets the user information.
         /// </summary>
         /// <returns></returns>
         [HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
@@ -98,13 +101,13 @@ namespace AllTheSame.WebAPI.Controllers
             {
                 Email = User.Identity.GetUserName(),
                 HasRegistered = externalLogin == null,
-                LoginProvider = externalLogin != null ? externalLogin.LoginProvider : null
+                LoginProvider = externalLogin?.LoginProvider
             };
         }
 
         // GET api/Account/UserLast
         /// <summary>
-        ///     Gets the user last.
+        /// Gets the user last.
         /// </summary>
         /// <returns></returns>
         [HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
@@ -145,7 +148,7 @@ namespace AllTheSame.WebAPI.Controllers
 
         // POST api/Account/Logout
         /// <summary>
-        ///     Logouts this instance.
+        /// Logouts this instance.
         /// </summary>
         /// <returns></returns>
         [Route("Logout")]
@@ -157,7 +160,7 @@ namespace AllTheSame.WebAPI.Controllers
 
         // GET api/Account/ManageInfo?returnUrl=%2F&generateState=true
         /// <summary>
-        ///     Gets the manage information.
+        /// Gets the manage information.
         /// </summary>
         /// <param name="returnUrl">The return URL.</param>
         /// <param name="generateState">if set to <c>true</c> [generate state].</param>
@@ -176,7 +179,7 @@ namespace AllTheSame.WebAPI.Controllers
 
         // POST api/Account/ChangePassword
         /// <summary>
-        ///     Changes the password.
+        /// Changes the password.
         /// </summary>
         /// <param name="model">The model.</param>
         /// <returns></returns>
@@ -201,7 +204,7 @@ namespace AllTheSame.WebAPI.Controllers
 
         // POST api/Account/SetPassword
         /// <summary>
-        ///     Sets the password.
+        /// Sets the password.
         /// </summary>
         /// <param name="model">The model.</param>
         /// <returns></returns>
@@ -225,7 +228,7 @@ namespace AllTheSame.WebAPI.Controllers
 
         // POST api/Account/AddExternalLogin
         /// <summary>
-        ///     Adds the external login.
+        /// Adds the external login.
         /// </summary>
         /// <param name="model">The model.</param>
         /// <returns></returns>
@@ -241,10 +244,7 @@ namespace AllTheSame.WebAPI.Controllers
 
             var ticket = AccessTokenFormat.Unprotect(model.ExternalAccessToken);
 
-            if (ticket == null || ticket.Identity == null || (ticket.Properties != null
-                                                              && ticket.Properties.ExpiresUtc.HasValue
-                                                              &&
-                                                              ticket.Properties.ExpiresUtc.Value < DateTimeOffset.UtcNow))
+            if (ticket?.Identity == null || (ticket.Properties?.ExpiresUtc != null && ticket.Properties.ExpiresUtc.Value < DateTimeOffset.UtcNow))
             {
                 return BadRequest("External login failure.");
             }
@@ -269,7 +269,7 @@ namespace AllTheSame.WebAPI.Controllers
 
         // POST api/Account/RemoveLogin
         /// <summary>
-        ///     Removes the login.
+        /// Removes the login.
         /// </summary>
         /// <param name="model">The model.</param>
         /// <returns></returns>
@@ -303,7 +303,7 @@ namespace AllTheSame.WebAPI.Controllers
 
         // GET api/Account/ExternalLogin
         /// <summary>
-        ///     Gets the external login.
+        /// Gets the external login.
         /// </summary>
         /// <param name="provider">The provider.</param>
         /// <param name="error">The error.</param>
@@ -365,7 +365,7 @@ namespace AllTheSame.WebAPI.Controllers
 
         // GET api/Account/ExternalLogins?returnUrl=%2F&generateState=true
         /// <summary>
-        ///     Gets the external logins.
+        /// Gets the external logins.
         /// </summary>
         /// <param name="returnUrl">The return URL.</param>
         /// <param name="generateState">if set to <c>true</c> [generate state].</param>
@@ -390,9 +390,14 @@ namespace AllTheSame.WebAPI.Controllers
 
             return descriptions.Select(description => new ExternalLoginViewModel
             {
-                Name = description.Caption, Url = Url.Route("ExternalLogin", new
+                Name = description.Caption,
+                Url = Url.Route("ExternalLogin", new
                 {
-                    provider = description.AuthenticationType, response_type = "token", client_id = Startup.PublicClientId, redirect_uri = new Uri(Request.RequestUri, returnUrl).AbsoluteUri, state
+                    provider = description.AuthenticationType,
+                    response_type = "token",
+                    client_id = Startup.PublicClientId,
+                    redirect_uri = new Uri(Request.RequestUri, returnUrl).AbsoluteUri,
+                    state
                 }),
                 State = state
             }).ToList();
@@ -400,7 +405,7 @@ namespace AllTheSame.WebAPI.Controllers
 
         // POST api/Account/Register
         /// <summary>
-        ///     Registers the specified model.
+        /// Registers the specified model.
         /// </summary>
         /// <param name="model">The model.</param>
         /// <returns></returns>
@@ -431,7 +436,7 @@ namespace AllTheSame.WebAPI.Controllers
 
         // POST api/Account/RegisterExternal
         /// <summary>
-        ///     Registers the external.
+        /// Registers the external.
         /// </summary>
         /// <param name="model">The model.</param>
         /// <returns></returns>
@@ -472,12 +477,10 @@ namespace AllTheSame.WebAPI.Controllers
         }
 
         /// <summary>
-        ///     Releases the unmanaged resources that are used by the object and, optionally, releases the managed resources.
+        /// Releases the unmanaged resources that are used by the object and, optionally, releases the managed resources.
         /// </summary>
-        /// <param name="disposing">
-        ///     true to release both managed and unmanaged resources; false to release only unmanaged
-        ///     resources.
-        /// </param>
+        /// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged
+        /// resources.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && _userManager != null)
@@ -491,12 +494,21 @@ namespace AllTheSame.WebAPI.Controllers
 
         #region Test Service Constructors
 
+        /// <summary>
+        /// The _service
+        /// </summary>
         private IAuthService _service;
+        /// <summary>
+        /// The _user service
+        /// </summary>
         private IUserService _userService;
+        /// <summary>
+        /// The _user session service
+        /// </summary>
         private IUserSessionService _userSessionService;
         //
         /// <summary>
-        ///     Initializes a new instance of the <see cref="AccountController" /> class.
+        /// Initializes a new instance of the <see cref="AccountController" /> class.
         /// </summary>
         /// <param name="authService">The authentication service.</param>
         public AccountController(IAuthService authService)
@@ -505,7 +517,7 @@ namespace AllTheSame.WebAPI.Controllers
         }
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="AccountController" /> class.
+        /// Initializes a new instance of the <see cref="AccountController" /> class.
         /// </summary>
         /// <param name="userService">The user service.</param>
         public AccountController(IUserService userService)
@@ -514,7 +526,7 @@ namespace AllTheSame.WebAPI.Controllers
         }
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="AccountController" /> class.
+        /// Initializes a new instance of the <see cref="AccountController" /> class.
         /// </summary>
         /// <param name="userSessionService">The user session service.</param>
         public AccountController(IUserSessionService userSessionService)
@@ -529,15 +541,12 @@ namespace AllTheSame.WebAPI.Controllers
         #region Helpers
 
         /// <summary>
-        ///     Gets the authentication.
+        /// Gets the authentication.
         /// </summary>
         /// <value>
-        ///     The authentication.
+        /// The authentication.
         /// </value>
-        private IAuthenticationManager Authentication
-        {
-            get { return Request.GetOwinContext().Authentication; }
-        }
+        private IAuthenticationManager Authentication => Request.GetOwinContext().Authentication;
 
         /// <summary>
         ///     Gets the error result.
@@ -627,8 +636,7 @@ namespace AllTheSame.WebAPI.Controllers
             {
                 var providerKeyClaim = identity?.FindFirst(ClaimTypes.NameIdentifier);
 
-                if (providerKeyClaim == null || string.IsNullOrEmpty(providerKeyClaim.Issuer)
-                    || string.IsNullOrEmpty(providerKeyClaim.Value))
+                if (string.IsNullOrEmpty(providerKeyClaim?.Issuer) || string.IsNullOrEmpty(providerKeyClaim.Value))
                 {
                     return null;
                 }
@@ -648,7 +656,7 @@ namespace AllTheSame.WebAPI.Controllers
         }
 
         /// <summary>
-        /// RandomOAuthStateGenerator
+        ///     RandomOAuthStateGenerator
         /// </summary>
         private static class RandomOAuthStateGenerator
         {

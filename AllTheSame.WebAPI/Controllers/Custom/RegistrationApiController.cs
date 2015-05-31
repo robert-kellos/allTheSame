@@ -6,11 +6,8 @@ using System.Web.Http.Description;
 using AllTheSame.Entity.Model;
 using AllTheSame.Repository.Common;
 using AllTheSame.Repository.UserData.implementation;
-using AllTheSame.Repository.UserData.interfaces;
-using AllTheSame.Service;
 using AllTheSame.Service.Common;
 using AllTheSame.Service.Implementation;
-using AllTheSame.Service.Interfaces;
 using AllTheSame.WebAPI.Models;
 
 namespace AllTheSame.WebAPI.Controllers.Custom
@@ -88,7 +85,7 @@ namespace AllTheSame.WebAPI.Controllers.Custom
         /// </summary>
         public RegistrationApiController()
         {
-            _context = new Entity.Model.AllTheSameDbContext();
+            _context = new AllTheSameDbContext();
 
             _vendorCredentialService = new VendorCredentialService(new UnitOfWork(_context),
                 new VendorCredentialRepository(_context));
@@ -121,7 +118,6 @@ namespace AllTheSame.WebAPI.Controllers.Custom
             //var c = Repository<Person>.Instance.Count;
             //var c2 = Repository<Person>.Instance.Count;
             //var s = new ServiceProxy<Person,IPersonRepository>().Count;
-            
         }
 
         /// <summary>
@@ -219,7 +215,7 @@ namespace AllTheSame.WebAPI.Controllers.Custom
         /// <summary>
         ///     The database context refernce.
         /// </summary>
-        private readonly Entity.Model.AllTheSameDbContext _context;
+        private readonly AllTheSameDbContext _context;
 
         /// <summary>
         ///     The service reference.

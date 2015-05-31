@@ -7,8 +7,8 @@
     <ProjectGuid>{EEE77609-87E3-4437-88FF-89BAAB5EBE56}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Accushield.Common</RootNamespace>
-    <AssemblyName>Accushield.Common</AssemblyName>
+    <RootNamespace>AllTheSame.Common</RootNamespace>
+    <AssemblyName>AllTheSame.Common</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
@@ -23,7 +23,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\Accushield.Common.XML</DocumentationFile>
+    <DocumentationFile>bin\Debug\AllTheSame.Common.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>

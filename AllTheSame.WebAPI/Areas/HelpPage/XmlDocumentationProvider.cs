@@ -218,7 +218,7 @@ namespace AllTheSame.WebAPI.Areas.HelpPage
 
                 // Trim the generic parameter counts from the name
                 genericTypeName = genericTypeName.Substring(0, genericTypeName.IndexOf('`'));
-                var argumentTypeNames = genericArguments.Select(t => GetTypeName(t)).ToArray();
+                var argumentTypeNames = genericArguments.Select(GetTypeName).ToArray();
                 name = string.Format(CultureInfo.InvariantCulture, "{0}{{{1}}}", genericTypeName,
                     string.Join(",", argumentTypeNames));
             }

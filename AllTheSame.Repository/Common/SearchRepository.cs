@@ -16,7 +16,7 @@ namespace AllTheSame.Repository.Common
         /// <summary>
         ///     The context
         /// </summary>
-        protected Entity.Model.AllTheSameDbContext Context;
+        protected AllTheSameDbContext Context;
 
         /// <summary>
         ///     The database set
@@ -28,7 +28,7 @@ namespace AllTheSame.Repository.Common
         /// </summary>
         public SearchRepository()
         {
-            Context = new Entity.Model.AllTheSameDbContext();
+            Context = new AllTheSameDbContext();
             DbSet = Context.Set<TEntity>();
         }
 
@@ -73,7 +73,7 @@ namespace AllTheSame.Repository.Common
             var repository = new SearchRepository<TEntity>();
 
             searchField = !string.IsNullOrEmpty(searchField) ? searchField : "Id";
-                //TODO: once UpdatedOn is implemented - this will be default
+            //TODO: once UpdatedOn is implemented - this will be default
             criteria = !string.IsNullOrEmpty(criteria) ? criteria : "";
 
             var q = new SearchQuery<TEntity>();
@@ -226,8 +226,7 @@ namespace AllTheSame.Repository.Common
         {
             if (!disposing) return;
 
-            if (Context != null)
-                Context.Dispose();
+            Context?.Dispose();
         }
     }
 }

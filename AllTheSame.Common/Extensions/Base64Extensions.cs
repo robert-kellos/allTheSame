@@ -22,14 +22,13 @@ namespace AllTheSame.Common.Extensions
         {
             try
             {
-                var base64 = default(string);
+                string base64;
                 using (var memory = new MemoryStream())
                 {
                     input.Save(memory, ImageFormat.Jpeg);
 
                     base64 = Convert.ToBase64String(memory.ToArray());
-                    if (memory != null)
-                        memory.Close();
+                    memory.Close();
                 }
 
                 return base64;
@@ -58,12 +57,11 @@ namespace AllTheSame.Common.Extensions
         {
             try
             {
-                var bitmap = default(Bitmap);
+                Bitmap bitmap;
                 using (var memory = new MemoryStream(Convert.FromBase64String(input)))
                 {
                     bitmap = new Bitmap(memory);
-                    if (memory != null)
-                        memory.Close();
+                    memory.Close();
                 }
                 return bitmap;
             }

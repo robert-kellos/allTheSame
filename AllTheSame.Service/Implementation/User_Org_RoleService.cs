@@ -8,7 +8,7 @@ namespace AllTheSame.Service.Implementation
 {
     /// <summary>
     /// User_Org_RoleService
-    /// Uncomment _unitOfWork, _repository and Dipose area below
+    /// Uncomment _unitOfWork, _repository and Dispose area below
     /// when building custom methods for this service
     /// </summary>
     public class User_Org_RoleService : EntityService<User_Org_Role, IUser_Org_RoleRepository>, IUser_Org_RoleService

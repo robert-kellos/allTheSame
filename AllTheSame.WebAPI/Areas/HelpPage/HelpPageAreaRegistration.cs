@@ -11,10 +11,7 @@ namespace AllTheSame.WebAPI.Areas.HelpPage
         /// <summary>
         ///     Gets the name of the area to register.
         /// </summary>
-        public override string AreaName
-        {
-            get { return "HelpPage"; }
-        }
+        public override string AreaName => "HelpPage";
 
         /// <summary>
         ///     Registers an area in an ASP.NET MVC application using the specified area's context information.

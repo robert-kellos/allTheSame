@@ -8,7 +8,7 @@ namespace AllTheSame.Service.Implementation
 {
     /// <summary>
     /// CommunityWorker_AlertService
-    /// Uncomment _unitOfWork, _repository and Dipose area below
+    /// Uncomment _unitOfWork, _repository and Dispose area below
     /// when building custom methods for this service
     /// </summary>
     public class CommunityWorker_AlertService : SyncEntityService<CommunityWorker_Alert, ICommunityWorker_AlertRepository>, ICommunityWorker_AlertService

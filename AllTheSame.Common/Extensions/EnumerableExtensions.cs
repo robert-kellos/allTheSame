@@ -73,10 +73,7 @@ namespace AllTheSame.Common.Extensions
                 var isEmpty = !enumerator.MoveNext();
 
                 var disposable = enumerator as IDisposable;
-                if (disposable != null)
-                {
-                    disposable.Dispose();
-                }
+                disposable?.Dispose();
 
                 return isEmpty;
             }

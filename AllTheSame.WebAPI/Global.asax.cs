@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
@@ -40,13 +39,13 @@ namespace AllTheSame.WebAPI
 
                 builder.RegisterModule(new RepositoryModule());
                 builder.RegisterModule(new ServiceModule());
-                builder.RegisterModule(new EFModule());
+                builder.RegisterModule(new EfModule());
 
                 builder.Register(c => new AllTheSameDbContext());
                 builder.Register(c => new ServiceProxy());
-                builder.Register(c => new Repository<User>(new Entity.Model.AllTheSameDbContext()));
-                builder.Register(c => new Repository<Person>(new Entity.Model.AllTheSameDbContext()));
-                builder.Register(c => new Repository<Vendor>(new Entity.Model.AllTheSameDbContext()));
+                builder.Register(c => new Repository<User>(new AllTheSameDbContext()));
+                builder.Register(c => new Repository<Person>(new AllTheSameDbContext()));
+                builder.Register(c => new Repository<Vendor>(new AllTheSameDbContext()));
 
                 var container = builder.Build();
 
@@ -77,7 +76,7 @@ namespace AllTheSame.WebAPI
         /// <param name="e">The <see cref="UnhandledExceptionEventArgs" /> instance containing the event data.</param>
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            if (e != null && e.ExceptionObject != null)
+            if (e?.ExceptionObject != null)
             {
                 Audit.Log.Error(AppConstants.ErrorMessages.UnhandledExceptionMessage, e.ExceptionObject as Exception);
             }

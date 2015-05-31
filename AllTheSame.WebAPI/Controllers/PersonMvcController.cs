@@ -20,7 +20,7 @@ namespace AllTheSame.WebAPI.Controllers
         /// <summary>
         ///     The _person service
         /// </summary>
-        private readonly Entity.Model.AllTheSameDbContext _context;
+        private readonly AllTheSameDbContext _context;
 
         /// <summary>
         ///     The _service
@@ -32,7 +32,7 @@ namespace AllTheSame.WebAPI.Controllers
         /// </summary>
         public PersonMvcController()
         {
-            _context = new Entity.Model.AllTheSameDbContext();
+            _context = new AllTheSameDbContext();
             _service = new PersonService(new UnitOfWork(_context), new PersonRepository(_context));
         }
 
@@ -116,7 +116,7 @@ namespace AllTheSame.WebAPI.Controllers
             try
             {
                 item.CreatedOn = DateTime.UtcNow;
-                item.UpdatedOn = item.UpdatedOn == null ? DateTime.UtcNow : item.UpdatedOn;
+                item.UpdatedOn = item.UpdatedOn ?? DateTime.UtcNow;
 
                 if (ModelState.IsValid)
                 {
@@ -173,13 +173,14 @@ namespace AllTheSame.WebAPI.Controllers
         /// <returns></returns>
         [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,FirstName,LastName,Email,MobilePhone,CreatedOn,UpdatedOn")] Person item)
+        public ActionResult Edit(
+            [Bind(Include = "Id,FirstName,LastName,Email,MobilePhone,CreatedOn,UpdatedOn")] Person item)
         {
             if (_service == null)
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
             try
             {
-                item.CreatedOn = item.CreatedOn == null ? DateTime.UtcNow : item.CreatedOn;
+                item.CreatedOn = item.CreatedOn ?? DateTime.UtcNow;
                 item.UpdatedOn = DateTime.UtcNow;
 
                 if (ModelState.IsValid)
@@ -249,7 +250,7 @@ namespace AllTheSame.WebAPI.Controllers
             {
                 var item = _service.GetById(id);
 
-                item.CreatedOn = item.CreatedOn == null ? DateTime.UtcNow : item.CreatedOn;
+                item.CreatedOn = item.CreatedOn ?? DateTime.UtcNow;
                 item.UpdatedOn = DateTime.UtcNow;
 
                 var deleted = _service.Delete(item);

@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using AllTheSame.Common.Interfaces.Generic;
-using AllTheSame.Repository.Common;
 using AllTheSame.Common.Logging;
+using AllTheSame.Repository.Common;
 
 namespace AllTheSame.Service.Common
 {

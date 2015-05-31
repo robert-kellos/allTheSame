@@ -4,9 +4,9 @@ using System.Data.Entity;
 using System.Linq.Expressions;
 using AllTheSame.Common.Helpers;
 using AllTheSame.Common.Interfaces.Generic;
+using AllTheSame.Common.Logging;
 using AllTheSame.Entity.Model;
 using AllTheSame.Repository.UserData.implementation;
-using AllTheSame.Common.Logging;
 
 namespace AllTheSame.Repository.Common
 {
@@ -41,11 +41,11 @@ namespace AllTheSame.Repository.Common
         /// <returns></returns>
         public virtual IEnumerable<T> GetAll(int lastSyncId)
         {
-            IEnumerable<T> result;
-            result = GetAll(lastSyncId, new Expression<Func<T, object>>[0]);
-            var list = (result as List<T>) != null ? (result as List<T>).Count : 0;
+            IEnumerable<T> result = GetAll(lastSyncId, new Expression<Func<T, object>>[0]);
+            var list = (result as List<T>)?.Count ?? 0;
 
-            Audit.Log.Info(string.Format("SyncRepository.GetAll(lastsyncId) :: lastSyncId : {0} - result count : {1}", lastSyncId, list));
+            Audit.Log.Info(string.Format("SyncRepository.GetAll(lastsyncId) :: lastSyncId : {0} - result count : {1}",
+                lastSyncId, list));
 
             return result;
         }
@@ -66,7 +66,9 @@ namespace AllTheSame.Repository.Common
 
             var query = GetVersionPredicate(lastSync);
 
-            Audit.Log.Info(string.Format("SyncRepository.GetAll(lastsyncId, params) :: lastSyncId : {0} - result Func : {1}", lastSyncId, query.Method.DeclaringType));
+            Audit.Log.Info(
+                string.Format("SyncRepository.GetAll(lastsyncId, params) :: lastSyncId : {0} - result Func : {1}",
+                    lastSyncId, query.Method.DeclaringType));
 
             return GetList(query, navigationProperties);
         }

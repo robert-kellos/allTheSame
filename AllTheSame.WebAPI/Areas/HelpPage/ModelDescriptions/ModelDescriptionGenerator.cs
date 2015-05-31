@@ -124,12 +124,9 @@ namespace AllTheSame.WebAPI.Areas.HelpPage.ModelDescriptions
         /// <summary>
         ///     GeneratedModels
         /// </summary>
-        public Dictionary<string, ModelDescription> GeneratedModels { get; private set; }
+        public Dictionary<string, ModelDescription> GeneratedModels { get; }
 
-        private IModelDocumentationProvider DocumentationProvider
-        {
-            get { return _documentationProvider.Value; }
-        }
+        private IModelDocumentationProvider DocumentationProvider => _documentationProvider.Value;
 
         /// <summary>
         ///     GetOrCreateModelDescription
@@ -236,18 +233,16 @@ namespace AllTheSame.WebAPI.Areas.HelpPage.ModelDescriptions
         private static string GetMemberName(MemberInfo member, bool hasDataContractAttribute)
         {
             var jsonProperty = member.GetCustomAttribute<JsonPropertyAttribute>();
-            if (jsonProperty != null && !string.IsNullOrEmpty(jsonProperty.PropertyName))
+            if (!string.IsNullOrEmpty(jsonProperty?.PropertyName))
             {
-                return jsonProperty.PropertyName;
+                if (jsonProperty != null) return jsonProperty.PropertyName;
             }
 
             if (hasDataContractAttribute)
             {
                 var dataMember = member.GetCustomAttribute<DataMemberAttribute>();
-                if (dataMember != null && !string.IsNullOrEmpty(dataMember.Name))
-                {
-                    return dataMember.Name;
-                }
+                if (string.IsNullOrEmpty(dataMember?.Name)) return member.Name;
+                if (dataMember != null) return dataMember.Name;
             }
 
             return member.Name;
@@ -261,9 +256,9 @@ namespace AllTheSame.WebAPI.Areas.HelpPage.ModelDescriptions
             var nonSerialized = member.GetCustomAttribute<NonSerializedAttribute>();
             var apiExplorerSetting = member.GetCustomAttribute<ApiExplorerSettingsAttribute>();
 
-            var hasMemberAttribute = member.DeclaringType.IsEnum
+            var hasMemberAttribute = member.DeclaringType != null && (member.DeclaringType.IsEnum
                 ? member.GetCustomAttribute<EnumMemberAttribute>() != null
-                : member.GetCustomAttribute<DataMemberAttribute>() != null;
+                : member.GetCustomAttribute<DataMemberAttribute>() != null);
 
             // Display member only if all the followings are true:
             // no JsonIgnoreAttribute

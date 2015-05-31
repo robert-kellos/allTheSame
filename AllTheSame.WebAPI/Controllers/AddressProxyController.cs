@@ -21,7 +21,7 @@ namespace AllTheSame.WebAPI.Controllers
     /// </summary>
     public class AddressProxyController : ApiController //BaseApiController<Address, AddressRepository>
     {
-        private readonly Entity.Model.AllTheSameDbContext _context;
+        private readonly AllTheSameDbContext _context;
         private readonly IEntityService<Address, IAddressRepository> _serviceProxy;
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace AllTheSame.WebAPI.Controllers
         /// </summary>
         public AddressProxyController()
         {
-            _context = new Entity.Model.AllTheSameDbContext();
+            _context = new AllTheSameDbContext();
             _serviceProxy = ServiceProxy.GetServiceRefernce<Address, IAddressRepository>(new AddressRepository(_context));
         }
 

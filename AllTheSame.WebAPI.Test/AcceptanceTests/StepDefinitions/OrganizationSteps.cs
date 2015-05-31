@@ -63,10 +63,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         //
         #endregion Local Properties/Fields
 
-        public override string Uri
-        {
-            get { return "/api/Organization"; }
-        }
+        public override string Uri => "/api/Organization";
 
         #region Post - add a new item by a populated item
         //

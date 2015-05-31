@@ -10,10 +10,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
     [Binding]
     public class AuthenticateSteps : BaseServiceTest
     {
-        public override string Uri
-        {
-            get { return "/Token"; }
-        }
+        public override string Uri => "/Token";
 
         [Given(@"I have entered valid credentials")]
         public void GivenIHaveEnteredValidCredentials(Table table)

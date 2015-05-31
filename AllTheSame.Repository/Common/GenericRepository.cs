@@ -11,17 +11,16 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using AllTheSame.Common.Core;
-using AllTheSame.Common.Extensions;
 using AllTheSame.Common.Helpers;
+using AllTheSame.Common.Interfaces.Generic;
 using AllTheSame.Common.Logging;
 using AllTheSame.Entity.Model;
-using AllTheSame.Common.Interfaces.Generic;
 using log4net.Config;
 
 namespace AllTheSame.Repository.Common
 {
     /// <summary>
-    /// GenericRepository of T
+    ///     GenericRepository of T
     /// </summary>
     /// <typeparam name="TEntity">The type of the entity.</typeparam>
     [Serializable]
@@ -29,28 +28,17 @@ namespace AllTheSame.Repository.Common
         where TEntity : class, IEntity<int>
     {
         /// <summary>
-        /// The Dbset
+        ///     The Dbset
         /// </summary>
         protected readonly IDbSet<TEntity> CurrentDbSet;
 
         /// <summary>
-        /// The DbContext
+        ///     The DbContext
         /// </summary>
-        [NonSerialized]
-        protected DbContext _context;
+        [NonSerialized] protected DbContext Context;
 
         /// <summary>
-        /// Gets the current database context.
-        /// </summary>
-        /// <value>
-        /// The current database context.
-        /// </value>
-        public DbContext CurrentDbContext
-        {
-            get { return _context ?? (_context = new Entity.Model.AllTheSameDbContext()); }
-        }
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GenericRepository{TEntity}" /> class.
+        ///     Initializes a new instance of the <see cref="GenericRepository{TEntity}" /> class.
         /// </summary>
         public GenericRepository()
         {
@@ -64,13 +52,13 @@ namespace AllTheSame.Repository.Common
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="GenericRepository{TEntity}" /> class.
+        ///     Initializes a new instance of the <see cref="GenericRepository{TEntity}" /> class.
         /// </summary>
         /// <param name="context">The context.</param>
         /// <exception cref="ArgumentNullException"></exception>
         public GenericRepository(DbContext context)
         {
-            _context = context;
+            Context = context;
 
             AppUtility.ValidateContext(CurrentDbContext);
 
@@ -99,7 +87,15 @@ namespace AllTheSame.Repository.Common
         }
 
         /// <summary>
-        /// Gets objects from database with filting and paging.
+        ///     Gets the current database context.
+        /// </summary>
+        /// <value>
+        ///     The current database context.
+        /// </value>
+        public DbContext CurrentDbContext => Context ?? (Context = new AllTheSameDbContext());
+
+        /// <summary>
+        ///     Gets objects from database with filting and paging.
         /// </summary>
         /// <typeparam name="TKey"></typeparam>
         /// <param name="filter">Specified a filter</param>
@@ -110,7 +106,7 @@ namespace AllTheSame.Repository.Common
         public IQueryable<TEntity> Filter<TKey>(Expression<Func<TEntity, bool>> filter,
             out int total, int index = 0, int size = 50)
         {
-            var skipCount = index * size;
+            var skipCount = index*size;
 
             var resetSet = filter != null
                 ? CurrentDbSet.Where(filter).AsQueryable()
@@ -126,15 +122,12 @@ namespace AllTheSame.Repository.Common
         }
 
         /// <summary>
-        /// Count of current db table set
+        ///     Count of current db table set
         /// </summary>
-        public int Count
-        {
-            get { return CurrentDbSet != null ? CurrentDbSet.Count() : -1; }
-        }
+        public int Count => CurrentDbSet?.Count() ?? -1;
 
         /// <summary>
-        /// Gets all.
+        ///     Gets all.
         /// </summary>
         /// <returns></returns>
         public virtual IEnumerable<TEntity> GetAll()
@@ -166,7 +159,7 @@ namespace AllTheSame.Repository.Common
         }
 
         /// <summary>
-        /// Gets the list asynchronous.
+        ///     Gets the list asynchronous.
         /// </summary>
         /// <param name="where">The where.</param>
         /// <param name="navigationProperties">The navigation properties.</param>
@@ -222,7 +215,7 @@ namespace AllTheSame.Repository.Common
         }
 
         /// <summary>
-        /// Finds the by.
+        ///     Finds the by.
         /// </summary>
         /// <param name="where">The predicate.</param>
         /// <returns></returns>
@@ -259,7 +252,7 @@ namespace AllTheSame.Repository.Common
         }
 
         /// <summary>
-        /// Finds the by asynchronous.
+        ///     Finds the by asynchronous.
         /// </summary>
         /// <param name="where">The where.</param>
         /// <returns></returns>
@@ -297,7 +290,7 @@ namespace AllTheSame.Repository.Common
         }
 
         /// <summary>
-        /// Finds the by.
+        ///     Finds the by.
         /// </summary>
         /// <param name="where">The where.</param>
         /// <param name="include">The include.</param>
@@ -341,7 +334,7 @@ namespace AllTheSame.Repository.Common
         }
 
         /// <summary>
-        /// Finds the by asynchronous.
+        ///     Finds the by asynchronous.
         /// </summary>
         /// <param name="where">The where.</param>
         /// <param name="include"></param>
@@ -381,7 +374,7 @@ namespace AllTheSame.Repository.Common
         }
 
         /// <summary>
-        /// Adds the specified entity.
+        ///     Adds the specified entity.
         /// </summary>
         /// <param name="entity">The entity.</param>
         /// <returns></returns>
@@ -395,7 +388,7 @@ namespace AllTheSame.Repository.Common
             {
                 entity.CreatedOn = DateTime.UtcNow;
                 //this sets model value
-                (entity as TEntity).CreatedOn = base.CreatedOn.HasValue ? base.CreatedOn.Value : DateTime.UtcNow;
+                entity.CreatedOn = CreatedOn ?? DateTime.UtcNow;
 
                 var added = CurrentDbSet.Add(entity);
 
@@ -424,7 +417,7 @@ namespace AllTheSame.Repository.Common
         }
 
         /// <summary>
-        /// Adds the many.
+        ///     Adds the many.
         /// </summary>
         /// <param name="items">The items.</param>
         public virtual void AddMany(params TEntity[] items)
@@ -442,8 +435,7 @@ namespace AllTheSame.Repository.Common
                     //this sets base value
                     item.CreatedOn = DateTime.UtcNow;
                     //this sets model value
-                    (item as TEntity).CreatedOn = base.CreatedOn.HasValue ? base.CreatedOn.Value : DateTime.UtcNow;
-
+                    item.CreatedOn = CreatedOn ?? DateTime.UtcNow;
                 }
                 CurrentDbContext.SaveChanges();
             }
@@ -468,7 +460,7 @@ namespace AllTheSame.Repository.Common
         }
 
         /// <summary>
-        /// Deletes the specified entity.
+        ///     Deletes the specified entity.
         /// </summary>
         /// <param name="entity">The entity.</param>
         /// <returns></returns>
@@ -487,7 +479,7 @@ namespace AllTheSame.Repository.Common
         }
 
         /// <summary>
-        /// Removes the many.
+        ///     Removes the many.
         /// </summary>
         /// <param name="items">The items.</param>
         public virtual void RemoveMany(params TEntity[] items)
@@ -502,11 +494,11 @@ namespace AllTheSame.Repository.Common
                 {
                     CurrentDbContext.Entry(item).State = EntityState.Deleted;
                     //this sets base value
-                    base.UpdatedOn = DateTime.UtcNow;
+                    UpdatedOn = DateTime.UtcNow;
                     //this sets model value
-                    (item as TEntity).UpdatedOn = base.UpdatedOn.HasValue ? base.UpdatedOn.Value : DateTime.UtcNow;
+                    item.UpdatedOn = UpdatedOn ?? DateTime.UtcNow;
 
-                    base.EntityState = EntityState.Deleted;
+                    EntityState = EntityState.Deleted;
                 }
                 CurrentDbContext.SaveChanges();
             }
@@ -531,7 +523,7 @@ namespace AllTheSame.Repository.Common
         }
 
         /// <summary>
-        /// Edits the specified entity.
+        ///     Edits the specified entity.
         /// </summary>
         /// <param name="entity">The entity.</param>
         public virtual void Edit(TEntity entity)
@@ -541,16 +533,16 @@ namespace AllTheSame.Repository.Common
             AppUtility.ValidateEntity(entity);
 
             //this sets base value
-            base.UpdatedOn = DateTime.UtcNow;
+            UpdatedOn = DateTime.UtcNow;
             //this sets model value
-            (entity as TEntity).UpdatedOn = base.UpdatedOn.HasValue ? base.UpdatedOn.Value : DateTime.UtcNow;
+            entity.UpdatedOn = UpdatedOn ?? DateTime.UtcNow;
 
-            base.EntityState = EntityState.Modified;
+            EntityState = EntityState.Modified;
             CurrentDbContext.Entry(entity).State = EntityState.Modified;
         }
 
         /// <summary>
-        /// Updates the many.
+        ///     Updates the many.
         /// </summary>
         /// <param name="items">The items.</param>
         public virtual void UpdateMany(params TEntity[] items)
@@ -564,11 +556,11 @@ namespace AllTheSame.Repository.Common
                 foreach (var item in items)
                 {
                     //this sets base value
-                    base.UpdatedOn = DateTime.UtcNow;
+                    UpdatedOn = DateTime.UtcNow;
                     //this sets model value
-                    (item as TEntity).UpdatedOn = base.UpdatedOn.HasValue ? base.UpdatedOn.Value : DateTime.UtcNow;
+                    item.UpdatedOn = UpdatedOn ?? DateTime.UtcNow;
 
-                    base.EntityState = EntityState.Modified;
+                    EntityState = EntityState.Modified;
                     CurrentDbContext.Entry(item).State = EntityState.Modified;
                 }
                 CurrentDbContext.SaveChanges();
@@ -594,7 +586,7 @@ namespace AllTheSame.Repository.Common
         }
 
         /// <summary>
-        /// Saves this instance.
+        ///     Saves this instance.
         /// </summary>
         /// <returns></returns>
         public virtual int Save()
@@ -639,7 +631,7 @@ namespace AllTheSame.Repository.Common
 
         //
         /// <summary>
-        /// Gets all.
+        ///     Gets all.
         /// </summary>
         /// <param name="navigationProperties">The navigation properties.</param>
         /// <returns></returns>
@@ -696,7 +688,7 @@ namespace AllTheSame.Repository.Common
         }
 
         /// <summary>
-        /// Gets all asynchronous.
+        ///     Gets all asynchronous.
         /// </summary>
         /// <returns></returns>
         public virtual async Task<List<TEntity>> GetAllAsync()
@@ -739,7 +731,7 @@ namespace AllTheSame.Repository.Common
         }
 
         /// <summary>
-        /// Gets the list.
+        ///     Gets the list.
         /// </summary>
         /// <param name="where">The where.</param>
         /// <param name="navigationProperties">The navigation properties.</param>
@@ -794,7 +786,7 @@ namespace AllTheSame.Repository.Common
         }
 
         /// <summary>
-        /// Gets the single.
+        ///     Gets the single.
         /// </summary>
         /// <param name="where">The where.</param>
         /// <param name="navigationProperties">The navigation properties.</param>
@@ -848,7 +840,7 @@ namespace AllTheSame.Repository.Common
         }
 
         /// <summary>
-        /// Gets the single asynchronous.
+        ///     Gets the single asynchronous.
         /// </summary>
         /// <param name="where">The where.</param>
         /// <param name="navigationProperties">The navigation properties.</param>
@@ -902,7 +894,18 @@ namespace AllTheSame.Repository.Common
         }
 
         /// <summary>
-        /// GetSortedFieldFilterResult
+        ///     Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+
+            Audit.Log.Info("GenericRepository Dispose :: CurrentDbContext destroyed");
+        }
+
+        /// <summary>
+        ///     GetSortedFieldFilterResult
         /// </summary>
         /// <param name="searchField">The search field.</param>
         /// <param name="criteria">The criteria.</param>
@@ -914,7 +917,7 @@ namespace AllTheSame.Repository.Common
             var repository = new SearchRepository<TEntity>();
 
             searchField = !string.IsNullOrEmpty(searchField) ? searchField : "Id";
-                //TODO: once UpdatedOn is implemented - this will be default
+            //TODO: once UpdatedOn is implemented - this will be default
             criteria = !string.IsNullOrEmpty(criteria) ? criteria : "";
 
             var q = new SearchQuery<TEntity>();
@@ -933,13 +936,13 @@ namespace AllTheSame.Repository.Common
         }
 
         /// <summary>
-        /// This decodes the DbUpdateException. If there are any errors it can
-        /// handle then it returns a list of errors. Otherwise it returns null
-        /// which means rethrow the error as it has not been handled
+        ///     This decodes the DbUpdateException. If there are any errors it can
+        ///     handle then it returns a list of errors. Otherwise it returns null
+        ///     which means rethrow the error as it has not been handled
         /// </summary>
         /// <param name="dbuex">The dbuex.</param>
         /// <returns>
-        /// null if cannot handle errors, otherwise a list of errors
+        ///     null if cannot handle errors, otherwise a list of errors
         /// </returns>
         private static IEnumerable<ValidationResult> TryDecodeDbUpdateException(DbUpdateException dbuex)
         {
@@ -982,7 +985,7 @@ namespace AllTheSame.Repository.Common
 
         //translate state from model between disconnected set
         /// <summary>
-        /// Gets the state of the entity.
+        ///     Gets the state of the entity.
         /// </summary>
         /// <param name="entityState">State of the entity.</param>
         /// <returns></returns>
@@ -1004,7 +1007,7 @@ namespace AllTheSame.Repository.Common
         }
 
         /// <summary>
-        /// Validate Entity, get list of errors
+        ///     Validate Entity, get list of errors
         /// </summary>
         /// <returns></returns>
         public IEnumerable<ValidationResult> Validate()
@@ -1018,7 +1021,7 @@ namespace AllTheSame.Repository.Common
         }
 
         /// <summary>
-        /// Attaches the specified entity.
+        ///     Attaches the specified entity.
         /// </summary>
         /// <param name="entity">The entity.</param>
         public void Attach(TEntity entity)
@@ -1029,10 +1032,7 @@ namespace AllTheSame.Repository.Common
             {
                 var dbset = CurrentDbContext.Set<TEntity>();
 
-                if (dbset != null)
-                {
-                    dbset.Attach(entity);
-                }
+                dbset?.Attach(entity);
             }
             catch (SqlException sqex)
             {
@@ -1055,33 +1055,17 @@ namespace AllTheSame.Repository.Common
         }
 
         /// <summary>
-        /// Disposes all external resources.
+        ///     Disposes all external resources.
         /// </summary>
         /// <param name="disposing">The dispose indicator.</param>
         private void Dispose(bool disposing)
         {
             if (!disposing) return;
 
-            if (CurrentDbContext != null)
-            {
-                CurrentDbContext.Dispose();
-            }
-            if (_context != null)
-            {
-                _context.Dispose();
-                _context = null;
-            }
-        }
-
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-
-            Audit.Log.Info("GenericRepository Dispose :: CurrentDbContext destroyed");
+            CurrentDbContext?.Dispose();
+            if (Context == null) return;
+            Context.Dispose();
+            Context = null;
         }
     }
 }

@@ -262,12 +262,8 @@ namespace AllTheSame.Common.Extensions
             private static string GetName(Expression reference)
             {
                 var lambda = reference as LambdaExpression;
-                if (lambda != null)
-                {
-                    var member = lambda.Body as MemberExpression;
-                    if (member != null) return member.Member.Name;
-                }
-                return null;
+                var member = lambda?.Body as MemberExpression;
+                return member?.Member.Name;
             }
         }
 

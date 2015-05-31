@@ -1,14 +1,13 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
 using System.Net;
 using System.Web.Mvc;
-using AllTheSame.Common.Core;
 using AllTheSame.Common.Logging;
 using AllTheSame.Entity.Model;
 using AllTheSame.Repository.Common;
 using AllTheSame.Repository.UserData.implementation;
 using AllTheSame.Service.Implementation;
 using AllTheSame.Service.Interfaces;
-using System;
 
 namespace AllTheSame.WebAPI.Controllers
 {
@@ -22,7 +21,7 @@ namespace AllTheSame.WebAPI.Controllers
         /// <summary>
         ///     The _context
         /// </summary>
-        private readonly Entity.Model.AllTheSameDbContext _context;
+        private readonly AllTheSameDbContext _context;
 
         /// <summary>
         ///     The _vendor service
@@ -34,7 +33,7 @@ namespace AllTheSame.WebAPI.Controllers
         /// </summary>
         public VendorMvcController()
         {
-            _context = new Entity.Model.AllTheSameDbContext();
+            _context = new AllTheSameDbContext();
             _service = new VendorService(new UnitOfWork(_context), new VendorRepository(_context));
         }
 
@@ -117,8 +116,8 @@ namespace AllTheSame.WebAPI.Controllers
             try
             {
                 item.CreatedOn = DateTime.UtcNow;
-                item.UpdatedOn = item.UpdatedOn == null ? DateTime.UtcNow : item.UpdatedOn;
-                item.OrgId = null;//FK will be a prob until we get real data
+                item.UpdatedOn = item.UpdatedOn ?? DateTime.UtcNow;
+                item.OrgId = null; //FK will be a prob until we get real data
 
                 if (ModelState.IsValid)
                 {
@@ -182,9 +181,9 @@ namespace AllTheSame.WebAPI.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
             try
             {
-                item.CreatedOn = item.CreatedOn == null ? DateTime.UtcNow : item.CreatedOn;
+                item.CreatedOn = item.CreatedOn ?? DateTime.UtcNow;
                 item.UpdatedOn = DateTime.UtcNow;
-                item.OrgId = null;//FK will be a prob until we get real data
+                item.OrgId = null; //FK will be a prob until we get real data
 
                 if (ModelState.IsValid)
                 {
@@ -236,9 +235,9 @@ namespace AllTheSame.WebAPI.Controllers
         {
             var item = _service.GetSingle(v => v.Id == id);
 
-            item.CreatedOn = item.CreatedOn == null ? DateTime.UtcNow : item.CreatedOn;
+            item.CreatedOn = item.CreatedOn ?? DateTime.UtcNow;
             item.UpdatedOn = DateTime.UtcNow;
-            item.OrgId = null;//FK will be a prob until we get real data
+            item.OrgId = null; //FK will be a prob until we get real data
 
             _service.Delete(item);
 

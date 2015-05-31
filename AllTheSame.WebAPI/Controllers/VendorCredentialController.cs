@@ -2,8 +2,6 @@
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Description;
-using AllTheSame.Common.Core;
-using AllTheSame.Common.Logging;
 using AllTheSame.Entity.Model;
 using AllTheSame.WebAPI.Controllers.Base;
 using AllTheSame.WebAPI.Models;
