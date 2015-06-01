@@ -1,36 +1,34 @@
 ﻿using System;
 using System.Configuration;
-using System.Diagnostics;
-using System.Net;
 using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Threading.Tasks;
-using System.Web.Http;
+using AllTheSame.Common.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
-using AllTheSame.Common.Logging;
 
 namespace AllTheSame.WebAPI.Test
 {
     /// <summary>
-    /// BaseServiceTest
+    ///     BaseServiceTest
     /// </summary>
     public abstract class BaseServiceTest : IDisposable
     {
         /// <summary>
-        /// The _client URL
+        ///     The _client URL
         /// </summary>
         private string _clientUrl;
+
         /// <summary>
-        /// The client
+        ///     The client
         /// </summary>
         protected HttpClient Client = new HttpClient();
 
         /// <summary>
-        /// Gets or sets the client URL.
+        ///     Gets or sets the client URL.
         /// </summary>
         /// <value>
-        /// The client URL.
+        ///     The client URL.
         /// </value>
         public string ClientUrl
         {
@@ -46,15 +44,24 @@ namespace AllTheSame.WebAPI.Test
         }
 
         /// <summary>
-        /// Gets the URI.
+        ///     Gets the URI.
         /// </summary>
         /// <value>
-        /// The URI.
+        ///     The URI.
         /// </value>
         public abstract string Uri { get; }
 
         /// <summary>
-        /// Setups this instance.
+        ///     Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        ///     Setups this instance.
         /// </summary>
         [TestInitialize]
         public virtual void Setup()
@@ -63,7 +70,7 @@ namespace AllTheSame.WebAPI.Test
         }
 
         /// <summary>
-        /// Tear-downs this instance.
+        ///     Tear-downs this instance.
         /// </summary>
         [TestCleanup]
         public void Teardown()
@@ -72,36 +79,36 @@ namespace AllTheSame.WebAPI.Test
         }
 
         /// <summary>
-        /// Gets the asynchronous.
+        ///     Gets the asynchronous.
         /// </summary>
         /// <returns></returns>
         protected virtual async Task<HttpResponseMessage> GetAsync()
         {
-            return await Client.GetAsync(string.Format("{0}{1}",ClientUrl, Uri));
+            return await Client.GetAsync(string.Format("{0}{1}", ClientUrl, Uri));
         }
 
         /// <summary>
-        /// Gets the asynchronous by identifier.
+        ///     Gets the asynchronous by identifier.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
         protected virtual async Task<HttpResponseMessage> GetAsyncById(long? id)
         {
-            return await Client.GetAsync(string.Format("{0}{1}/{2}",ClientUrl, Uri, id));
+            return await Client.GetAsync(string.Format("{0}{1}/{2}", ClientUrl, Uri, id));
         }
 
         /// <summary>
-        /// Gets the asynchronous exists.
+        ///     Gets the asynchronous exists.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
         protected virtual async Task<HttpResponseMessage> GetAsyncExists(long? id)
         {
-            return await Client.GetAsync(string.Format("{0}{1}/Exists/{2}",ClientUrl, Uri, id));
+            return await Client.GetAsync(string.Format("{0}{1}/Exists/{2}", ClientUrl, Uri, id));
         }
 
         /// <summary>
-        /// Gets the response.
+        ///     Gets the response.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
@@ -113,7 +120,7 @@ namespace AllTheSame.WebAPI.Test
         }
 
         /// <summary>
-        /// Gets the response by identifier.
+        ///     Gets the response by identifier.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="id">The identifier.</param>
@@ -126,7 +133,7 @@ namespace AllTheSame.WebAPI.Test
         }
 
         /// <summary>
-        /// Gets the response exists.
+        ///     Gets the response exists.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="id">The identifier.</param>
@@ -139,7 +146,7 @@ namespace AllTheSame.WebAPI.Test
         }
 
         /// <summary>
-        /// Posts the response.
+        ///     Posts the response.
         /// </summary>
         /// <typeparam name="TModel">The type of the model.</typeparam>
         /// <typeparam name="TResponse">The type of the response.</typeparam>
@@ -153,7 +160,7 @@ namespace AllTheSame.WebAPI.Test
         }
 
         /// <summary>
-        /// Puts the response.
+        ///     Puts the response.
         /// </summary>
         /// <typeparam name="TModel">The type of the model.</typeparam>
         /// <typeparam name="TResponse">The type of the response.</typeparam>
@@ -167,7 +174,7 @@ namespace AllTheSame.WebAPI.Test
         }
 
         /// <summary>
-        /// Posts the response.
+        ///     Posts the response.
         /// </summary>
         /// <typeparam name="TModel">The type of the model.</typeparam>
         /// <typeparam name="TResponse">The type of the response.</typeparam>
@@ -179,11 +186,10 @@ namespace AllTheSame.WebAPI.Test
             return JsonConvert.DeserializeObject<TResponse>(response.Result.Content.ReadAsStringAsync().Result);
         }
 
-
         // -- ///////////////////////
 
         /// <summary>
-        /// Posts the asynchronous.
+        ///     Posts the asynchronous.
         /// </summary>
         /// <typeparam name="TModel">The type of the model.</typeparam>
         /// <param name="model">The model.</param>
@@ -192,14 +198,14 @@ namespace AllTheSame.WebAPI.Test
         {
             var formatter = new JsonMediaTypeFormatter {UseDataContractJsonSerializer = true, Indent = false};
 
-            var canWrite = formatter.CanWriteType(typeof(TModel));
+            var canWrite = formatter.CanWriteType(typeof (TModel));
 
             return await Client.PostAsync(string.Format("{0}{1}", ClientUrl, Uri),
-                new ObjectContent(typeof(TModel), model, formatter));
+                new ObjectContent(typeof (TModel), model, formatter));
         }
 
         /// <summary>
-        /// Puts the asynchronous.
+        ///     Puts the asynchronous.
         /// </summary>
         /// <typeparam name="TModel">The type of the model.</typeparam>
         /// <param name="id">The identifier.</param>
@@ -207,29 +213,49 @@ namespace AllTheSame.WebAPI.Test
         /// <returns></returns>
         protected virtual async Task<HttpResponseMessage> PutAsync<TModel>(long? id, TModel model)
         {
-            var endpoint = string.Format("{0}{1}/{2}",ClientUrl, Uri, id);
+            var endpoint = string.Format("{0}{1}/{2}", ClientUrl, Uri, id);
             var formatter = new JsonMediaTypeFormatter {UseDataContractJsonSerializer = true, Indent = false};
 
 
-            var canWrite = formatter.CanWriteType(typeof(TModel));
-            
+            var canWrite = formatter.CanWriteType(typeof (TModel));
+
             return await Client.PutAsync(endpoint,
-                new ObjectContent(typeof(TModel), model, formatter));
+                new ObjectContent(typeof (TModel), model, formatter));
         }
 
         /// <summary>
-        /// Deletes the asynchronous.
+        ///     Deletes the asynchronous.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
         protected virtual async Task<HttpResponseMessage> DeleteAsync(long? id)
         {
-            return await Client.DeleteAsync(string.Format("{0}{1}/{2}",ClientUrl, Uri, id));
+            return await Client.DeleteAsync(string.Format("{0}{1}/{2}", ClientUrl, Uri, id));
+        }
+
+        /// <summary>
+        ///     Posts the setup.
+        /// </summary>
+        protected virtual void PostSetup()
+        {
+        }
+
+        /// <summary>
+        ///     Disposes all external resources.
+        /// </summary>
+        /// <param name="disposing">The dispose indicator.</param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                Client?.Dispose();
+            }
         }
 
         #region Helpers
+
         /// <summary>
-        /// Actions the response.
+        ///     Actions the response.
         /// </summary>
         /// <param name="task">The task.</param>
         /// <param name="error">The error.</param>
@@ -253,6 +279,7 @@ namespace AllTheSame.WebAPI.Test
 
             return response;
         }
+
         protected virtual TModel Add<TModel>(TModel model, out HttpResponseMessage response)
         {
             var result = default(TModel);
@@ -261,19 +288,17 @@ namespace AllTheSame.WebAPI.Test
 
             //Now, let's Delete the newly added item
             PostAsync(model).ContinueWith(
-                t =>
-                {
-                    actionResponse = ActionResponse(t, out error);
-                }
-            ).Wait();
+                t => { actionResponse = ActionResponse(t, out error); }
+                ).Wait();
 
             response = actionResponse;
-            
-            if(response.IsSuccessStatusCode)
+
+            if (response.IsSuccessStatusCode)
                 result = PostResponse<TModel, TModel>(model);
 
             return result;
         }
+
         protected virtual bool Exists(int id)
         {
             var response = GetResponseExists<bool>(id);
@@ -295,14 +320,12 @@ namespace AllTheSame.WebAPI.Test
 
             //Now, let's Delete the newly added item
             PutAsync(id, model).ContinueWith(
-                t =>
-                {
-                    response = ActionResponse(t, out error);
-                }
-            ).Wait();
+                t => { response = ActionResponse(t, out error); }
+                ).Wait();
 
             return response;
         }
+
         protected virtual HttpResponseMessage Delete(int id)
         {
             AggregateException error;
@@ -310,14 +333,12 @@ namespace AllTheSame.WebAPI.Test
 
             //Now, let's Delete the newly added item
             DeleteAsync(id).ContinueWith(
-                t =>
-                {
-                    response = ActionResponse(t, out error);
-                }
-            ).Wait();
+                t => { response = ActionResponse(t, out error); }
+                ).Wait();
 
             return response;
         }
+
         public virtual int ConvertToIntValue(string value)
         {
             var result = -1;
@@ -326,35 +347,9 @@ namespace AllTheSame.WebAPI.Test
 
             return result;
         }
+
         //
+
         #endregion Helpers
-
-        /// <summary>
-        /// Posts the setup.
-        /// </summary>
-        protected virtual void PostSetup()
-        {
-        }
-
-        /// <summary>
-        /// Disposes all external resources.
-        /// </summary>
-        /// <param name="disposing">The dispose indicator.</param>
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                Client?.Dispose();
-            }
-        }
-
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
     }
 }

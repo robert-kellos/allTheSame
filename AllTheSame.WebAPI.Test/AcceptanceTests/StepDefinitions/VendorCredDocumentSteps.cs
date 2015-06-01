@@ -1,18 +1,43 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
+using AllTheSame.Common.Logging;
 using AllTheSame.Entity.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
-using System.Net.Http;
-using System;
-using AllTheSame.Common.Logging;
-using System.Net;
 
 namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
 {
     [Binding]
-    public class VendorCredDocumentSteps : BaseServiceTest//AuthenticatedTest //- Allows automatic fetching of token for each get call
+    public class VendorCredDocumentSteps : BaseServiceTest
+        //AuthenticatedTest //- Allows automatic fetching of token for each get call
     {
+        public override string Uri => "/api/VendorCredDocument";
+
+        #region Get - get an item by Id
+
+        //
+        [Given(@"the following VendorCredDocument GetById input")]
+        public void GivenTheFollowingVendorCredDocumentGetByIdInput(Table table)
+        {
+            var response = default(HttpResponseMessage);
+            AggregateException error;
+
+            PostAsync(_addItem).ContinueWith(
+                t => { response = ActionResponse(t, out error); }
+                ).Wait();
+
+            Assert.IsNotNull(response);
+            ScenarioContext.Current[AddItemKey] = response;
+        }
+
+        //
+
+        #endregion Post - add a new item by a populated item
+
         #region Local Properties/Fields
+
         //
         private const string HttpResponseKey = "http_response";
 
@@ -43,22 +68,26 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         private string _existsId = "-1";
         private int _existsIdValue = -1;
 
-        private int _vendorCredId = 41;
+        private readonly int _vendorCredId = 41;
         private string _title = "";
         private string _url = "";
         private string _text = "";
-        private string _docType = "txt";
+        private readonly string _docType = "txt";
 
         //
+
         #endregion Local Properties/Fields
 
-        public override string Uri => "/api/VendorCredDocument";
-
         #region CRUD Tests
+
         //
 
-        [When(@"I call the add VendorCredDocument Post api endpoint to add a VendorCredDocument it checks if exists pulls item edits it and deletes it")]
-        public void WhenICallTheAddVendorCredDocumentPostApiEndpointToAddAVendorCredDocumentItChecksIfExistsPullsItemEditsItAndDeletesIt()
+        [When(
+            @"I call the add VendorCredDocument Post api endpoint to add a VendorCredDocument it checks if exists pulls item edits it and deletes it"
+            )]
+        public void
+            WhenICallTheAddVendorCredDocumentPostApiEndpointToAddAVendorCredDocumentItChecksIfExistsPullsItemEditsItAndDeletesIt
+            ()
         {
             HttpResponseMessage response;
 
@@ -68,7 +97,9 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             ScenarioContext.Current[AddItemKey] = response;
         }
 
-        [Then(@"the add result should be a VendorCredDocument Id check exists get by id edit and delete with http response returns")]
+        [Then(
+            @"the add result should be a VendorCredDocument Id check exists get by id edit and delete with http response returns"
+            )]
         public void ThenTheAddResultShouldBeAVendorCredDocumentIdCheckExistsGetByIdEditAndDeleteWithHttpResponseReturns()
         {
             //did we get a good result
@@ -110,10 +141,13 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             var deleteResponse = Delete(_deletedIdValue);
             Assert.IsNotNull(deleteResponse);
         }
+
         //
+
         #endregion CRUD Tests
 
         #region Post - add a new item by a populated item
+
         //
         [Given(@"the following VendorCredDocument Add input")]
         public void GivenTheFollowingVendorCredDocumentAddInput(Table table)
@@ -129,15 +163,14 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             }
             Assert.IsNotNull(_title);
 
-            _addItem = new VendorCredDocument()
+            _addItem = new VendorCredDocument
             {
                 VendorCredId = _vendorCredId,
                 DocType = _docType,
                 Title = _title,
                 URL = _url,
                 Text = _text,
-
-                CreatedOn = DateTime.UtcNow,
+                CreatedOn = DateTime.UtcNow
             };
         }
 
@@ -145,24 +178,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         public void WhenICallTheAddVendorCredDocumentPostApiEndpointToAddAVendorCredDocument()
         {
             var response = default(HttpResponseMessage);
-            var error = default(AggregateException);
+            AggregateException error;
 
             PostAsync(_addItem).ContinueWith(
-                t =>
-                {
-                    if (t.IsCompleted)
-                    {
-                        if (t.Result != null)
-                            response = (t.Result as HttpResponseMessage);
-                    }
-
-                    if (t.IsFaulted)
-                    {
-                        error = t.Exception;
-                        Audit.Log.Error("POST Task Exception ::", error);
-                    }
-                }
-            ).Wait();
+                t => { response = ActionResponse(t, out error); }
+                ).Wait();
 
             Assert.IsNotNull(response);
             ScenarioContext.Current[AddItemKey] = response;
@@ -172,24 +192,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         public void ThenTheAddResultShouldBeAVendorCredDocumentId()
         {
             var response = default(HttpResponseMessage);
-            var error = default(AggregateException);
+            AggregateException error;
 
             PostAsync(_addItem).ContinueWith(
-                t =>
-                {
-                    if (t.IsCompleted)
-                    {
-                        if (t.Result != null)
-                            response = (t.Result as HttpResponseMessage);
-                    }
-
-                    if (t.IsFaulted)
-                    {
-                        error = t.Exception;
-                        Audit.Log.Error("POST Task Exception ::", error);
-                    }
-                }
-            ).Wait();
+                t => { response = ActionResponse(t, out error); }
+                ).Wait();
 
             Assert.IsNotNull(response);
             ScenarioContext.Current[AddItemKey] = response;
@@ -204,7 +211,6 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             var result = PostResponse<VendorCredDocument, VendorCredDocument>(_addItem);
             if (result != null)
             {
-
                 _addedIdValue = result.Id;
                 Assert.IsTrue(_addedIdValue > 0);
 
@@ -220,9 +226,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         }
 
         //
+
         #endregion Post - add a new item by a populated item
 
         #region Get - get a list of items
+
         //
         [When(@"I call the VendorCredDocument Get api endpoint")]
         public void WhenICallTheVendorCredDocumentGetApiEndpoint()
@@ -240,41 +248,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         }
 
         //
+
         #endregion Get - get a list of items
 
-        #region Get - get an item by Id
-        //
-        [Given(@"the following VendorCredDocument GetById input")]
-        public void GivenTheFollowingVendorCredDocumentGetByIdInput(Table table)
-        {
-            var response = default(HttpResponseMessage);
-            var error = default(AggregateException);
-
-            PostAsync(_addItem).ContinueWith(
-                t =>
-                {
-                    if (t.IsCompleted)
-                    {
-                        if (t.Result != null)
-                            response = (t.Result as HttpResponseMessage);
-                    }
-
-                    if (t.IsFaulted)
-                    {
-                        error = t.Exception;
-                        Audit.Log.Error("POST Task Exception ::", error);
-                    }
-                }
-            ).Wait();
-
-            Assert.IsNotNull(response);
-            ScenarioContext.Current[AddItemKey] = response;
-        }
-
-        //
-        #endregion Post - add a new item by a populated item
-
         #region Put - edit an existing item by a populated item, and its Id
+
         //
         [Given(@"the following VendorCredDocument Edit input")]
         public void GivenTheFollowingVendorCredDocumentEditInput(Table table)
@@ -295,9 +273,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         }
 
         //
+
         #endregion Put - edit an existing item by a populated item, and its Id
 
         #region Post - delete an existing item by a populated item
+
         //
         [Given(@"the following VendorCredDocument Delete input")]
         public void GivenTheFollowingVendorCredDocumentDeleteInput(Table table)
@@ -318,9 +298,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         }
 
         //
+
         #endregion Post - delete an existing item by a populated item
 
         #region Get - Exists, verify Exists function checks and return a valid bool for exists or not
+
         //
         [Given(@"the following VendorCredDocument Id input")]
         public void GivenTheFollowingVendorCredDocumentIdInput(Table table)
@@ -358,9 +340,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         }
 
         //
+
         #endregion Get - Exists, verify Exists function checks and return a valid bool for exists or not
-
-        //
-
     }
 }

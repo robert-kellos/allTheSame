@@ -1,18 +1,43 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
+using AllTheSame.Common.Logging;
 using AllTheSame.Entity.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
-using System.Net.Http;
-using System;
-using AllTheSame.Common.Logging;
-using System.Net;
 
 namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
 {
     [Binding]
-    public class VendorSteps : BaseServiceTest//AuthenticatedTest //- Allows automatic fetching of token for each get call
+    public class VendorSteps : BaseServiceTest
+        //AuthenticatedTest //- Allows automatic fetching of token for each get call
     {
+        public override string Uri => "/api/Vendor";
+
+        #region Get - get an item by Id
+
+        //
+        [Given(@"the following Vendor GetById input")]
+        public void GivenTheFollowingVendorGetByIdInput(Table table)
+        {
+            var response = default(HttpResponseMessage);
+            AggregateException error;
+
+            PostAsync(_addItem).ContinueWith(
+                t => { response = ActionResponse(t, out error); }
+                ).Wait();
+
+            Assert.IsNotNull(response);
+            ScenarioContext.Current[AddItemKey] = response;
+        }
+
+        //
+
+        #endregion Post - add a new item by a populated item
+
         #region Local Properties/Fields
+
         //
         private const string HttpResponseKey = "http_response";
 
@@ -46,14 +71,16 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         private string _name = "";
         private int _orgId = 5;
         //
+
         #endregion Local Properties/Fields
 
-        public override string Uri => "/api/Vendor";
-
         #region CRUD Tests
+
         //
 
-        [When(@"I call the add Vendor Post api endpoint to add a Vendor it checks if exists pulls item edits it and deletes it")]
+        [When(
+            @"I call the add Vendor Post api endpoint to add a Vendor it checks if exists pulls item edits it and deletes it"
+            )]
         public void WhenICallTheAddVendorPostApiEndpointToAddAVendorItChecksIfExistsPullsItemEditsItAndDeletesIt()
         {
             HttpResponseMessage response;
@@ -64,7 +91,8 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             ScenarioContext.Current[AddItemKey] = response;
         }
 
-        [Then(@"the add result should be a Vendor Id check exists get by id edit and delete with http response returns")]
+        [Then(@"the add result should be a Vendor Id check exists get by id edit and delete with http response returns")
+        ]
         public void ThenTheAddResultShouldBeAVendorIdCheckExistsGetByIdEditAndDeleteWithHttpResponseReturns()
         {
             //did we get a good result
@@ -106,10 +134,13 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             var deleteResponse = Delete(_deletedIdValue);
             Assert.IsNotNull(deleteResponse);
         }
+
         //
+
         #endregion CRUD Tests
 
         #region Post - add a new item by a populated item
+
         //
         [Given(@"the following Vendor Add input")]
         public void GivenTheFollowingVendorAddInput(Table table)
@@ -124,12 +155,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             }
             Assert.IsNotNull(_name);
 
-            _addItem = new Vendor()
+            _addItem = new Vendor
             {
                 OrgId = _orgId,
                 Name = _name,
-
-                CreatedOn = DateTime.UtcNow,
+                CreatedOn = DateTime.UtcNow
             };
         }
 
@@ -137,24 +167,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         public void WhenICallTheAddVendorPostApiEndpointToAddAVendor()
         {
             var response = default(HttpResponseMessage);
-            var error = default(AggregateException);
+            AggregateException error;
 
             PostAsync(_addItem).ContinueWith(
-                t =>
-                {
-                    if (t.IsCompleted)
-                    {
-                        if (t.Result != null)
-                            response = (t.Result as HttpResponseMessage);
-                    }
-
-                    if (t.IsFaulted)
-                    {
-                        error = t.Exception;
-                        Audit.Log.Error("POST Task Exception ::", error);
-                    }
-                }
-            ).Wait();
+                t => { response = ActionResponse(t, out error); }
+                ).Wait();
 
             Assert.IsNotNull(response);
             ScenarioContext.Current[AddItemKey] = response;
@@ -164,24 +181,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         public void ThenTheAddResultShouldBeAVendorId()
         {
             var response = default(HttpResponseMessage);
-            var error = default(AggregateException);
+            AggregateException error;
 
             PostAsync(_addItem).ContinueWith(
-                t =>
-                {
-                    if (t.IsCompleted)
-                    {
-                        if (t.Result != null)
-                            response = (t.Result as HttpResponseMessage);
-                    }
-
-                    if (t.IsFaulted)
-                    {
-                        error = t.Exception;
-                        Audit.Log.Error("POST Task Exception ::", error);
-                    }
-                }
-            ).Wait();
+                t => { response = ActionResponse(t, out error); }
+                ).Wait();
 
             Assert.IsNotNull(response);
             ScenarioContext.Current[AddItemKey] = response;
@@ -196,7 +200,6 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             var result = PostResponse<Vendor, Vendor>(_addItem);
             if (result != null)
             {
-
                 _addedIdValue = result.Id;
                 Assert.IsTrue(_addedIdValue > 0);
 
@@ -211,9 +214,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         }
 
         //
+
         #endregion Post - add a new item by a populated item
 
         #region Get - get a list of items
+
         //
         [When(@"I call the Vendor Get api endpoint")]
         public void WhenICallTheVendorGetApiEndpoint()
@@ -231,41 +236,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         }
 
         //
+
         #endregion Get - get a list of items
 
-        #region Get - get an item by Id
-        //
-        [Given(@"the following Vendor GetById input")]
-        public void GivenTheFollowingVendorGetByIdInput(Table table)
-        {
-            var response = default(HttpResponseMessage);
-            var error = default(AggregateException);
-
-            PostAsync(_addItem).ContinueWith(
-                t =>
-                {
-                    if (t.IsCompleted)
-                    {
-                        if (t.Result != null)
-                            response = (t.Result as HttpResponseMessage);
-                    }
-
-                    if (t.IsFaulted)
-                    {
-                        error = t.Exception;
-                        Audit.Log.Error("POST Task Exception ::", error);
-                    }
-                }
-            ).Wait();
-
-            Assert.IsNotNull(response);
-            ScenarioContext.Current[AddItemKey] = response;
-        }
-
-        //
-        #endregion Post - add a new item by a populated item
-
         #region Put - edit an existing item by a populated item, and its Id
+
         //
         [Given(@"the following Vendor Edit input")]
         public void GivenTheFollowingVendorEditInput(Table table)
@@ -286,9 +261,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         }
 
         //
+
         #endregion Put - edit an existing item by a populated item, and its Id
 
         #region Post - delete an existing item by a populated item
+
         //
         [Given(@"the following Vendor Delete input")]
         public void GivenTheFollowingVendorDeleteInput(Table table)
@@ -309,9 +286,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         }
 
         //
+
         #endregion Post - delete an existing item by a populated item
 
         #region Get - Exists, verify Exists function checks and return a valid bool for exists or not
+
         //
         [Given(@"the following Vendor Id input")]
         public void GivenTheFollowingVendorIdInput(Table table)
@@ -349,9 +328,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         }
 
         //
+
         #endregion Get - Exists, verify Exists function checks and return a valid bool for exists or not
-
-        //
-
     }
 }

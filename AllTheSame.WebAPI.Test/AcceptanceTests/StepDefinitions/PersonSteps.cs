@@ -1,29 +1,24 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
 using AllTheSame.Common.Extensions;
-using AllTheSame.Common.Helpers;
+using AllTheSame.Common.Logging;
 using AllTheSame.Entity.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
-using AllTheSame.Common.Logging;
-using System.Net.Http;
-using System.Web.Http.Results;
-using System.Net;
-using System;
-using System.Net.Http.Headers;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Net.Http.Formatting;
-using Newtonsoft.Json;
-using System.Web.Http;
-using Newtonsoft.Json.Serialization;
-using AllTheSame.WebAPI.Models;
 
 namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
 {
     [Binding]
-    public class PersonSteps : BaseServiceTest//AuthenticatedTest //- Allows automatic fetching of token for each get call
+    public class PersonSteps : BaseServiceTest
+        //AuthenticatedTest //- Allows automatic fetching of token for each get call
     {
+        public override string Uri => "/api/Person";
+        //
+        
         #region Local Properties/Fields
+
         //
         private const string HttpResponseKey = "http_response";
 
@@ -59,11 +54,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         private string _email = "";
         private string _mobileNumber = "";
         //
+
         #endregion Local Properties/Fields
 
-        public override string Uri => "/api/Person";
-
         #region Post - add a new item by a populated item
+
         //
         [Given(@"the following Person Add input")]
         public void GivenTheFollowingPersonAddInput(Table table)
@@ -82,14 +77,13 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             Assert.IsNotNull(_email);
             Assert.IsNotNull(_email.IsValidEmailAddress());
 
-            _addItem = new Person()
+            _addItem = new Person
             {
                 FirstName = _firstName,
                 LastName = _lastName,
                 Email = _email,
                 MobilePhone = _mobileNumber,
-
-                CreatedOn = DateTime.UtcNow,
+                CreatedOn = DateTime.UtcNow
             };
         }
 
@@ -97,24 +91,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         public void WhenICallTheAddPersonPostApiEndpointToAddAPerson()
         {
             var response = default(HttpResponseMessage);
-            var error = default(AggregateException);
+            AggregateException error;
 
             PostAsync(_addItem).ContinueWith(
-                t =>
-                {
-                    if (t.IsCompleted)
-                    {
-                        if (t.Result != null)
-                            response = (t.Result as HttpResponseMessage);
-                    }
-
-                    if (t.IsFaulted)
-                    {
-                        error = t.Exception;
-                        Audit.Log.Error("POST Task Exception ::", error);
-                    }
-                }
-            ).Wait();
+                t => { response = ActionResponse(t, out error); }
+                ).Wait();
 
             Assert.IsNotNull(response);
             ScenarioContext.Current[AddItemKey] = response;
@@ -129,7 +110,6 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             var result = PostResponse<Person, Person>(_addItem);
             if (result != null)
             {
-
                 _addedIdValue = result.Id;
                 Assert.IsTrue(_addedIdValue > 0);
 
@@ -145,10 +125,13 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             Assert.IsNotNull(response);
             Assert.IsTrue(response.StatusCode == HttpStatusCode.Created);
         }
+
         //
+
         #endregion Post - add a new item by a populated item
 
         #region Get - get a list of items
+
         //
         [When(@"I call the Person Get api endpoint")]
         public void WhenICallThePersonGetApiEndpoint()
@@ -163,10 +146,13 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             Assert.IsNotNull(list);
             Assert.IsNotNull(list as IList<Person>);
         }
+
         //
+
         #endregion Get - get a list of items
 
         #region Get - get an item by Id
+
         //
         [Given(@"the following Person GetById input")]
         public void GivenTheFollowingPersonGetByIdInput(Table table)
@@ -198,16 +184,19 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             Assert.IsNotNull(item);
             Assert.IsTrue(item.Id == _getIdValue);
         }
+
         //
+
         #endregion Get - get an item by Id
 
         #region Put - edit an existing item by a populated item, and its Id
+
         //
         [Given(@"the following Person Edit input")]
         public void GivenTheFollowingPersonEditInput(Table table)
         {
             Assert.IsNotNull(table);
-            
+
             foreach (var row in table.Rows)
             {
                 _editId = row["Id"];
@@ -228,7 +217,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             Assert.IsNotNull(_email);
             Assert.IsNotNull(_email.IsValidEmailAddress());
 
-            _editItem = new Person()
+            _editItem = new Person
             {
                 Id = _editIdValue,
                 FirstName = _firstName,
@@ -242,24 +231,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         public void WhenICallTheEditPersonPutApiEndpointToEditAPerson()
         {
             var response = default(HttpResponseMessage);
-            var error = default(AggregateException);
+            AggregateException error;
 
             PutAsync(_editItem.Id, _editItem).ContinueWith(
-                t =>
-                {
-                    if (t.IsCompleted)
-                    {
-                        if (t.Result != null)
-                            response = (t.Result as HttpResponseMessage);
-                    }
-
-                    if (t.IsFaulted)
-                    {
-                        error = t.Exception;
-                        Audit.Log.Error("PUT Task Exception ::", error);
-                    }
-                }
-            ).Wait();
+                t => { response = ActionResponse(t, out error); }
+                ).Wait();
 
             Assert.IsNotNull(response);
             ScenarioContext.Current[EditItemKey] = response;
@@ -282,14 +258,17 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
                 Assert.AreEqual(_editItem.Email, result.Email);
                 Assert.AreEqual(_editItem.MobilePhone, result.MobilePhone);
             }
-            
+
             Assert.IsNotNull(response);
             Assert.IsTrue(response.StatusCode == HttpStatusCode.OK);
         }
+
         //
+
         #endregion Put - edit an existing item by a populated item, and its Id
 
         #region Post - delete an existing item by a populated item
+
         //
         [Given(@"the following Person Delete input")]
         public void GivenTheFollowingPersonDeleteInput(Table table)
@@ -316,24 +295,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         public void WhenICallTheDeletePersonPostApiEndpointToDeleteAPerson()
         {
             var response = default(HttpResponseMessage);
-            var error = default(AggregateException);
+            AggregateException error;
 
             DeleteAsync(_deletedIdValue).ContinueWith(
-                t =>
-                {
-                    if (t.IsCompleted)
-                    {
-                        if (t.Result != null)
-                            response = (t.Result as HttpResponseMessage);
-                    }
-
-                    if (t.IsFaulted)
-                    {
-                        error = t.Exception;
-                        Audit.Log.Error("POST Task Exception ::", error);
-                    }
-                }
-            ).Wait();
+                t => { response = ActionResponse(t, out error); }
+                ).Wait();
 
             Assert.IsNotNull(response);
             ScenarioContext.Current[DeleteItemKey] = response;
@@ -349,12 +315,15 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             var response = (ScenarioContext.Current[DeleteItemKey] as HttpResponseMessage);
 
             Assert.IsNotNull(response);
-            Assert.IsTrue(response.StatusCode == HttpStatusCode.OK);         
+            Assert.IsTrue(response.StatusCode == HttpStatusCode.OK);
         }
+
         //
+
         #endregion Post - delete an existing item by a populated item
 
         #region Get - Exists, verify Exists function checks and return a valid bool for exists or not
+
         //
         [Given(@"the following Person Id input")]
         public void GivenTheFollowingPersonIdInput(Table table)
@@ -363,7 +332,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
 
             foreach (var row in table.Rows)
             {
-                _existsId = row["Id"]; 
+                _existsId = row["Id"];
 
                 break;
             }
@@ -392,21 +361,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         }
 
         //
+
         #endregion Get - Exists, verify Exists function checks and return a valid bool for exists or not
-
-        //
-
-        #region helpers
-        //
-        public int ConvertToIntValue(string value)
-        {
-            var result = -1;
-
-            int.TryParse(value, out result);
-
-            return result;
-        }
-        //
-        #endregion helpers
     }
 }

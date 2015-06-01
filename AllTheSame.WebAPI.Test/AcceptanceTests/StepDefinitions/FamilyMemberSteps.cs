@@ -1,29 +1,21 @@
-﻿using System.Collections.Generic;
-using AllTheSame.Common.Extensions;
-using AllTheSame.Common.Helpers;
+﻿using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
 using AllTheSame.Entity.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
-using AllTheSame.Common.Logging;
-using System.Net.Http;
-using System.Web.Http.Results;
-using System.Net;
-using System;
-using System.Net.Http.Headers;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Net.Http.Formatting;
-using Newtonsoft.Json;
-using System.Web.Http;
-using Newtonsoft.Json.Serialization;
-using AllTheSame.WebAPI.Models;
 
 namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
 {
     [Binding]
-    public class FamilyMemberSteps : BaseServiceTest//AuthenticatedTest //- Allows automatic fetching of token for each get call
+    public class FamilyMemberSteps : BaseServiceTest
+        //AuthenticatedTest //- Allows automatic fetching of token for each get call
     {
+        public override string Uri => "/api/FamilyMember";
+
         #region Local Properties/Fields
+
         //
         private const string HttpResponseKey = "http_response";
 
@@ -42,7 +34,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         private string _getId = "-1";
         private int _getIdValue = -1;
 
-        private string _editId = "-1";
+        private readonly string _editId = "-1";
         private int _editIdValue = -1;
 
         private string _addedId = "-1";
@@ -57,15 +49,18 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         private int _personId = 1;
         private int _residentId = 20;
         //
+
         #endregion Local Properties/Fields
 
-        public override string Uri => "/api/FamilyMember";
-
         #region CRUD Tests
+
         //
 
-        [When(@"I call the add FamilyMember Post api endpoint to add a FamilyMember it checks if exists pulls item edits it and deletes it")]
-        public void WhenICallTheAddFamilyMemberPostApiEndpointToAddAFamilyMemberItChecksIfExistsPullsItemEditsItAndDeletesIt()
+        [When(
+            @"I call the add FamilyMember Post api endpoint to add a FamilyMember it checks if exists pulls item edits it and deletes it"
+            )]
+        public void
+            WhenICallTheAddFamilyMemberPostApiEndpointToAddAFamilyMemberItChecksIfExistsPullsItemEditsItAndDeletesIt()
         {
             HttpResponseMessage response;
 
@@ -75,7 +70,9 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             ScenarioContext.Current[AddItemKey] = response;
         }
 
-        [Then(@"the add result should be a FamilyMember Id check exists get by id edit and delete with http response returns")]
+        [Then(
+            @"the add result should be a FamilyMember Id check exists get by id edit and delete with http response returns"
+            )]
         public void ThenTheAddResultShouldBeAFamilyMemberIdCheckExistsGetByIdEditAndDeleteWithHttpResponseReturns()
         {
             //did we get a good result
@@ -117,10 +114,13 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             var deleteResponse = Delete(_deletedIdValue);
             Assert.IsNotNull(deleteResponse);
         }
+
         //
+
         #endregion CRUD Tests
 
         #region Post - add a new item by a populated item
+
         //
         [Given(@"the following FamilyMember Add input")]
         public void GivenTheFollowingFamilyMemberAddInput(Table table)
@@ -134,12 +134,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
                 break;
             }
 
-            _addItem = new FamilyMember()
+            _addItem = new FamilyMember
             {
                 PersonId = _personId,
                 ResidentId = _residentId,
-
-                CreatedOn = DateTime.UtcNow,
+                CreatedOn = DateTime.UtcNow
             };
         }
 
@@ -150,11 +149,8 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             AggregateException error;
 
             PostAsync(_addItem).ContinueWith(
-                t =>
-                {
-                    response = ActionResponse(t, out error);
-                }
-            ).Wait();
+                t => { response = ActionResponse(t, out error); }
+                ).Wait();
 
             Assert.IsNotNull(response);
             ScenarioContext.Current[AddItemKey] = response;
@@ -181,10 +177,13 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             Assert.IsNotNull(response);
             Assert.IsTrue(response.StatusCode == HttpStatusCode.Created);
         }
+
         //
+
         #endregion Post - add a new item by a populated item
 
         #region Get - get a list of items
+
         //
         [When(@"I call the FamilyMember Get api endpoint")]
         public void WhenICallTheFamilyMemberGetApiEndpoint()
@@ -199,10 +198,13 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             Assert.IsNotNull(list);
             Assert.IsNotNull(list as IList<FamilyMember>);
         }
+
         //
+
         #endregion Get - get a list of items
 
         #region Get - get an item by Id
+
         //
         [Given(@"the following FamilyMember GetById input")]
         public void GivenTheFollowingFamilyMemberGetByIdInput(Table table)
@@ -234,16 +236,19 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             Assert.IsNotNull(item);
             Assert.IsTrue(item.Id == _getIdValue);
         }
+
         //
+
         #endregion Get - get an item by Id
 
         #region Put - edit an existing item by a populated item, and its Id
+
         //
         [Given(@"the following FamilyMember Edit input")]
         public void GivenTheFollowingFamilyMemberEditInput(Table table)
         {
             Assert.IsNotNull(table);
-            
+
             foreach (var row in table.Rows)
             {
                 //_editId = row["Id"];
@@ -251,8 +256,6 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
                 //_lastName = row["LastName"];
                 //_email = row["Email"];
                 //_mobileNumber = row["MobileNumber"];
-
-                break;
             }
             Assert.IsNotNull(_editId);
             _editIdValue = ConvertToIntValue(_editId);
@@ -264,12 +267,10 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             //Assert.IsNotNull(_email);
             //Assert.IsNotNull(_email.IsValidEmailAddress());
 
-            _editItem = new FamilyMember()
+            _editItem = new FamilyMember
             {
-                Id = _editIdValue,
-                
+                Id = _editIdValue
             };
-            
         }
 
         [When(@"I call the edit FamilyMember Put api endpoint to edit a FamilyMember")]
@@ -279,11 +280,8 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             AggregateException error;
 
             PutAsync(_editItem.Id, _editItem).ContinueWith(
-                t =>
-                {
-                    response = ActionResponse(t, out error);
-                }
-            ).Wait();
+                t => { response = ActionResponse(t, out error); }
+                ).Wait();
 
             Assert.IsNotNull(response);
             ScenarioContext.Current[EditItemKey] = response;
@@ -306,14 +304,17 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
                 //Assert.AreEqual(_editItem.Email, result.Email);
                 //Assert.AreEqual(_editItem.MobilePhone, result.MobilePhone);
             }
-            
+
             Assert.IsNotNull(response);
             Assert.IsTrue(response.StatusCode == HttpStatusCode.OK);
         }
+
         //
+
         #endregion Put - edit an existing item by a populated item, and its Id
 
         #region Post - delete an existing item by a populated item
+
         //
         [Given(@"the following FamilyMember Delete input")]
         public void GivenTheFollowingFamilyMemberDeleteInput(Table table)
@@ -343,11 +344,8 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             AggregateException error;
 
             DeleteAsync(_deletedIdValue).ContinueWith(
-                t =>
-                {
-                    response = ActionResponse(t, out error);
-                }
-            ).Wait();
+                t => { response = ActionResponse(t, out error); }
+                ).Wait();
 
             Assert.IsNotNull(response);
             ScenarioContext.Current[DeleteItemKey] = response;
@@ -363,12 +361,15 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             var response = (ScenarioContext.Current[DeleteItemKey] as HttpResponseMessage);
 
             Assert.IsNotNull(response);
-            Assert.IsTrue(response.StatusCode == HttpStatusCode.OK);         
+            Assert.IsTrue(response.StatusCode == HttpStatusCode.OK);
         }
+
         //
+
         #endregion Post - delete an existing item by a populated item
 
         #region Get - Exists, verify Exists function checks and return a valid bool for exists or not
+
         //
         [Given(@"the following FamilyMember Id input")]
         public void GivenTheFollowingFamilyMemberIdInput(Table table)
@@ -377,7 +378,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
 
             foreach (var row in table.Rows)
             {
-                _existsId = row["Id"]; 
+                _existsId = row["Id"];
 
                 break;
             }
@@ -406,8 +407,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         }
 
         //
-        #endregion Get - Exists, verify Exists function checks and return a valid bool for exists or not
 
-        //
+        #endregion Get - Exists, verify Exists function checks and return a valid bool for exists or not
     }
 }

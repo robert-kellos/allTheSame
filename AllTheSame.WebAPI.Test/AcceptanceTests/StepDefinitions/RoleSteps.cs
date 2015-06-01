@@ -1,29 +1,43 @@
-﻿using System.Collections.Generic;
-using AllTheSame.Common.Extensions;
-using AllTheSame.Common.Helpers;
+﻿using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
+using AllTheSame.Common.Logging;
 using AllTheSame.Entity.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
-using AllTheSame.Common.Logging;
-using System.Net.Http;
-using System.Web.Http.Results;
-using System.Net;
-using System;
-using System.Net.Http.Headers;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Net.Http.Formatting;
-using Newtonsoft.Json;
-using System.Web.Http;
-using Newtonsoft.Json.Serialization;
-using AllTheSame.WebAPI.Models;
 
 namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
 {
     [Binding]
-    public class RoleSteps : BaseServiceTest//AuthenticatedTest //- Allows automatic fetching of token for each get call
+    public class RoleSteps : BaseServiceTest
+        //AuthenticatedTest //- Allows automatic fetching of token for each get call
     {
+        public override string Uri => "/api/Role";
+
+        #region Get - get an item by Id
+
+        //
+        [Given(@"the following Role GetById input")]
+        public void GivenTheFollowingRoleGetByIdInput(Table table)
+        {
+            var response = default(HttpResponseMessage);
+            AggregateException error;
+
+            PostAsync(_addItem).ContinueWith(
+                t => { response = ActionResponse(t, out error); }
+                ).Wait();
+
+            Assert.IsNotNull(response);
+            ScenarioContext.Current[AddItemKey] = response;
+        }
+
+        //
+
+        #endregion Post - add a new item by a populated item
+
         #region Local Properties/Fields
+
         //
         private const string HttpResponseKey = "http_response";
 
@@ -56,14 +70,16 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
 
         private string _name = "";
         //
+
         #endregion Local Properties/Fields
 
-        public override string Uri => "/api/Role";
-
         #region CRUD Tests
+
         //
 
-        [When(@"I call the add Role Post api endpoint to add a Role it checks if exists pulls item edits it and deletes it")]
+        [When(
+            @"I call the add Role Post api endpoint to add a Role it checks if exists pulls item edits it and deletes it"
+            )]
         public void WhenICallTheAddRolePostApiEndpointToAddARoleItChecksIfExistsPullsItemEditsItAndDeletesIt()
         {
             HttpResponseMessage response;
@@ -116,10 +132,13 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             var deleteResponse = Delete(_deletedIdValue);
             Assert.IsNotNull(deleteResponse);
         }
+
         //
+
         #endregion CRUD Tests
 
         #region Post - add a new item by a populated item
+
         //
         [Given(@"the following Role Add input")]
         public void GivenTheFollowingRoleAddInput(Table table)
@@ -133,11 +152,10 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             }
             Assert.IsNotNull(_name);
 
-            _addItem = new Role()
+            _addItem = new Role
             {
                 Name = _name,
-
-                CreatedOn = DateTime.UtcNow,
+                CreatedOn = DateTime.UtcNow
             };
         }
 
@@ -145,24 +163,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         public void WhenICallTheAddRolePostApiEndpointToAddARole()
         {
             var response = default(HttpResponseMessage);
-            var error = default(AggregateException);
+            AggregateException error;
 
             PostAsync(_addItem).ContinueWith(
-                t =>
-                {
-                    if (t.IsCompleted)
-                    {
-                        if (t.Result != null)
-                            response = (t.Result as HttpResponseMessage);
-                    }
-
-                    if (t.IsFaulted)
-                    {
-                        error = t.Exception;
-                        Audit.Log.Error("POST Task Exception ::", error);
-                    }
-                }
-            ).Wait();
+                t => { response = ActionResponse(t, out error); }
+                ).Wait();
 
             Assert.IsNotNull(response);
             ScenarioContext.Current[AddItemKey] = response;
@@ -172,24 +177,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         public void ThenTheAddResultShouldBeARoleId()
         {
             var response = default(HttpResponseMessage);
-            var error = default(AggregateException);
+            AggregateException error;
 
             PostAsync(_addItem).ContinueWith(
-                t =>
-                {
-                    if (t.IsCompleted)
-                    {
-                        if (t.Result != null)
-                            response = (t.Result as HttpResponseMessage);
-                    }
-
-                    if (t.IsFaulted)
-                    {
-                        error = t.Exception;
-                        Audit.Log.Error("POST Task Exception ::", error);
-                    }
-                }
-            ).Wait();
+                t => { response = ActionResponse(t, out error); }
+                ).Wait();
 
             Assert.IsNotNull(response);
             ScenarioContext.Current[AddItemKey] = response;
@@ -204,7 +196,6 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             var result = PostResponse<Role, Role>(_addItem);
             if (result != null)
             {
-
                 _addedIdValue = result.Id;
                 Assert.IsTrue(_addedIdValue > 0);
 
@@ -219,9 +210,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         }
 
         //
+
         #endregion Post - add a new item by a populated item
 
         #region Get - get a list of items
+
         //
         [When(@"I call the Role Get api endpoint")]
         public void WhenICallTheRoleGetApiEndpoint()
@@ -239,41 +232,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         }
 
         //
+
         #endregion Get - get a list of items
 
-        #region Get - get an item by Id
-        //
-        [Given(@"the following Role GetById input")]
-        public void GivenTheFollowingRoleGetByIdInput(Table table)
-        {
-            var response = default(HttpResponseMessage);
-            var error = default(AggregateException);
-
-            PostAsync(_addItem).ContinueWith(
-                t =>
-                {
-                    if (t.IsCompleted)
-                    {
-                        if (t.Result != null)
-                            response = (t.Result as HttpResponseMessage);
-                    }
-
-                    if (t.IsFaulted)
-                    {
-                        error = t.Exception;
-                        Audit.Log.Error("POST Task Exception ::", error);
-                    }
-                }
-            ).Wait();
-
-            Assert.IsNotNull(response);
-            ScenarioContext.Current[AddItemKey] = response;
-        }
-
-        //
-        #endregion Post - add a new item by a populated item
-
         #region Put - edit an existing item by a populated item, and its Id
+
         //
         [Given(@"the following Role Edit input")]
         public void GivenTheFollowingRoleEditInput(Table table)
@@ -294,9 +257,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         }
 
         //
+
         #endregion Put - edit an existing item by a populated item, and its Id
 
         #region Post - delete an existing item by a populated item
+
         //
         [Given(@"the following Role Delete input")]
         public void GivenTheFollowingRoleDeleteInput(Table table)
@@ -317,9 +282,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         }
 
         //
+
         #endregion Post - delete an existing item by a populated item
 
         #region Get - Exists, verify Exists function checks and return a valid bool for exists or not
+
         //
         [Given(@"the following Role Id input")]
         public void GivenTheFollowingRoleIdInput(Table table)
@@ -328,7 +295,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
 
             foreach (var row in table.Rows)
             {
-                _existsId = row["Id"]; 
+                _existsId = row["Id"];
 
                 break;
             }
@@ -357,8 +324,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         }
 
         //
-        #endregion Get - Exists, verify Exists function checks and return a valid bool for exists or not
 
-        //
+        #endregion Get - Exists, verify Exists function checks and return a valid bool for exists or not
     }
 }

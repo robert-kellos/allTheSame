@@ -1,29 +1,39 @@
-﻿using System.Collections.Generic;
-using AllTheSame.Common.Extensions;
-using AllTheSame.Common.Helpers;
+﻿using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
+using AllTheSame.Common.Logging;
 using AllTheSame.Entity.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
-using AllTheSame.Common.Logging;
-using System.Net.Http;
-using System.Web.Http.Results;
-using System.Net;
-using System;
-using System.Net.Http.Headers;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Net.Http.Formatting;
-using Newtonsoft.Json;
-using System.Web.Http;
-using Newtonsoft.Json.Serialization;
-using AllTheSame.WebAPI.Models;
 
 namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
 {
     [Binding]
-    public class AppointmentTypeSteps : BaseServiceTest//AuthenticatedTest //- Allows automatic fetching of token for each get call
+    public class AppointmentTypeSteps : BaseServiceTest
+        //AuthenticatedTest //- Allows automatic fetching of token for each get call
     {
+        public override string Uri => "/api/AppointmentType";
+        //
+
+        #region helpers
+
+        //
+        public int ConvertToIntValue(string value)
+        {
+            var result = -1;
+
+            int.TryParse(value, out result);
+
+            return result;
+        }
+
+        //
+
+        #endregion helpers
+
         #region Local Properties/Fields
+
         //
         private const string HttpResponseKey = "http_response";
 
@@ -53,7 +63,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
 
         private string _existsId = "-1";
         private int _existsIdValue = -1;
-        
+
         /*
         [Id] [int] IDENTITY(1,1) NOT NULL,
 	    [Code] [varchar](50) NOT NULL,
@@ -64,15 +74,19 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         private string _code = "";
         private string _label = "";
         //
+
         #endregion Local Properties/Fields
 
-        public override string Uri => "/api/AppointmentType";
-
         #region CRUD Tests
+
         //
 
-        [When(@"I call the add AppointmentType Post api endpoint to add a AppointmentType it checks if exists pulls item edits it and deletes it")]
-        public void WhenICallTheAddAppointmentTypePostApiEndpointToAddAAppointmentTypeItChecksIfExistsPullsItemEditsItAndDeletesIt()
+        [When(
+            @"I call the add AppointmentType Post api endpoint to add a AppointmentType it checks if exists pulls item edits it and deletes it"
+            )]
+        public void
+            WhenICallTheAddAppointmentTypePostApiEndpointToAddAAppointmentTypeItChecksIfExistsPullsItemEditsItAndDeletesIt
+            ()
         {
             HttpResponseMessage response;
 
@@ -82,7 +96,9 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             ScenarioContext.Current[AddItemKey] = response;
         }
 
-        [Then(@"the add result should be a AppointmentType Id check exists get by id edit and delete with http response returns")]
+        [Then(
+            @"the add result should be a AppointmentType Id check exists get by id edit and delete with http response returns"
+            )]
         public void ThenTheAddResultShouldBeAAppointmentTypeIdCheckExistsGetByIdEditAndDeleteWithHttpResponseReturns()
         {
             //did we get a good result
@@ -124,11 +140,13 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             var deleteResponse = Delete(_deletedIdValue);
             Assert.IsNotNull(deleteResponse);
         }
+
         //
+
         #endregion CRUD Tests
 
-
         #region Post - add a new item by a populated item
+
         //
         [Given(@"the following AppointmentType Add input")]
         public void GivenTheFollowingAppointmentTypeAddInput(Table table)
@@ -143,12 +161,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             }
             Assert.IsNotNull(_code);
 
-            _addItem = new AppointmentType()
+            _addItem = new AppointmentType
             {
                 Code = _code,
                 Label = _label,
-
-                CreatedOn = DateTime.UtcNow,
+                CreatedOn = DateTime.UtcNow
             };
         }
 
@@ -164,7 +181,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
                     if (t.IsCompleted)
                     {
                         if (t.Result != null)
-                            response = (t.Result as HttpResponseMessage);
+                            response = t.Result;
                     }
 
                     if (t.IsFaulted)
@@ -173,7 +190,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
                         Audit.Log.Error("POST Task Exception ::", error);
                     }
                 }
-            ).Wait();
+                ).Wait();
 
             Assert.IsNotNull(response);
             ScenarioContext.Current[AddItemKey] = response;
@@ -191,7 +208,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
                     if (t.IsCompleted)
                     {
                         if (t.Result != null)
-                            response = (t.Result as HttpResponseMessage);
+                            response = t.Result;
                     }
 
                     if (t.IsFaulted)
@@ -200,7 +217,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
                         Audit.Log.Error("POST Task Exception ::", error);
                     }
                 }
-            ).Wait();
+                ).Wait();
 
             Assert.IsNotNull(response);
             ScenarioContext.Current[AddItemKey] = response;
@@ -215,7 +232,6 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             var result = PostResponse<AppointmentType, AppointmentType>(_addItem);
             if (result != null)
             {
-
                 _addedIdValue = result.Id;
                 Assert.IsTrue(_addedIdValue > 0);
 
@@ -236,9 +252,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         }
 
         //
+
         #endregion Post - add a new item by a populated item
 
         #region Get - get a list of items
+
         //
         [When(@"I call the AppointmentType Get api endpoint")]
         public void WhenICallTheAppointmentTypeGetApiEndpoint()
@@ -255,9 +273,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         }
 
         //
+
         #endregion Get - get a list of items
 
         #region Get - get an item by Id
+
         //
         [Given(@"the following AppointmentType GetById input")]
         public void GivenTheFollowingAppointmentTypeGetByIdInput(Table table)
@@ -271,7 +291,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             }
             Assert.IsNotNull(_getId);
             _getIdValue = ConvertToIntValue(_getId);
-            Assert.IsTrue(_getIdValue > 0);  
+            Assert.IsTrue(_getIdValue > 0);
         }
 
         [When(@"I call the AppointmentType Get api endpoint by Id")]
@@ -291,9 +311,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         }
 
         //
+
         #endregion Post - add a new item by a populated item
 
         #region Put - edit an existing item by a populated item, and its Id
+
         //
         [Given(@"the following AppointmentType Edit input")]
         public void GivenTheFollowingAppointmentTypeEditInput(Table table)
@@ -316,11 +338,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             Assert.IsTrue(_editIdValue > 0);
             Assert.IsNotNull(_code);
 
-            _editItem = new AppointmentType()
+            _editItem = new AppointmentType
             {
                 Id = _editIdValue,
                 Code = _code,
-                Label = _label,
+                Label = _label
             };
         }
 
@@ -336,7 +358,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
                     if (t.IsCompleted)
                     {
                         if (t.Result != null)
-                            response = (t.Result as HttpResponseMessage);
+                            response = t.Result;
                     }
 
                     if (t.IsFaulted)
@@ -345,7 +367,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
                         Audit.Log.Error("PUT Task Exception ::", error);
                     }
                 }
-            ).Wait();
+                ).Wait();
 
             Assert.IsNotNull(response);
             ScenarioContext.Current[EditItemKey] = response;
@@ -372,9 +394,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         }
 
         //
+
         #endregion Put - edit an existing item by a populated item, and its Id
 
         #region Post - delete an existing item by a populated item
+
         //
         [Given(@"the following AppointmentType Delete input")]
         public void GivenTheFollowingAppointmentTypeDeleteInput(Table table)
@@ -383,7 +407,8 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
 
             foreach (var row in table.Rows)
             {
-                _deletedId = _deletedIdValue > 0 ? _deletedIdValue.ToString() : row["Id"]; //this is just a place holder, using Id from added item
+                _deletedId = _deletedIdValue > 0 ? _deletedIdValue.ToString() : row["Id"];
+                    //this is just a place holder, using Id from added item
 
                 break;
             }
@@ -400,12 +425,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         [When(@"I call the delete AppointmentType Post api endpoint to delete a appointmentType")]
         public void WhenICallTheDeleteAppointmentTypePostApiEndpointToDeleteAAppointmentType()
         {
-            _addItem = new AppointmentType()
+            _addItem = new AppointmentType
             {
                 Code = "test",
                 Label = "test",
-
-                CreatedOn = DateTime.UtcNow,
+                CreatedOn = DateTime.UtcNow
             };
             WhenICallTheAddAppointmentTypePostApiEndpointToAddAAppointmentType();
             var result = PostResponse<AppointmentType, AppointmentType>(_addItem);
@@ -420,7 +444,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
                     if (t.IsCompleted)
                     {
                         if (t.Result != null)
-                            response = (t.Result as HttpResponseMessage);
+                            response = t.Result;
                     }
 
                     if (t.IsFaulted)
@@ -429,7 +453,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
                         Audit.Log.Error("POST Task Exception ::", error);
                     }
                 }
-            ).Wait();
+                ).Wait();
 
             Assert.IsNotNull(response);
             ScenarioContext.Current[DeleteItemKey] = response;
@@ -449,9 +473,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         }
 
         //
+
         #endregion Post - delete an existing item by a populated item
 
         #region Get - Exists, verify Exists function checks and return a valid bool for exists or not
+
         //
         [When(@"I call the AppointmentType Exists Get api endpoint by Id to verify if it exists")]
         public void WhenICallTheAppointmentTypeExistsGetApiEndpointByIdToVerifyIfItExists()
@@ -472,21 +498,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         }
 
         //
+
         #endregion Get - Exists, verify Exists function checks and return a valid bool for exists or not
-
-        //
-
-        #region helpers
-        //
-        public int ConvertToIntValue(string value)
-        {
-            var result = -1;
-
-            int.TryParse(value, out result);
-
-            return result;
-        }
-        //
-        #endregion helpers
     }
 }

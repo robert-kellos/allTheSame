@@ -9,35 +9,6 @@ namespace AllTheSame.WebAPI.Test
 {
     public abstract class AuthenticatedTest : BaseServiceTest
     {
-        #region Locals
-        //
-        private int _orgid = 16; //- Default root OrgId
-        private string _password = "testpasswordA1_";
-        private string _username = "super@admin.net"; // Set to a super admin account in unit test DB
-
-        public int OrgId
-
-        {
-            get { return _orgid; }
-            set { _orgid = value; }
-        }
-
-        protected virtual string Username
-        {
-            get { return _username; }
-            set { _username = value; }
-        }
-
-        protected virtual string Password
-        {
-            get { return _password; }
-            set { _password = value; }
-        }
-
-        public string Token { get; set; }
-        //
-        #endregion Locals
-
         protected virtual void FetchAuthtoken()
         {
             var tokenDetails = new List<KeyValuePair<string, string>>
@@ -100,5 +71,20 @@ namespace AllTheSame.WebAPI.Test
             if (Client.DefaultRequestHeaders.Contains("orgId") == false)
                 Client.DefaultRequestHeaders.Add("orgId", OrgId.ToString());
         }
+
+        #region Locals
+
+        //
+
+        public int OrgId { get; set; } = 16;
+
+        protected virtual string Username { get; set; } = "super@admin.net";
+
+        protected virtual string Password { get; set; } = "testpasswordA1_";
+
+        public string Token { get; set; }
+        //
+
+        #endregion Locals
     }
 }

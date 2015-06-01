@@ -1,29 +1,21 @@
-﻿using System.Collections.Generic;
-using AllTheSame.Common.Extensions;
-using AllTheSame.Common.Helpers;
+﻿using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
 using AllTheSame.Entity.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
-using AllTheSame.Common.Logging;
-using System.Net.Http;
-using System.Web.Http.Results;
-using System.Net;
-using System;
-using System.Net.Http.Headers;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Net.Http.Formatting;
-using Newtonsoft.Json;
-using System.Web.Http;
-using Newtonsoft.Json.Serialization;
-using AllTheSame.WebAPI.Models;
 
 namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
 {
     [Binding]
-    public class OrganizationSteps : BaseServiceTest//AuthenticatedTest //- Allows automatic fetching of token for each get call
+    public class OrganizationSteps : BaseServiceTest
+        //AuthenticatedTest //- Allows automatic fetching of token for each get call
     {
+        public override string Uri => "/api/Organization";
+
         #region Local Properties/Fields
+
         //
         private const string HttpResponseKey = "http_response";
 
@@ -56,11 +48,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
 
         private string _name = "";
         //
+
         #endregion Local Properties/Fields
 
-        public override string Uri => "/api/Organization";
-
         #region Post - add a new item by a populated item
+
         //
         [Given(@"the following Organization Add input")]
         public void GivenTheFollowingOrganizationAddInput(Table table)
@@ -72,15 +64,12 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
 
                 break;
             }
-            //Assert.IsNotNull(_line1);
-            //Assert.IsNotNull(_city);
-            //Assert.IsNotNull(_city.IsValidEmailAddress());
+            Assert.IsNotNull(_name);
 
-            _addItem = new Organization()
+            _addItem = new Organization
             {
                 Name = _name,
-
-                CreatedOn = DateTime.UtcNow,
+                CreatedOn = DateTime.UtcNow
             };
         }
 
@@ -91,11 +80,8 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             AggregateException error;
 
             PostAsync(_addItem).ContinueWith(
-                t =>
-                {
-                    response = ActionResponse(t, out error);
-                }
-            ).Wait();
+                t => { response = ActionResponse(t, out error); }
+                ).Wait();
 
             Assert.IsNotNull(response);
             ScenarioContext.Current[AddItemKey] = response;
@@ -108,11 +94,8 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             AggregateException error;
 
             PostAsync(_addItem).ContinueWith(
-                t =>
-                {
-                    response = ActionResponse(t, out error);
-                }
-            ).Wait();
+                t => { response = ActionResponse(t, out error); }
+                ).Wait();
 
             Assert.IsNotNull(response);
             ScenarioContext.Current[AddItemKey] = response;
@@ -131,7 +114,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
                 Assert.IsTrue(_addedIdValue > 0);
 
                 ////validate values changed
-                //Assert.AreEqual(_addItem.FirstName, result.FirstName);
+                Assert.AreEqual(_addItem.Name, result.Name);
             }
 
             var response = (ScenarioContext.Current[AddItemKey] as HttpResponseMessage);
@@ -141,9 +124,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         }
 
         //
+
         #endregion Post - add a new item by a populated item
 
         #region Get - get a list of items
+
         //
         [When(@"I call the Organization Get api endpoint")]
         public void WhenICallTheOrganizationGetApiEndpoint()
@@ -161,9 +146,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         }
 
         //
+
         #endregion Get - get a list of items
 
         #region Get - get an item by Id
+
         //
         [Given(@"the following Organization GetById input")]
         public void GivenTheFollowingOrganizationGetByIdInput(Table table)
@@ -179,6 +166,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             _getIdValue = ConvertToIntValue(_getId);
             Assert.IsTrue(_getIdValue > 0);
         }
+
         [When(@"I call the Organization Get api endpoint by Id")]
         public void WhenICallTheOrganizationGetApiEndpointById()
         {
@@ -194,10 +182,13 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             Assert.IsNotNull(item);
             Assert.IsTrue(item.Id == _getIdValue);
         }
+
         //
+
         #endregion Get - get an item by Id
 
         #region Put - edit an existing item by a populated item, and its Id
+
         //
         [Given(@"the following Organization Edit input")]
         public void GivenTheFollowingOrganizationEditInput(Table table)
@@ -218,9 +209,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         }
 
         //
+
         #endregion Put - edit an existing item by a populated item, and its Id
 
         #region Post - delete an existing item by a populated item
+
         //
         [Given(@"the following Organization Delete input")]
         public void GivenTheFollowingOrganizationDeleteInput(Table table)
@@ -241,9 +234,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         }
 
         //
+
         #endregion Post - delete an existing item by a populated item
 
         #region Get - Exists, verify Exists function checks and return a valid bool for exists or not
+
         //
         [Given(@"the following Organization Id input")]
         public void GivenTheFollowingOrganizationIdInput(Table table)
@@ -252,7 +247,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
 
             foreach (var row in table.Rows)
             {
-                _existsId = row["Id"]; 
+                _existsId = row["Id"];
 
                 break;
             }
@@ -281,8 +276,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         }
 
         //
-        #endregion Get - Exists, verify Exists function checks and return a valid bool for exists or not
 
-        //
+        #endregion Get - Exists, verify Exists function checks and return a valid bool for exists or not
     }
 }

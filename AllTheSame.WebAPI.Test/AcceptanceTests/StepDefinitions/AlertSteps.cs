@@ -1,18 +1,21 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
 using AllTheSame.Entity.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
-using System;
-using System.Net.Http;
-using AllTheSame.Common.Logging;
-using System.Net;
 
 namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
 {
     [Binding]
-    public class AlertSteps : BaseServiceTest//AuthenticatedTest //- Allows automatic fetching of token for each get call
+    public class AlertSteps : BaseServiceTest
+        //AuthenticatedTest //- Allows automatic fetching of token for each get call
     {
+        public override string Uri => "/api/Alert";
+
         #region Local Properties/Fields
+
         //
         private const string HttpResponseKey = "http_response";
 
@@ -57,14 +60,16 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
 	    [UpdatedOn] [datetime] NULL,
         */
         //
+
         #endregion Local Properties/Fields
 
-        public override string Uri => "/api/Alert";
-
         #region CRUD Tests
+
         //
 
-        [When(@"I call the add Alert Post api endpoint to add a alert it checks if exists pulls item edits it and deletes it")]
+        [When(
+            @"I call the add Alert Post api endpoint to add a alert it checks if exists pulls item edits it and deletes it"
+            )]
         public void WhenICallTheAddAlertPostApiEndpointToAddAAlertItChecksIfExistsPullsItemEditsItAndDeletesIt()
         {
             HttpResponseMessage response;
@@ -117,11 +122,13 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             var deleteResponse = Delete(_deletedIdValue);
             Assert.IsNotNull(deleteResponse);
         }
+
         //
+
         #endregion CRUD Tests
 
-
         #region Post - add a new item by a populated item
+
         //
         [Given(@"the following Alert Add input")]
         public void GivenTheFollowingAlertAddInput(Table table)
@@ -136,12 +143,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             }
             Assert.IsNotNull(_description);
 
-            _addItem = new Alert()
+            _addItem = new Alert
             {
                 Description = _description,
                 AlertTypeId = _alertTypeId,
-
-                CreatedOn = DateTime.UtcNow,
+                CreatedOn = DateTime.UtcNow
             };
         }
 
@@ -152,11 +158,8 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             AggregateException error;
 
             PostAsync(_addItem).ContinueWith(
-                t =>
-                {
-                    response = ActionResponse(t, out error);
-                }
-            ).Wait();
+                t => { response = ActionResponse(t, out error); }
+                ).Wait();
 
             Assert.IsNotNull(response);
             ScenarioContext.Current[AddItemKey] = response;
@@ -190,9 +193,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         }
 
         //
+
         #endregion Post - add a new item by a populated item
 
         #region Get - get a list of items
+
         //
         [When(@"I call the Alert Get api endpoint")]
         public void WhenICallTheAlertGetApiEndpoint()
@@ -209,9 +214,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         }
 
         //
+
         #endregion Get - get a list of items
 
         #region Get - get an item by Id
+
         //
         [Given(@"the following Alert GetById input")]
         public void GivenTheFollowingAlertGetByIdInput(Table table)
@@ -225,7 +232,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             }
             Assert.IsNotNull(_getId);
             _getIdValue = ConvertToIntValue(_getId);
-            Assert.IsTrue(_getIdValue > 0);   
+            Assert.IsTrue(_getIdValue > 0);
         }
 
         [When(@"I call the Alert Get api endpoint by Id")]
@@ -248,9 +255,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
 
 
         //
+
         #endregion Post - add a new item by a populated item
 
         #region Put - edit an existing item by a populated item, and its Id
+
         //
         [Given(@"the following Alert Edit input")]
         public void GivenTheFollowingAlertEditInput(Table table)
@@ -272,10 +281,10 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             Assert.IsTrue(_editIdValue > 0);
             Assert.IsNotNull(_description);
 
-            _editItem = new Alert()
+            _editItem = new Alert
             {
                 Id = _editIdValue,
-                Description = _description,
+                Description = _description
             };
         }
 
@@ -286,11 +295,8 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             AggregateException error;
 
             PutAsync(_editItem.Id, _editItem).ContinueWith(
-                t =>
-                {
-                    response = ActionResponse(t, out error);
-                }
-            ).Wait();
+                t => { response = ActionResponse(t, out error); }
+                ).Wait();
 
             Assert.IsNotNull(response);
             ScenarioContext.Current[EditItemKey] = response;
@@ -316,9 +322,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         }
 
         //
+
         #endregion Put - edit an existing item by a populated item, and its Id
 
         #region Post - delete an existing item by a populated item
+
         //
         [Given(@"the following Alert Delete input")]
         public void GivenTheFollowingAlertDeleteInput(Table table)
@@ -327,7 +335,8 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
 
             foreach (var row in table.Rows)
             {
-                _deletedId = _addedIdValue > 0 ? _addedIdValue.ToString() : row["Id"]; //this is just a place holder, using Id from added item
+                _deletedId = _addedIdValue > 0 ? _addedIdValue.ToString() : row["Id"];
+                    //this is just a place holder, using Id from added item
 
                 break;
             }
@@ -349,11 +358,8 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             AggregateException error;
 
             DeleteAsync(_deletedIdValue).ContinueWith(
-                t =>
-                {
-                    response = ActionResponse(t, out error);
-                }
-            ).Wait();
+                t => { response = ActionResponse(t, out error); }
+                ).Wait();
 
             Assert.IsNotNull(response);
             ScenarioContext.Current[DeleteItemKey] = response;
@@ -373,9 +379,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         }
 
         //
+
         #endregion Post - delete an existing item by a populated item
 
         #region Get - Exists, verify Exists function checks and return a valid bool for exists or not
+
         //
         [Given(@"the following Alert Id input")]
         public void GivenTheFollowingAlertIdInput(Table table)
@@ -415,8 +423,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         }
 
         //
-        #endregion Get - Exists, verify Exists function checks and return a valid bool for exists or not
 
-        //
+        #endregion Get - Exists, verify Exists function checks and return a valid bool for exists or not
     }
 }

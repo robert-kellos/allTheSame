@@ -1,29 +1,41 @@
-﻿using System.Collections.Generic;
-using AllTheSame.Common.Extensions;
-using AllTheSame.Common.Helpers;
+﻿using System;
+using System.Collections.Generic;
+using System.Net.Http;
 using AllTheSame.Entity.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
-using AllTheSame.Common.Logging;
-using System.Net.Http;
-using System.Web.Http.Results;
-using System.Net;
-using System;
-using System.Net.Http.Headers;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Net.Http.Formatting;
-using Newtonsoft.Json;
-using System.Web.Http;
-using Newtonsoft.Json.Serialization;
-using AllTheSame.WebAPI.Models;
 
 namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
 {
     [Binding]
-    public class IndustrySteps : BaseServiceTest//AuthenticatedTest //- Allows automatic fetching of token for each get call
+    public class IndustrySteps : BaseServiceTest
+        //AuthenticatedTest //- Allows automatic fetching of token for each get call
     {
+        public override string Uri => "/api/Industry";
+
+        #region Get - get an item by Id
+
+        //
+        [Given(@"the following Industry GetById input")]
+        public void GivenTheFollowingIndustryGetByIdInput(Table table)
+        {
+            var response = default(HttpResponseMessage);
+            AggregateException error;
+
+            PostAsync(_addItem).ContinueWith(
+                t => { response = ActionResponse(t, out error); }
+                ).Wait();
+
+            Assert.IsNotNull(response);
+            ScenarioContext.Current[AddItemKey] = response;
+        }
+
+        //
+
+        #endregion Post - add a new item by a populated item
+
         #region Local Properties/Fields
+
         //
         private const string HttpResponseKey = "http_response";
 
@@ -57,14 +69,16 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         private string _code = "";
         private string _label = "";
         //
+
         #endregion Local Properties/Fields
 
-        public override string Uri => "/api/Industry";
-
         #region CRUD Tests
+
         //
 
-        [When(@"I call the add Industry Post api endpoint to add a Industry it checks if exists pulls item edits it and deletes it")]
+        [When(
+            @"I call the add Industry Post api endpoint to add a Industry it checks if exists pulls item edits it and deletes it"
+            )]
         public void WhenICallTheAddIndustryPostApiEndpointToAddAIndustryItChecksIfExistsPullsItemEditsItAndDeletesIt()
         {
             HttpResponseMessage response;
@@ -75,7 +89,9 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             ScenarioContext.Current[AddItemKey] = response;
         }
 
-        [Then(@"the add result should be a Industry Id check exists get by id edit and delete with http response returns")]
+        [Then(
+            @"the add result should be a Industry Id check exists get by id edit and delete with http response returns")
+        ]
         public void ThenTheAddResultShouldBeAIndustryIdCheckExistsGetByIdEditAndDeleteWithHttpResponseReturns()
         {
             //did we get a good result
@@ -117,10 +133,13 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             var deleteResponse = Delete(_deletedIdValue);
             Assert.IsNotNull(deleteResponse);
         }
+
         //
+
         #endregion CRUD Tests
 
         #region Post - add a new item by a populated item
+
         //
         [Given(@"the following Industry Add input")]
         public void GivenTheFollowingIndustryAddInput(Table table)
@@ -136,12 +155,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             Assert.IsNotNull(_code);
             Assert.IsNotNull(_label);
 
-            _addItem = new Industry()
+            _addItem = new Industry
             {
                 Code = _code,
                 Label = _label,
-
-                CreatedOn = DateTime.UtcNow,
+                CreatedOn = DateTime.UtcNow
             };
         }
 
@@ -152,11 +170,8 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             AggregateException error;
 
             PostAsync(_addItem).ContinueWith(
-                t =>
-                {
-                    response = ActionResponse(t, out error);
-                }
-            ).Wait();
+                t => { response = ActionResponse(t, out error); }
+                ).Wait();
 
             Assert.IsNotNull(response);
             ScenarioContext.Current[AddItemKey] = response;
@@ -169,20 +184,19 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             AggregateException error;
 
             PostAsync(_addItem).ContinueWith(
-                t =>
-                {
-                    response = ActionResponse(t, out error);
-                }
-            ).Wait();
+                t => { response = ActionResponse(t, out error); }
+                ).Wait();
 
             Assert.IsNotNull(response);
             ScenarioContext.Current[AddItemKey] = response;
         }
 
         //
+
         #endregion Post - add a new item by a populated item
 
         #region Get - get a list of items
+
         //
         [When(@"I call the Industry Get api endpoint")]
         public void WhenICallTheIndustryGetApiEndpoint()
@@ -200,31 +214,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         }
 
         //
+
         #endregion Get - get a list of items
 
-        #region Get - get an item by Id
-        //
-        [Given(@"the following Industry GetById input")]
-        public void GivenTheFollowingIndustryGetByIdInput(Table table)
-        {
-            var response = default(HttpResponseMessage);
-            AggregateException error;
-
-            PostAsync(_addItem).ContinueWith(
-                t =>
-                {
-                    response = ActionResponse(t, out error);
-                }
-            ).Wait();
-
-            Assert.IsNotNull(response);
-            ScenarioContext.Current[AddItemKey] = response;
-        }
-
-        //
-        #endregion Post - add a new item by a populated item
-
         #region Put - edit an existing item by a populated item, and its Id
+
         //
         [Given(@"the following Industry Edit input")]
         public void GivenTheFollowingIndustryEditInput(Table table)
@@ -245,9 +239,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         }
 
         //
+
         #endregion Put - edit an existing item by a populated item, and its Id
 
         #region Post - delete an existing item by a populated item
+
         //
         [Given(@"the following Industry Delete input")]
         public void GivenTheFollowingIndustryDeleteInput(Table table)
@@ -268,9 +264,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         }
 
         //
+
         #endregion Post - delete an existing item by a populated item
 
         #region Get - Exists, verify Exists function checks and return a valid bool for exists or not
+
         //
         [Given(@"the following Industry Id input")]
         public void GivenTheFollowingIndustryIdInput(Table table)
@@ -279,7 +277,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
 
             foreach (var row in table.Rows)
             {
-                _existsId = row["Id"]; 
+                _existsId = row["Id"];
 
                 break;
             }
@@ -308,8 +306,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         }
 
         //
-        #endregion Get - Exists, verify Exists function checks and return a valid bool for exists or not
 
-        //
+        #endregion Get - Exists, verify Exists function checks and return a valid bool for exists or not
     }
 }

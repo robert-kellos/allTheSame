@@ -1,29 +1,41 @@
-﻿using System.Collections.Generic;
-using AllTheSame.Common.Extensions;
-using AllTheSame.Common.Helpers;
+﻿using System;
+using System.Collections.Generic;
+using System.Net.Http;
 using AllTheSame.Entity.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
-using AllTheSame.Common.Logging;
-using System.Net.Http;
-using System.Web.Http.Results;
-using System.Net;
-using System;
-using System.Net.Http.Headers;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Net.Http.Formatting;
-using Newtonsoft.Json;
-using System.Web.Http;
-using Newtonsoft.Json.Serialization;
-using AllTheSame.WebAPI.Models;
 
 namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
 {
     [Binding]
-    public class CommunityWorkerSteps : BaseServiceTest//AuthenticatedTest //- Allows automatic fetching of token for each get call
+    public class CommunityWorkerSteps : BaseServiceTest
+        //AuthenticatedTest //- Allows automatic fetching of token for each get call
     {
+        public override string Uri => "/api/CommunityWorker";
+
+        #region Get - get an item by Id
+
+        //
+        [Given(@"the following CommunityWorker GetById input")]
+        public void GivenTheFollowingCommunityWorkerGetByIdInput(Table table)
+        {
+            var response = default(HttpResponseMessage);
+            AggregateException error;
+
+            PostAsync(_addItem).ContinueWith(
+                t => { response = ActionResponse(t, out error); }
+                ).Wait();
+
+            Assert.IsNotNull(response);
+            ScenarioContext.Current[AddItemKey] = response;
+        }
+
+        //
+
+        #endregion Post - add a new item by a populated item
+
         #region Local Properties/Fields
+
         //
         private const string HttpResponseKey = "http_response";
 
@@ -61,17 +73,21 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
 	    [UpdatedOn] [datetime] NULL,
         */
         private int _communityid = 17;
-        private int _personId = 1;
+        private readonly int _personId = 1;
         //
+
         #endregion Local Properties/Fields
 
-        public override string Uri => "/api/CommunityWorker";
-
         #region CRUD Tests
+
         //
 
-        [When(@"I call the add CommunityWorker Post api endpoint to add a CommunityWorker it checks if exists pulls item edits it and deletes it")]
-        public void WhenICallTheAddCommunityWorkerPostApiEndpointToAddACommunityWorkerItChecksIfExistsPullsItemEditsItAndDeletesIt()
+        [When(
+            @"I call the add CommunityWorker Post api endpoint to add a CommunityWorker it checks if exists pulls item edits it and deletes it"
+            )]
+        public void
+            WhenICallTheAddCommunityWorkerPostApiEndpointToAddACommunityWorkerItChecksIfExistsPullsItemEditsItAndDeletesIt
+            ()
         {
             HttpResponseMessage response;
 
@@ -81,7 +97,9 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             ScenarioContext.Current[AddItemKey] = response;
         }
 
-        [Then(@"the add result should be a CommunityWorker Id check exists get by id edit and delete with http response returns")]
+        [Then(
+            @"the add result should be a CommunityWorker Id check exists get by id edit and delete with http response returns"
+            )]
         public void ThenTheAddResultShouldBeACommunityWorkerIdCheckExistsGetByIdEditAndDeleteWithHttpResponseReturns()
         {
             //did we get a good result
@@ -123,10 +141,13 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             var deleteResponse = Delete(_deletedIdValue);
             Assert.IsNotNull(deleteResponse);
         }
+
         //
+
         #endregion CRUD Tests
 
         #region Post - add a new item by a populated item
+
         //
         [Given(@"the following CommunityWorker Add input")]
         public void GivenTheFollowingCommunityWorkerAddInput(Table table)
@@ -135,17 +156,16 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             foreach (var row in table.Rows)
             {
                 _communityid = Convert.ToInt32(row["CommunityId"]);
-                
+
 
                 break;
             }
 
-            _addItem = new CommunityWorker()
+            _addItem = new CommunityWorker
             {
                 CommunityId = _communityid,
                 PersonId = _personId,
-
-                CreatedOn = DateTime.UtcNow,
+                CreatedOn = DateTime.UtcNow
             };
         }
 
@@ -156,11 +176,8 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             AggregateException error;
 
             PostAsync(_addItem).ContinueWith(
-                t =>
-                {
-                    response = ActionResponse(t, out error);
-                }
-            ).Wait();
+                t => { response = ActionResponse(t, out error); }
+                ).Wait();
 
             Assert.IsNotNull(response);
             ScenarioContext.Current[AddItemKey] = response;
@@ -173,20 +190,19 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             AggregateException error;
 
             PostAsync(_addItem).ContinueWith(
-                t =>
-                {
-                    response = ActionResponse(t, out error);
-                }
-            ).Wait();
+                t => { response = ActionResponse(t, out error); }
+                ).Wait();
 
             Assert.IsNotNull(response);
             ScenarioContext.Current[AddItemKey] = response;
         }
 
         //
+
         #endregion Post - add a new item by a populated item
 
         #region Get - get a list of items
+
         //
         [When(@"I call the CommunityWorker Get api endpoint")]
         public void WhenICallTheCommunityWorkerGetApiEndpoint()
@@ -204,31 +220,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         }
 
         //
+
         #endregion Get - get a list of items
 
-        #region Get - get an item by Id
-        //
-        [Given(@"the following CommunityWorker GetById input")]
-        public void GivenTheFollowingCommunityWorkerGetByIdInput(Table table)
-        {
-            var response = default(HttpResponseMessage);
-            AggregateException error;
-
-            PostAsync(_addItem).ContinueWith(
-                t =>
-                {
-                    response = ActionResponse(t, out error);
-                }
-            ).Wait();
-
-            Assert.IsNotNull(response);
-            ScenarioContext.Current[AddItemKey] = response;
-        }
-
-        //
-        #endregion Post - add a new item by a populated item
-
         #region Put - edit an existing item by a populated item, and its Id
+
         //
         [Given(@"the following CommunityWorker Edit input")]
         public void GivenTheFollowingCommunityWorkerEditInput(Table table)
@@ -249,9 +245,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         }
 
         //
+
         #endregion Put - edit an existing item by a populated item, and its Id
 
         #region Post - delete an existing item by a populated item
+
         //
         [Given(@"the following CommunityWorker Delete input")]
         public void GivenTheFollowingCommunityWorkerDeleteInput(Table table)
@@ -272,9 +270,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         }
 
         //
+
         #endregion Post - delete an existing item by a populated item
 
         #region Get - Exists, verify Exists function checks and return a valid bool for exists or not
+
         //
         [Given(@"the following CommunityWorker Id input")]
         public void GivenTheFollowingCommunityWorkerIdInput(Table table)
@@ -283,7 +283,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
 
             foreach (var row in table.Rows)
             {
-                _existsId = row["Id"]; 
+                _existsId = row["Id"];
 
                 break;
             }
@@ -312,8 +312,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         }
 
         //
-        #endregion Get - Exists, verify Exists function checks and return a valid bool for exists or not
 
-        //
+        #endregion Get - Exists, verify Exists function checks and return a valid bool for exists or not
     }
 }

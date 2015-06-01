@@ -1,29 +1,41 @@
-﻿using System.Collections.Generic;
-using AllTheSame.Common.Extensions;
-using AllTheSame.Common.Helpers;
+﻿using System;
+using System.Collections.Generic;
+using System.Net.Http;
 using AllTheSame.Entity.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
-using AllTheSame.Common.Logging;
-using System.Net.Http;
-using System.Web.Http.Results;
-using System.Net;
-using System;
-using System.Net.Http.Headers;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Net.Http.Formatting;
-using Newtonsoft.Json;
-using System.Web.Http;
-using Newtonsoft.Json.Serialization;
-using AllTheSame.WebAPI.Models;
 
 namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
 {
     [Binding]
-    public class CommunityWorkerAlertSteps : BaseServiceTest//AuthenticatedTest //- Allows automatic fetching of token for each get call
+    public class CommunityWorkerAlertSteps : BaseServiceTest
+        //AuthenticatedTest //- Allows automatic fetching of token for each get call
     {
+        public override string Uri => "/api/CommunityWorker_Alert";
+
+        #region Get - get an item by Id
+
+        //
+        [Given(@"the following CommunityWorker_Alert GetById input")]
+        public void GivenTheFollowingCommunityWorker_AlertGetByIdInput(Table table)
+        {
+            var response = default(HttpResponseMessage);
+            AggregateException error;
+
+            PostAsync(_addItem).ContinueWith(
+                t => { response = ActionResponse(t, out error); }
+                ).Wait();
+
+            Assert.IsNotNull(response);
+            ScenarioContext.Current[AddItemKey] = response;
+        }
+
+        //
+
+        #endregion Post - add a new item by a populated item
+
         #region Local Properties/Fields
+
         //
         private const string HttpResponseKey = "http_response";
 
@@ -62,19 +74,23 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
 	    [UpdatedOn] [datetime] NULL,
             
         */
-        private int _communityWorkId = 24;
-        private int _alertId = 17;
+        private readonly int _communityWorkId = 24;
+        private readonly int _alertId = 17;
         private bool _isRead = true;
         //
+
         #endregion Local Properties/Fields
 
-        public override string Uri => "/api/CommunityWorker_Alert";
-
         #region CRUD Tests
+
         //
 
-        [When(@"I call the add CommunityWorker_Alert Post api endpoint to add a CommunityWorker_Alert it checks if exists pulls item edits it and deletes it")]
-        public void WhenICallTheAddCommunityWorker_AlertPostApiEndpointToAddACommunityWorker_AlertItChecksIfExistsPullsItemEditsItAndDeletesIt()
+        [When(
+            @"I call the add CommunityWorker_Alert Post api endpoint to add a CommunityWorker_Alert it checks if exists pulls item edits it and deletes it"
+            )]
+        public void
+            WhenICallTheAddCommunityWorker_AlertPostApiEndpointToAddACommunityWorker_AlertItChecksIfExistsPullsItemEditsItAndDeletesIt
+            ()
         {
             HttpResponseMessage response;
 
@@ -84,8 +100,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             ScenarioContext.Current[AddItemKey] = response;
         }
 
-        [Then(@"the add result should be a CommunityWorker_Alert Id check exists get by id edit and delete with http response returns")]
-        public void ThenTheAddResultShouldBeACommunityWorker_AlertIdCheckExistsGetByIdEditAndDeleteWithHttpResponseReturns()
+        [Then(
+            @"the add result should be a CommunityWorker_Alert Id check exists get by id edit and delete with http response returns"
+            )]
+        public void
+            ThenTheAddResultShouldBeACommunityWorker_AlertIdCheckExistsGetByIdEditAndDeleteWithHttpResponseReturns()
         {
             //did we get a good result
             Assert.IsTrue(_addItem != null && _addItem.Id > 0);
@@ -126,10 +145,13 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             var deleteResponse = Delete(_deletedIdValue);
             Assert.IsNotNull(deleteResponse);
         }
+
         //
+
         #endregion CRUD Tests
 
         #region Post - add a new item by a populated item
+
         //
         [Given(@"the following CommunityWorker_Alert Add input")]
         public void GivenTheFollowingCommunityWorker_AlertAddInput(Table table)
@@ -142,13 +164,12 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
                 break;
             }
 
-            _addItem = new CommunityWorker_Alert()
+            _addItem = new CommunityWorker_Alert
             {
                 CommunityWorkerId = _communityWorkId,
                 AlertId = _alertId,
                 IsRead = _isRead,
-
-                CreatedOn = DateTime.UtcNow,
+                CreatedOn = DateTime.UtcNow
             };
         }
 
@@ -159,11 +180,8 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             AggregateException error;
 
             PostAsync(_addItem).ContinueWith(
-                t =>
-                {
-                    response = ActionResponse(t, out error);
-                }
-            ).Wait();
+                t => { response = ActionResponse(t, out error); }
+                ).Wait();
 
             Assert.IsNotNull(response);
             ScenarioContext.Current[AddItemKey] = response;
@@ -176,20 +194,19 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             AggregateException error;
 
             PostAsync(_addItem).ContinueWith(
-                t =>
-                {
-                    response = ActionResponse(t, out error);
-                }
-            ).Wait();
+                t => { response = ActionResponse(t, out error); }
+                ).Wait();
 
             Assert.IsNotNull(response);
             ScenarioContext.Current[AddItemKey] = response;
         }
 
         //
+
         #endregion Post - add a new item by a populated item
 
         #region Get - get a list of items
+
         //
         [When(@"I call the CommunityWorker_Alert Get api endpoint")]
         public void WhenICallTheCommunityWorker_AlertGetApiEndpoint()
@@ -207,31 +224,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         }
 
         //
+
         #endregion Get - get a list of items
 
-        #region Get - get an item by Id
-        //
-        [Given(@"the following CommunityWorker_Alert GetById input")]
-        public void GivenTheFollowingCommunityWorker_AlertGetByIdInput(Table table)
-        {
-            var response = default(HttpResponseMessage);
-            AggregateException error;
-
-            PostAsync(_addItem).ContinueWith(
-                t =>
-                {
-                    response = ActionResponse(t, out error);
-                }
-            ).Wait();
-
-            Assert.IsNotNull(response);
-            ScenarioContext.Current[AddItemKey] = response;
-        }
-
-        //
-        #endregion Post - add a new item by a populated item
-
         #region Put - edit an existing item by a populated item, and its Id
+
         //
         [Given(@"the following CommunityWorker_Alert Edit input")]
         public void GivenTheFollowingCommunityWorker_AlertEditInput(Table table)
@@ -252,9 +249,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         }
 
         //
+
         #endregion Put - edit an existing item by a populated item, and its Id
 
         #region Post - delete an existing item by a populated item
+
         //
         [Given(@"the following CommunityWorker_Alert Delete input")]
         public void GivenTheFollowingCommunityWorker_AlertDeleteInput(Table table)
@@ -275,9 +274,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         }
 
         //
+
         #endregion Post - delete an existing item by a populated item
 
         #region Get - Exists, verify Exists function checks and return a valid bool for exists or not
+
         //
         [Given(@"the following CommunityWorker_Alert Id input")]
         public void GivenTheFollowingCommunityWorker_AlertIdInput(Table table)
@@ -286,7 +287,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
 
             foreach (var row in table.Rows)
             {
-                _existsId = row["Id"]; 
+                _existsId = row["Id"];
 
                 break;
             }
@@ -315,8 +316,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         }
 
         //
-        #endregion Get - Exists, verify Exists function checks and return a valid bool for exists or not
 
-        //
+        #endregion Get - Exists, verify Exists function checks and return a valid bool for exists or not
     }
 }

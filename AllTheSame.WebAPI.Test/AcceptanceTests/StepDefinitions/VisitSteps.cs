@@ -1,18 +1,44 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
+using AllTheSame.Common.Logging;
 using AllTheSame.Entity.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
-using System.Net.Http;
-using System;
-using AllTheSame.Common.Logging;
-using System.Net;
 
 namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
 {
     [Binding]
-    public class VisitSteps : BaseServiceTest//AuthenticatedTest //- Allows automatic fetching of token for each get call
+    public class VisitSteps : BaseServiceTest
+        //AuthenticatedTest //- Allows automatic fetching of token for each get call
     {
+        public override string Uri => "/api/Visit";
+
+        #region Get - get an item by Id
+
+        //
+        [Given(@"the following Visit GetById input")]
+        public void GivenTheFollowingVisitGetByIdInput(Table table)
+        {
+            var response = default(HttpResponseMessage);
+            AggregateException error;
+
+            PostAsync(_addItem).ContinueWith(
+                t => { response = ActionResponse(t, out error); }
+                ).Wait();
+
+            Assert.IsNotNull(response);
+            ScenarioContext.Current[AddItemKey] = response;
+        }
+
+
+        //
+
+        #endregion Post - add a new item by a populated item
+
         #region Local Properties/Fields
+
         //
         private const string HttpResponseKey = "http_response";
 
@@ -43,21 +69,23 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         private string _existsId = "-1";
         private int _existsIdValue = -1;
 
-  //      | ResidentId | VendorWorkerId | VisitorId | TimeIn                  | TimeOut                 |
-		//| 20         | 13             | 1         | 2015-06-01 12:00:00.000 | 2015-06-01 01:00:00.000 |
+        //      | ResidentId | VendorWorkerId | VisitorId | TimeIn                  | TimeOut                 |
+        //| 20         | 13             | 1         | 2015-06-01 12:00:00.000 | 2015-06-01 01:00:00.000 |
         private int _residentId = 20;
         private int _vendorWorkerId = 1;
-        private DateTime _timeIn = DateTime.UtcNow;
-        private DateTime _timeOut = DateTime.UtcNow.AddHours(4);
+        private readonly DateTime _timeIn = DateTime.UtcNow;
+        private readonly DateTime _timeOut = DateTime.UtcNow.AddHours(4);
         //
+
         #endregion Local Properties/Fields
 
-        public override string Uri => "/api/Visit";
-
         #region CRUD Tests
+
         //
 
-        [When(@"I call the add Visit Post api endpoint to add a Visit it checks if exists pulls item edits it and deletes it")]
+        [When(
+            @"I call the add Visit Post api endpoint to add a Visit it checks if exists pulls item edits it and deletes it"
+            )]
         public void WhenICallTheAddVisitPostApiEndpointToAddAVisitItChecksIfExistsPullsItemEditsItAndDeletesIt()
         {
             HttpResponseMessage response;
@@ -110,10 +138,13 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             var deleteResponse = Delete(_deletedIdValue);
             Assert.IsNotNull(deleteResponse);
         }
+
         //
+
         #endregion CRUD Tests
 
         #region Post - add a new item by a populated item
+
         //
         [Given(@"the following Visit Add input")]
         public void GivenTheFollowingVisitAddInput(Table table)
@@ -123,18 +154,17 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             {
                 _residentId = Convert.ToInt32(row["ResidentId"]);
                 _vendorWorkerId = Convert.ToInt32(row["VendorWorkerId"]);
-                
+
                 break;
             }
 
-            _addItem = new Visit()
+            _addItem = new Visit
             {
                 ResidentId = _residentId,
                 VendorWorkerId = _vendorWorkerId,
                 TimeIn = _timeIn,
                 TimeOut = _timeOut,
-                
-                CreatedOn = DateTime.UtcNow,
+                CreatedOn = DateTime.UtcNow
             };
         }
 
@@ -142,24 +172,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         public void WhenICallTheAddVisitPostApiEndpointToAddAVisit()
         {
             var response = default(HttpResponseMessage);
-            var error = default(AggregateException);
+            AggregateException error;
 
             PostAsync(_addItem).ContinueWith(
-                t =>
-                {
-                    if (t.IsCompleted)
-                    {
-                        if (t.Result != null)
-                            response = (t.Result as HttpResponseMessage);
-                    }
-
-                    if (t.IsFaulted)
-                    {
-                        error = t.Exception;
-                        Audit.Log.Error("POST Task Exception ::", error);
-                    }
-                }
-            ).Wait();
+                t => { response = ActionResponse(t, out error); }
+                ).Wait();
 
             Assert.IsNotNull(response);
             ScenarioContext.Current[AddItemKey] = response;
@@ -169,24 +186,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         public void ThenTheAddResultShouldBeAVisitId()
         {
             var response = default(HttpResponseMessage);
-            var error = default(AggregateException);
+            AggregateException error;
 
             PostAsync(_addItem).ContinueWith(
-                t =>
-                {
-                    if (t.IsCompleted)
-                    {
-                        if (t.Result != null)
-                            response = (t.Result as HttpResponseMessage);
-                    }
-
-                    if (t.IsFaulted)
-                    {
-                        error = t.Exception;
-                        Audit.Log.Error("POST Task Exception ::", error);
-                    }
-                }
-            ).Wait();
+                t => { response = ActionResponse(t, out error); }
+                ).Wait();
 
             Assert.IsNotNull(response);
             ScenarioContext.Current[AddItemKey] = response;
@@ -201,7 +205,6 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             var result = PostResponse<Visit, Visit>(_addItem);
             if (result != null)
             {
-
                 _addedIdValue = result.Id;
                 Assert.IsTrue(_addedIdValue > 0);
 
@@ -219,9 +222,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         }
 
         //
+
         #endregion Post - add a new item by a populated item
 
         #region Get - get a list of items
+
         //
         [When(@"I call the Visit Get api endpoint")]
         public void WhenICallTheVisitGetApiEndpoint()
@@ -238,42 +243,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         }
 
         //
+
         #endregion Get - get a list of items
 
-        #region Get - get an item by Id
-        //
-        [Given(@"the following Visit GetById input")]
-        public void GivenTheFollowingVisitGetByIdInput(Table table)
-        {
-            var response = default(HttpResponseMessage);
-            var error = default(AggregateException);
-
-            PostAsync(_addItem).ContinueWith(
-                t =>
-                {
-                    if (t.IsCompleted)
-                    {
-                        if (t.Result != null)
-                            response = (t.Result as HttpResponseMessage);
-                    }
-
-                    if (t.IsFaulted)
-                    {
-                        error = t.Exception;
-                        Audit.Log.Error("POST Task Exception ::", error);
-                    }
-                }
-            ).Wait();
-
-            Assert.IsNotNull(response);
-            ScenarioContext.Current[AddItemKey] = response;
-        }
-
-        
-        //
-        #endregion Post - add a new item by a populated item
-
         #region Put - edit an existing item by a populated item, and its Id
+
         //
         [Given(@"the following Visit Edit input")]
         public void GivenTheFollowingVisitEditInput(Table table)
@@ -294,9 +268,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         }
 
         //
+
         #endregion Put - edit an existing item by a populated item, and its Id
 
         #region Post - delete an existing item by a populated item
+
         //
         [Given(@"the following Visit Delete input")]
         public void GivenTheFollowingVisitDeleteInput(Table table)
@@ -317,9 +293,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         }
 
         //
+
         #endregion Post - delete an existing item by a populated item
 
         #region Get - Exists, verify Exists function checks and return a valid bool for exists or not
+
         //
         [Given(@"the following Visit Id input")]
         public void GivenTheFollowingVisitIdInput(Table table)
@@ -357,9 +335,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         }
 
         //
+
         #endregion Get - Exists, verify Exists function checks and return a valid bool for exists or not
-
-        //
-
     }
 }

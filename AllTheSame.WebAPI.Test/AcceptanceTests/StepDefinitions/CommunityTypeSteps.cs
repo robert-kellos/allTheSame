@@ -1,29 +1,41 @@
-﻿using System.Collections.Generic;
-using AllTheSame.Common.Extensions;
-using AllTheSame.Common.Helpers;
+﻿using System;
+using System.Collections.Generic;
+using System.Net.Http;
 using AllTheSame.Entity.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
-using AllTheSame.Common.Logging;
-using System.Net.Http;
-using System.Web.Http.Results;
-using System.Net;
-using System;
-using System.Net.Http.Headers;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Net.Http.Formatting;
-using Newtonsoft.Json;
-using System.Web.Http;
-using Newtonsoft.Json.Serialization;
-using AllTheSame.WebAPI.Models;
 
 namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
 {
     [Binding]
-    public class CommunityTypeSteps : BaseServiceTest//AuthenticatedTest //- Allows automatic fetching of token for each get call
+    public class CommunityTypeSteps : BaseServiceTest
+        //AuthenticatedTest //- Allows automatic fetching of token for each get call
     {
+        public override string Uri => "/api/CommunityType";
+
+        #region Get - get an item by Id
+
+        //
+        [Given(@"the following CommunityType GetById input")]
+        public void GivenTheFollowingCommunityTypeGetByIdInput(Table table)
+        {
+            var response = default(HttpResponseMessage);
+            AggregateException error;
+
+            PostAsync(_addItem).ContinueWith(
+                t => { response = ActionResponse(t, out error); }
+                ).Wait();
+
+            Assert.IsNotNull(response);
+            ScenarioContext.Current[AddItemKey] = response;
+        }
+
+        //
+
+        #endregion Post - add a new item by a populated item
+
         #region Local Properties/Fields
+
         //
         private const string HttpResponseKey = "http_response";
 
@@ -63,16 +75,18 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         private string _code = "";
         private string _label = "";
         //
+
         #endregion Local Properties/Fields
 
-        public override string Uri => "/api/CommunityType";
-
-
         #region CRUD Tests
+
         //
 
-        [When(@"I call the add CommunityType Post api endpoint to add a CommunityType it checks if exists pulls item edits it and deletes it")]
-        public void WhenICallTheAddCommunityTypePostApiEndpointToAddACommunityTypeItChecksIfExistsPullsItemEditsItAndDeletesIt()
+        [When(
+            @"I call the add CommunityType Post api endpoint to add a CommunityType it checks if exists pulls item edits it and deletes it"
+            )]
+        public void
+            WhenICallTheAddCommunityTypePostApiEndpointToAddACommunityTypeItChecksIfExistsPullsItemEditsItAndDeletesIt()
         {
             HttpResponseMessage response;
 
@@ -82,7 +96,9 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             ScenarioContext.Current[AddItemKey] = response;
         }
 
-        [Then(@"the add result should be a CommunityType Id check exists get by id edit and delete with http response returns")]
+        [Then(
+            @"the add result should be a CommunityType Id check exists get by id edit and delete with http response returns"
+            )]
         public void ThenTheAddResultShouldBeACommunityTypeIdCheckExistsGetByIdEditAndDeleteWithHttpResponseReturns()
         {
             //did we get a good result
@@ -124,11 +140,13 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             var deleteResponse = Delete(_deletedIdValue);
             Assert.IsNotNull(deleteResponse);
         }
+
         //
+
         #endregion CRUD Tests
 
-
         #region Post - add a new item by a populated item
+
         //
         [Given(@"the following CommunityType Add input")]
         public void GivenTheFollowingCommunityTypeAddInput(Table table)
@@ -144,12 +162,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             Assert.IsNotNull(_code);
             Assert.IsNotNull(_label);
 
-            _addItem = new CommunityType()
+            _addItem = new CommunityType
             {
                 Code = _code,
                 Label = _label,
-
-                CreatedOn = DateTime.UtcNow,
+                CreatedOn = DateTime.UtcNow
             };
         }
 
@@ -160,11 +177,8 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             AggregateException error;
 
             PostAsync(_addItem).ContinueWith(
-                t =>
-                {
-                    response = ActionResponse(t, out error);
-                }
-            ).Wait();
+                t => { response = ActionResponse(t, out error); }
+                ).Wait();
 
             Assert.IsNotNull(response);
             ScenarioContext.Current[AddItemKey] = response;
@@ -177,20 +191,19 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             AggregateException error;
 
             PostAsync(_addItem).ContinueWith(
-                t =>
-                {
-                    response = ActionResponse(t, out error);
-                }
-            ).Wait();
+                t => { response = ActionResponse(t, out error); }
+                ).Wait();
 
             Assert.IsNotNull(response);
             ScenarioContext.Current[AddItemKey] = response;
         }
 
         //
+
         #endregion Post - add a new item by a populated item
 
         #region Get - get a list of items
+
         //
         [When(@"I call the CommunityType Get api endpoint")]
         public void WhenICallTheCommunityTypeGetApiEndpoint()
@@ -201,38 +214,17 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         [Then(@"the get result should be a list of CommunityTypes")]
         public void ThenTheGetResultShouldBeAListOfCommunityTypes()
         {
-         
             var list = ScenarioContext.Current[GetListKey];
             Assert.IsNotNull(list);
             Assert.IsNotNull(list as IList<CommunityType>);
         }
 
         //
+
         #endregion Get - get a list of items
 
-        #region Get - get an item by Id
-        //
-        [Given(@"the following CommunityType GetById input")]
-        public void GivenTheFollowingCommunityTypeGetByIdInput(Table table)
-        {
-            var response = default(HttpResponseMessage);
-            AggregateException error;
-
-            PostAsync(_addItem).ContinueWith(
-                t =>
-                {
-                    response = ActionResponse(t, out error);
-                }
-            ).Wait();
-
-            Assert.IsNotNull(response);
-            ScenarioContext.Current[AddItemKey] = response;
-        }
-
-        //
-        #endregion Post - add a new item by a populated item
-
         #region Put - edit an existing item by a populated item, and its Id
+
         //  
 
         [Given(@"the following CommunityType Edit input")]
@@ -254,9 +246,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         }
 
         //
+
         #endregion Put - edit an existing item by a populated item, and its Id
 
         #region Post - delete an existing item by a populated item
+
         //
         [Given(@"the following CommunityType Delete input")]
         public void GivenTheFollowingCommunityTypeDeleteInput(Table table)
@@ -277,9 +271,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         }
 
         //
+
         #endregion Post - delete an existing item by a populated item
 
         #region Get - Exists, verify Exists function checks and return a valid bool for exists or not
+
         //
 
         [Given(@"the following CommunityType Id input")]
@@ -289,7 +285,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
 
             foreach (var row in table.Rows)
             {
-                _existsId = row["Id"]; 
+                _existsId = row["Id"];
 
                 break;
             }
@@ -318,8 +314,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         }
 
         //
-        #endregion Get - Exists, verify Exists function checks and return a valid bool for exists or not
 
-        //
+        #endregion Get - Exists, verify Exists function checks and return a valid bool for exists or not
     }
 }

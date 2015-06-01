@@ -1,21 +1,39 @@
-﻿using System.Collections.Generic;
-using AllTheSame.Common.Extensions;
-using AllTheSame.Common.Helpers;
+﻿using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
+using AllTheSame.Common.Logging;
 using AllTheSame.Entity.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
-using AllTheSame.Common.Logging;
-using System.Net.Http;
-using System.Net;
-using System;
-using System.Threading.Tasks;
 
 namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
 {
     [Binding]
-    public class AlertTypeSteps : BaseServiceTest//AuthenticatedTest //- Allows automatic fetching of token for each get call
+    public class AlertTypeSteps : BaseServiceTest
+        //AuthenticatedTest //- Allows automatic fetching of token for each get call
     {
+        public override string Uri => "/api/AlertType";
+        //
+
+        #region helpers
+
+        //
+        public int ConvertToIntValue(string value)
+        {
+            var result = -1;
+
+            int.TryParse(value, out result);
+
+            return result;
+        }
+
+        //
+
+        #endregion helpers
+
         #region Local Properties/Fields
+
         //
         private const string HttpResponseKey = "http_response";
 
@@ -45,7 +63,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
 
         private string _existsId = "-1";
         private int _existsIdValue = -1;
-        
+
         /*
         [Id] [int] IDENTITY(1,1) NOT NULL,
         [Code] [varchar](50) NOT NULL,
@@ -56,14 +74,16 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         private string _code = "";
         private string _formatText = "";
         //
+
         #endregion Local Properties/Fields
 
-        public override string Uri => "/api/AlertType";
-
         #region CRUD Tests
+
         //
 
-        [When(@"I call the add AlertType Post api endpoint to add a AlertType it checks if exists pulls item edits it and deletes it")]
+        [When(
+            @"I call the add AlertType Post api endpoint to add a AlertType it checks if exists pulls item edits it and deletes it"
+            )]
         public void WhenICallTheAddAlertTypePostApiEndpointToAddAAlertTypeItChecksIfExistsPullsItemEditsItAndDeletesIt()
         {
             HttpResponseMessage response;
@@ -74,7 +94,9 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             ScenarioContext.Current[AddItemKey] = response;
         }
 
-        [Then(@"the add result should be a AlertType Id check exists get by id edit and delete with http response returns")]
+        [Then(
+            @"the add result should be a AlertType Id check exists get by id edit and delete with http response returns"
+            )]
         public void ThenTheAddResultShouldBeAAlertTypeIdCheckExistsGetByIdEditAndDeleteWithHttpResponseReturns()
         {
             //did we get a good result
@@ -116,11 +138,13 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             var deleteResponse = Delete(_deletedIdValue);
             Assert.IsNotNull(deleteResponse);
         }
+
         //
+
         #endregion CRUD Tests
 
-
         #region Post - add a new item by a populated item
+
         //
         [Given(@"the following AlertType Add input")]
         public void GivenTheFollowingAlertTypeAddInput(Table table)
@@ -135,12 +159,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             }
             Assert.IsNotNull(_code);
 
-            _addItem = new AlertType()
+            _addItem = new AlertType
             {
                 Code = _code,
                 FormatText = _formatText,
-
-                CreatedOn = DateTime.UtcNow,
+                CreatedOn = DateTime.UtcNow
             };
         }
 
@@ -163,7 +186,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
                     error = t.Exception;
                     Audit.Log.Error("POST Task Exception ::", error);
                 }
-            ).Wait();
+                ).Wait();
 
             Assert.IsNotNull(response);
             ScenarioContext.Current[AddItemKey] = response;
@@ -178,7 +201,6 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             var result = PostResponse<AlertType, AlertType>(_addItem);
             if (result != null)
             {
-
                 _addedIdValue = result.Id;
                 Assert.IsTrue(_addedIdValue > 0);
 
@@ -199,9 +221,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         }
 
         //
+
         #endregion Post - add a new item by a populated item
 
         #region Get - get a list of items
+
         //
         [When(@"I call the AlertType Get api endpoint")]
         public void WhenICallTheAlertTypeGetApiEndpoint()
@@ -218,9 +242,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         }
 
         //
+
         #endregion Get - get a list of items
 
         #region Get - get an item by Id
+
         //
         [Given(@"the following AlertType GetById input")]
         public void GivenTheFollowingAlertTypeGetByIdInput(Table table)
@@ -234,7 +260,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             }
             Assert.IsNotNull(_getId);
             _getIdValue = ConvertToIntValue(_getId);
-            Assert.IsTrue(_getIdValue > 0);  
+            Assert.IsTrue(_getIdValue > 0);
         }
 
         [When(@"I call the AlertType Get api endpoint by Id")]
@@ -252,11 +278,13 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             Assert.IsNotNull(item);
             Assert.IsTrue(item.Id == _getIdValue);
         }
-        
+
         //
+
         #endregion Post - add a new item by a populated item
 
         #region Put - edit an existing item by a populated item, and its Id
+
         //
         [Given(@"the following AlertType Edit input")]
         public void GivenTheFollowingAlertTypeEditInput(Table table)
@@ -279,11 +307,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             Assert.IsTrue(_editIdValue > 0);
             Assert.IsNotNull(_code);
 
-            _editItem = new AlertType()
+            _editItem = new AlertType
             {
                 Id = _editIdValue,
                 Code = _code,
-                FormatText = _formatText,
+                FormatText = _formatText
             };
         }
 
@@ -299,7 +327,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
                     if (t.IsCompleted)
                     {
                         if (t.Result != null)
-                            response = (t.Result as HttpResponseMessage);
+                            response = t.Result;
                     }
 
                     if (t.IsFaulted)
@@ -308,7 +336,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
                         Audit.Log.Error("PUT Task Exception ::", error);
                     }
                 }
-            ).Wait();
+                ).Wait();
 
             Assert.IsNotNull(response);
             ScenarioContext.Current[EditItemKey] = response;
@@ -335,9 +363,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         }
 
         //
+
         #endregion Put - edit an existing item by a populated item, and its Id
 
         #region Post - delete an existing item by a populated item
+
         //
         [Given(@"the following AlertType Delete input")]
         public void GivenTheFollowingAlertTypeDeleteInput(Table table)
@@ -346,7 +376,8 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
 
             foreach (var row in table.Rows)
             {
-                _deletedId = _addedIdValue > 0 ? _addedIdValue.ToString() : row["Id"]; //this is just a place holder, using Id from added item
+                _deletedId = _addedIdValue > 0 ? _addedIdValue.ToString() : row["Id"];
+                    //this is just a place holder, using Id from added item
 
                 break;
             }
@@ -364,12 +395,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         [When(@"I call the delete AlertType Post api endpoint to delete a alertType")]
         public void WhenICallTheDeleteAlertTypePostApiEndpointToDeleteAAlertType()
         {
-            _addItem = new AlertType()
+            _addItem = new AlertType
             {
                 Code = "test",
                 FormatText = "test",
-
-                CreatedOn = DateTime.UtcNow,
+                CreatedOn = DateTime.UtcNow
             };
             WhenICallTheAddAlertTypePostApiEndpointToAddAAlertType();
             var result = PostResponse<AlertType, AlertType>(_addItem);
@@ -384,7 +414,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
                     if (t.IsCompleted)
                     {
                         if (t.Result != null)
-                            response = (t.Result as HttpResponseMessage);
+                            response = t.Result;
                     }
 
                     if (t.IsFaulted)
@@ -393,7 +423,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
                         Audit.Log.Error("POST Task Exception ::", error);
                     }
                 }
-            ).Wait();
+                ).Wait();
 
             Assert.IsNotNull(response);
             ScenarioContext.Current[DeleteItemKey] = response;
@@ -413,9 +443,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         }
 
         //
+
         #endregion Post - delete an existing item by a populated item
 
         #region Get - Exists, verify Exists function checks and return a valid bool for exists or not
+
         //
 
         [Given(@"the following AlertType Id input")]
@@ -454,21 +486,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         }
 
         //
+
         #endregion Get - Exists, verify Exists function checks and return a valid bool for exists or not
-
-        //
-
-        #region helpers
-        //
-        public int ConvertToIntValue(string value)
-        {
-            var result = -1;
-
-            int.TryParse(value, out result);
-
-            return result;
-        }
-        //
-        #endregion helpers
     }
 }

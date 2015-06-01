@@ -1,17 +1,21 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
 using AllTheSame.Entity.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
-using System.Net.Http;
-using System.Net;
-using System;
 
 namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
 {
     [Binding]
-    public class AppointmentSteps : BaseServiceTest//AuthenticatedTest //- Allows automatic fetching of token for each get call
+    public class AppointmentSteps : BaseServiceTest
+        //AuthenticatedTest //- Allows automatic fetching of token for each get call
     {
+        public override string Uri => "/api/Appointment";
+
         #region Local Properties/Fields
+
         //
         private const string HttpResponseKey = "http_response";
 
@@ -46,8 +50,8 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         private DateTime _endTime;
         private string _description = "";
         private int _appointmentTypeId;
-        private int _residentId = 20;
-        private int _vendorWorkerId = 13;
+        private readonly int _residentId = 20;
+        private readonly int _vendorWorkerId = 13;
         private bool _remindVendor;
         private bool _alertOnVendorSignIn;
         private bool _alertOnVendorSignOut;
@@ -67,15 +71,18 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
 	    [UpdatedOn] [datetime] NULL,
         */
         //
+
         #endregion Local Properties/Fields
 
-        public override string Uri => "/api/Appointment";
-
         #region CRUD Tests
+
         //
 
-        [When(@"I call the add Appointment Post api endpoint to add a Appointment it checks if exists pulls item edits it and deletes it")]
-        public void WhenICallTheAddAppointmentPostApiEndpointToAddAAppointmentItChecksIfExistsPullsItemEditsItAndDeletesIt()
+        [When(
+            @"I call the add Appointment Post api endpoint to add a Appointment it checks if exists pulls item edits it and deletes it"
+            )]
+        public void
+            WhenICallTheAddAppointmentPostApiEndpointToAddAAppointmentItChecksIfExistsPullsItemEditsItAndDeletesIt()
         {
             HttpResponseMessage response;
 
@@ -85,7 +92,9 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             ScenarioContext.Current[AddItemKey] = response;
         }
 
-        [Then(@"the add result should be a Appointment Id check exists get by id edit and delete with http response returns")]
+        [Then(
+            @"the add result should be a Appointment Id check exists get by id edit and delete with http response returns"
+            )]
         public void ThenTheAddResultShouldBeAAppointmentIdCheckExistsGetByIdEditAndDeleteWithHttpResponseReturns()
         {
             //did we get a good result
@@ -127,11 +136,13 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             var deleteResponse = Delete(_deletedIdValue);
             Assert.IsNotNull(deleteResponse);
         }
+
         //
+
         #endregion CRUD Tests
 
-
         #region Post - add a new item by a populated item
+
         //
         [Given(@"the following Appointment Add input")]
         public void GivenTheFollowingAppointmentAddInput(Table table)
@@ -157,11 +168,10 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
 
             Assert.IsNotNull(_description);
 
-            _addItem = new Appointment()
+            _addItem = new Appointment
             {
                 ResidentId = _residentId,
                 VendorWorkerId = _vendorWorkerId,
-
                 StartTime = _startTime,
                 EndTime = _endTime,
                 AppointmentTypeId = _appointmentTypeId,
@@ -169,8 +179,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
                 RemindVendor = _remindVendor,
                 AlertOnVendorSignIn = _alertOnVendorSignIn,
                 AlertOnVendorSignOut = _alertOnVendorSignOut,
-
-                CreatedOn = DateTime.UtcNow,
+                CreatedOn = DateTime.UtcNow
             };
         }
 
@@ -181,11 +190,8 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             AggregateException error;
 
             PostAsync(_addItem).ContinueWith(
-                t =>
-                {
-                    response = ActionResponse(t, out error);
-                }
-            ).Wait();
+                t => { response = ActionResponse(t, out error); }
+                ).Wait();
 
             Assert.IsNotNull(response);
             ScenarioContext.Current[AddItemKey] = response;
@@ -198,11 +204,8 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             AggregateException error;
 
             PostAsync(_addItem).ContinueWith(
-                t =>
-                {
-                    response = ActionResponse(t, out error);
-                }
-            ).Wait();
+                t => { response = ActionResponse(t, out error); }
+                ).Wait();
 
             Assert.IsNotNull(response);
             ScenarioContext.Current[AddItemKey] = response;
@@ -236,9 +239,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         }
 
         //
+
         #endregion Post - add a new item by a populated item
-                
+
         #region Get - get a list of items
+
         //
         [When(@"I call the Appointment Get api endpoint")]
         public void WhenICallTheAppointmentGetApiEndpoint()
@@ -253,10 +258,13 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             Assert.IsNotNull(list);
             Assert.IsNotNull(list as IList<Appointment>);
         }
+
         //
+
         #endregion Get - get a list of items
 
         #region Get - get an item by Id
+
         //
         [Given(@"the following Appointment GetById input")]
         public void GivenTheFollowingAppointmentGetByIdInput(Table table)
@@ -270,7 +278,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             }
             Assert.IsNotNull(_getId);
             _getIdValue = ConvertToIntValue(_getId);
-            Assert.IsTrue(_getIdValue > 0);  
+            Assert.IsTrue(_getIdValue > 0);
         }
 
         [When(@"I call the Appointment Get api endpoint by Id")]
@@ -290,9 +298,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         }
 
         //
+
         #endregion Post - add a new item by a populated item
 
         #region Put - edit an existing item by a populated item, and its Id
+
         //
         [Given(@"the following Appointment Edit input")]
         public void GivenTheFollowingAppointmentEditInput(Table table)
@@ -314,10 +324,10 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             Assert.IsTrue(_editIdValue > 0);
             Assert.IsNotNull(_description);
 
-            _editItem = new Appointment()
+            _editItem = new Appointment
             {
                 Id = _editIdValue,
-                Description = _description,
+                Description = _description
             };
         }
 
@@ -328,11 +338,8 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             AggregateException error;
 
             PutAsync(_editItem.Id, _editItem).ContinueWith(
-                t =>
-                {
-                    response = ActionResponse(t, out error);
-                }
-            ).Wait();
+                t => { response = ActionResponse(t, out error); }
+                ).Wait();
 
             Assert.IsNotNull(response);
             ScenarioContext.Current[EditItemKey] = response;
@@ -358,9 +365,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         }
 
         //
+
         #endregion Put - edit an existing item by a populated item, and its Id
 
         #region Post - delete an existing item by a populated item
+
         //
         [Given(@"the following Appointment Delete input")]
         public void GivenTheFollowingAppointmentDeleteInput(Table table)
@@ -369,7 +378,8 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
 
             foreach (var row in table.Rows)
             {
-                _deletedId = _deletedIdValue > 0 ? _deletedIdValue.ToString() : row["Id"]; //this is just a place holder, using Id from added item
+                _deletedId = _deletedIdValue > 0 ? _deletedIdValue.ToString() : row["Id"];
+                    //this is just a place holder, using Id from added item
 
                 break;
             }
@@ -386,11 +396,10 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         [When(@"I call the delete Appointment Post api endpoint to delete a appointment")]
         public void WhenICallTheDeleteAppointmentPostApiEndpointToDeleteAAppointment()
         {
-            _addItem = new Appointment()
+            _addItem = new Appointment
             {
                 Description = "test",
-
-                CreatedOn = DateTime.UtcNow,
+                CreatedOn = DateTime.UtcNow
             };
             WhenICallTheAddAppointmentPostApiEndpointToAddAAppointment();
             var result = PostResponse<Appointment, Appointment>(_addItem);
@@ -400,11 +409,8 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             AggregateException error;
 
             DeleteAsync(_deletedIdValue).ContinueWith(
-                t =>
-                {
-                    response = ActionResponse(t, out error);
-                }
-            ).Wait();
+                t => { response = ActionResponse(t, out error); }
+                ).Wait();
 
             Assert.IsNotNull(response);
             ScenarioContext.Current[DeleteItemKey] = response;
@@ -424,9 +430,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         }
 
         //
+
         #endregion Post - delete an existing item by a populated item
 
         #region Get - Exists, verify Exists function checks and return a valid bool for exists or not
+
         //
         [When(@"I call the Appointment Exists Get api endpoint by Id to verify if it exists")]
         public void WhenICallTheAppointmentExistsGetApiEndpointByIdToVerifyIfItExists()
@@ -447,7 +455,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         }
 
         //
+
         #endregion Get - Exists, verify Exists function checks and return a valid bool for exists or not
-        
     }
 }
