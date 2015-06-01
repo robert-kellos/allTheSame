@@ -31,8 +31,8 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.Features
         public static void FeatureSetup(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "CommunityWorker", "In order to see a list of communityWorkers\r\nAs a Community Administrator\r\nI want " +
-                    "to load a list of communityWorkers", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "CommunityWorker", "In order to see a list of CommunityWorkers\r\nAs a Community Administrator\r\nI want " +
+                    "to load a list of CommunityWorkers", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -70,158 +70,71 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.Features
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Add a communityWorker")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("CommunityWorker--Add, Check, GetById, Update and Delete CommunityWorker")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "CommunityWorker")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("CommunityWorker")]
-        public virtual void AddACommunityWorker()
+        public virtual void CommunityWorker_AddCheckGetByIdUpdateAndDeleteCommunityWorker()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add a communityWorker", new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("CommunityWorker--Add, Check, GetById, Update and Delete CommunityWorker", new string[] {
                         "CommunityWorker"});
 #line 8
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
-                        "FirstName",
-                        "LastName",
-                        "Email",
-                        "MobileNumber"});
+                        "CommunityId"});
             table1.AddRow(new string[] {
-                        "Spec",
-                        "Flow",
-                        "x@y.com",
-                        "800-555-1212"});
+                        "17"});
 #line 9
  testRunner.Given("the following CommunityWorker Add input", ((string)(null)), table1, "Given ");
 #line 12
- testRunner.When("I call the add CommunityWorker Post api endpoint to add a communityWorker", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I call the add CommunityWorker Post api endpoint to add a CommunityWorker it chec" +
+                    "ks if exists pulls item edits it and deletes it", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 13
- testRunner.Then("the add result should be a CommunityWorker Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the add result should be a CommunityWorker Id check exists get by id edit and del" +
+                    "ete with http response returns", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Retrieve all communityWorkers")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("CommunityWorker--Retrieve all CommunityWorkers")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "CommunityWorker")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("CommunityWorkers")]
-        public virtual void RetrieveAllCommunityWorkers()
+        public virtual void CommunityWorker_RetrieveAllCommunityWorkers()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve all communityWorkers", new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("CommunityWorker--Retrieve all CommunityWorkers", new string[] {
                         "CommunityWorkers"});
 #line 17
 this.ScenarioSetup(scenarioInfo);
 #line 19
  testRunner.When("I call the CommunityWorker Get api endpoint", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 20
- testRunner.Then("the get result should be a list of communityWorkers", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the get result should be a list of CommunityWorkers", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Retrieve a communityWorker by Id")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Add a CommunityWorker")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "CommunityWorker")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("CommunityWorker")]
-        public virtual void RetrieveACommunityWorkerById()
+        public virtual void AddACommunityWorker()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve a communityWorker by Id", new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add a CommunityWorker", new string[] {
                         "CommunityWorker"});
 #line 24
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Id"});
+                        "CommunityId"});
             table2.AddRow(new string[] {
-                        "2"});
+                        "17"});
 #line 25
- testRunner.Given("the following CommunityWorker GetById input", ((string)(null)), table2, "Given ");
+ testRunner.Given("the following CommunityWorker Add input", ((string)(null)), table2, "Given ");
 #line 28
- testRunner.When("I call the CommunityWorker Get api endpoint by Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I call the add CommunityWorker Post api endpoint to add a CommunityWorker", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 29
- testRunner.Then("the get by id result should be a CommunityWorker", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Update a communityWorker")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "CommunityWorker")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("CommunityWorker")]
-        public virtual void UpdateACommunityWorker()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update a communityWorker", new string[] {
-                        "CommunityWorker"});
-#line 33
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Id",
-                        "FirstName",
-                        "LastName",
-                        "Email",
-                        "MobileNumber"});
-            table3.AddRow(new string[] {
-                        "2",
-                        "Spec",
-                        "Flow",
-                        "x@y.com",
-                        "800-555-1212"});
-#line 34
- testRunner.Given("the following CommunityWorker Edit input", ((string)(null)), table3, "Given ");
-#line 37
- testRunner.When("I call the edit CommunityWorker Put api endpoint to edit a communityWorker", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 38
- testRunner.Then("the edit result should be an updated CommunityWorker", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete a communityWorker")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "CommunityWorker")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("CommunityWorker")]
-        public virtual void DeleteACommunityWorker()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete a communityWorker", new string[] {
-                        "CommunityWorker"});
-#line 42
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Id"});
-            table4.AddRow(new string[] {
-                        "0"});
-#line 43
- testRunner.Given("the following CommunityWorker Delete input", ((string)(null)), table4, "Given ");
-#line 47
- testRunner.When("I call the delete CommunityWorker Post api endpoint to delete a communityWorker", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 48
- testRunner.Then("the delete result should be an deleted CommunityWorker", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Check if a communityWorker exists")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "CommunityWorker")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("CommunityWorker")]
-        public virtual void CheckIfACommunityWorkerExists()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Check if a communityWorker exists", new string[] {
-                        "CommunityWorker"});
-#line 52
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Id"});
-            table5.AddRow(new string[] {
-                        "2"});
-#line 53
- testRunner.Given("the following CommunityWorker Id input", ((string)(null)), table5, "Given ");
-#line 56
- testRunner.When("I call the CommunityWorker Exists Get api endpoint by Id to verify if it exists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 57
- testRunner.Then("the CommunityWorker exists result should be bool true or false", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the add result should be a CommunityWorker Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

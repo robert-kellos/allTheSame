@@ -1,7 +1,7 @@
 ﻿Feature: AlertType
-	In order to see a list of alertTypes
+	In order to see a list of AlertTypes
 	As a Community Administrator
-	I want to load a list of alertTypes
+	I want to load a list of AlertTypes
 
 @AlertType 
 #[C]RUD - [Post] :: Create, Check, GetById, Update and Delete AlertType, by passing a newly populated AlertType
@@ -21,11 +21,11 @@ Scenario: AlertType--Retrieve all AlertTypes
 
 @AlertType 
 #[C]RUD - [Post] :: Create a new alertType, by passing a newly populated alertType
-Scenario: Add a alertType
+Scenario: Add a AlertType
 	Given the following AlertType Add input
 		| Code			| FormatText |
 		| SpecFlow      | test	 |
-	When I call the add AlertType Post api endpoint to add a alertType
+	When I call the add AlertType Post api endpoint to add a AlertType
 	Then the add result should be a AlertType Id
 
 #@AlertTypes 

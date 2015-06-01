@@ -31,8 +31,8 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.Features
         public static void FeatureSetup(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "AlertType", "In order to see a list of alertTypes\r\nAs a Community Administrator\r\nI want to loa" +
-                    "d a list of alertTypes", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "AlertType", "In order to see a list of AlertTypes\r\nAs a Community Administrator\r\nI want to loa" +
+                    "d a list of AlertTypes", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -117,12 +117,12 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Add a alertType")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Add a AlertType")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "AlertType")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("AlertType")]
         public virtual void AddAAlertType()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add a alertType", new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add a AlertType", new string[] {
                         "AlertType"});
 #line 24
 this.ScenarioSetup(scenarioInfo);
@@ -136,7 +136,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 25
  testRunner.Given("the following AlertType Add input", ((string)(null)), table2, "Given ");
 #line 28
- testRunner.When("I call the add AlertType Post api endpoint to add a alertType", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I call the add AlertType Post api endpoint to add a AlertType", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 29
  testRunner.Then("the add result should be a AlertType Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden

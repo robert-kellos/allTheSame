@@ -31,8 +31,8 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.Features
         public static void FeatureSetup(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Appointment", "In order to see a list of appointments\r\nAs a Community Administrator\r\nI want to l" +
-                    "oad a list of appointments", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Appointment", "In order to see a list of Appointments\r\nAs a Community Administrator\r\nI want to l" +
+                    "oad a list of Appointments", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -81,9 +81,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.Features
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Description"});
+                        "Description",
+                        "AppointmentTypeId"});
             table1.AddRow(new string[] {
-                        "SpecFlow Test"});
+                        "SpecFlow Test",
+                        "1"});
 #line 9
  testRunner.Given("the following Appointment Add input", ((string)(null)), table1, "Given ");
 #line 12
@@ -110,6 +112,31 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.When("I call the Appointment Get api endpoint", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 20
  testRunner.Then("the get result should be a list of Appointments", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Add a Appointment")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Appointment")]
+        public virtual void AddAAppointment()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add a Appointment", ((string[])(null)));
+#line 24
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Description",
+                        "AppointmentTypeId"});
+            table2.AddRow(new string[] {
+                        "SpecFlow Test",
+                        "1"});
+#line 25
+ testRunner.Given("the following Appointment Add input", ((string)(null)), table2, "Given ");
+#line 28
+ testRunner.When("I call the add Appointment Post api endpoint to add a Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 29
+ testRunner.Then("the add result should be a Appointment Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

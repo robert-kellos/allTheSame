@@ -31,8 +31,8 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.Features
         public static void FeatureSetup(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "KioskStatus", "In order to see a list of kioskStatuses\r\nAs a Community Administrator\r\nI want to " +
-                    "load a list of kioskStatuses", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "KioskStatus", "In order to see a list of KioskStatuses\r\nAs a Community Administrator\r\nI want to " +
+                    "load a list of KioskStatuses", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -70,158 +70,75 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.Features
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Add a kioskStatus")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("KioskStatus--Add, Check, GetById, Update and Delete KioskStatus")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "KioskStatus")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("KioskStatus")]
-        public virtual void AddAKioskStatus()
+        public virtual void KioskStatus_AddCheckGetByIdUpdateAndDeleteKioskStatus()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add a kioskStatus", new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("KioskStatus--Add, Check, GetById, Update and Delete KioskStatus", new string[] {
                         "KioskStatus"});
 #line 8
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
-                        "FirstName",
-                        "LastName",
-                        "Email",
-                        "MobileNumber"});
+                        "Code",
+                        "Label"});
             table1.AddRow(new string[] {
-                        "Spec",
-                        "Flow",
-                        "x@y.com",
-                        "800-555-1212"});
+                        "SpecFlow",
+                        "test"});
 #line 9
  testRunner.Given("the following KioskStatus Add input", ((string)(null)), table1, "Given ");
 #line 12
- testRunner.When("I call the add KioskStatus Post api endpoint to add a kioskStatus", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I call the add KioskStatus Post api endpoint to add a KioskStatus it checks if ex" +
+                    "ists pulls item edits it and deletes it", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 13
- testRunner.Then("the add result should be a KioskStatus Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the add result should be a KioskStatus Id check exists get by id edit and delete " +
+                    "with http response returns", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Retrieve all kioskStatuses")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("KioskStatus--Retrieve all KioskStatuses")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "KioskStatus")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("KioskStatuss")]
-        public virtual void RetrieveAllKioskStatuses()
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("KioskStatuses")]
+        public virtual void KioskStatus_RetrieveAllKioskStatuses()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve all kioskStatuses", new string[] {
-                        "KioskStatuss"});
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("KioskStatus--Retrieve all KioskStatuses", new string[] {
+                        "KioskStatuses"});
 #line 17
 this.ScenarioSetup(scenarioInfo);
 #line 19
  testRunner.When("I call the KioskStatus Get api endpoint", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 20
- testRunner.Then("the get result should be a list of kioskStatuses", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the get result should be a list of KioskStatuses", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Retrieve a kioskStatus by Id")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Add a KioskStatus")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "KioskStatus")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("KioskStatus")]
-        public virtual void RetrieveAKioskStatusById()
+        public virtual void AddAKioskStatus()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve a kioskStatus by Id", new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add a KioskStatus", new string[] {
                         "KioskStatus"});
 #line 24
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Id"});
+                        "Code",
+                        "Label"});
             table2.AddRow(new string[] {
-                        "2"});
+                        "SpecFlowTest",
+                        "FlowTest"});
 #line 25
- testRunner.Given("the following KioskStatus GetById input", ((string)(null)), table2, "Given ");
+ testRunner.Given("the following KioskStatus Add input", ((string)(null)), table2, "Given ");
 #line 28
- testRunner.When("I call the KioskStatus Get api endpoint by Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I call the add KioskStatus Post api endpoint to add a KioskStatus", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 29
- testRunner.Then("the get by id result should be a KioskStatus", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Update a kioskStatus")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "KioskStatus")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("KioskStatus")]
-        public virtual void UpdateAKioskStatus()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update a kioskStatus", new string[] {
-                        "KioskStatus"});
-#line 33
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Id",
-                        "FirstName",
-                        "LastName",
-                        "Email",
-                        "MobileNumber"});
-            table3.AddRow(new string[] {
-                        "2",
-                        "Spec",
-                        "Flow",
-                        "x@y.com",
-                        "800-555-1212"});
-#line 34
- testRunner.Given("the following KioskStatus Edit input", ((string)(null)), table3, "Given ");
-#line 37
- testRunner.When("I call the edit KioskStatus Put api endpoint to edit a kioskStatus", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 38
- testRunner.Then("the edit result should be an updated KioskStatus", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete a kioskStatus")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "KioskStatus")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("KioskStatus")]
-        public virtual void DeleteAKioskStatus()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete a kioskStatus", new string[] {
-                        "KioskStatus"});
-#line 42
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Id"});
-            table4.AddRow(new string[] {
-                        "0"});
-#line 43
- testRunner.Given("the following KioskStatus Delete input", ((string)(null)), table4, "Given ");
-#line 47
- testRunner.When("I call the delete KioskStatus Post api endpoint to delete a kioskStatus", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 48
- testRunner.Then("the delete result should be an deleted KioskStatus", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Check if a kioskStatus exists")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "KioskStatus")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("KioskStatus")]
-        public virtual void CheckIfAKioskStatusExists()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Check if a kioskStatus exists", new string[] {
-                        "KioskStatus"});
-#line 52
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Id"});
-            table5.AddRow(new string[] {
-                        "2"});
-#line 53
- testRunner.Given("the following KioskStatus Id input", ((string)(null)), table5, "Given ");
-#line 56
- testRunner.When("I call the KioskStatus Exists Get api endpoint by Id to verify if it exists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 57
- testRunner.Then("the KioskStatus exists result should be bool true or false", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the add result should be a KioskStatus Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

@@ -60,25 +60,9 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         [When(@"I call the add Address Post api endpoint to add a Address it checks if exists pulls item edits it and deletes it")]
         public void WhenICallTheAddAddressPostApiEndpointToAddAAddressItChecksIfExistsPullsItemEditsItAndDeletesIt()
         {
-            var response = default(HttpResponseMessage);
-            var error = default(AggregateException);
+            HttpResponseMessage response;
 
-            PostAsync(_addItem).ContinueWith(
-                t =>
-                {
-                    if (t.IsCompleted)
-                    {
-                        if (t.Result != null)
-                            response = (t.Result as HttpResponseMessage);
-                    }
-
-                    if (t.IsFaulted)
-                    {
-                        error = t.Exception;
-                        Audit.Log.Error("POST Task Exception ::", error);
-                    }
-                }
-            ).Wait();
+            _addItem = Add(_addItem, out response);
 
             Assert.IsNotNull(response);
             ScenarioContext.Current[AddItemKey] = response;
@@ -87,30 +71,24 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         [Then(@"the add result should be a Address Id check exists get by id edit and delete with http response returns")]
         public void ThenTheAddResultShouldBeAAddressIdCheckExistsGetByIdEditAndDeleteWithHttpResponseReturns()
         {
-            //is the item setup
-            Assert.IsTrue(_addItem != null);
-
-            //add the item
-            var resultAdd = Add(_addItem);
-
             //did we get a good result
-            Assert.IsTrue(resultAdd != null && resultAdd.Id > 0);
+            Assert.IsTrue(_addItem != null && _addItem.Id > 0);
 
-            //set te returned AddID to current Get
-            _addedIdValue = resultAdd.Id;
+            //set the returned AddID to current Get
+            _addedIdValue = _addItem.Id;
             _getIdValue = _addedIdValue;
             _existsIdValue = _getIdValue;
 
             //check that the item exists
             var itemReturned = Exists(_existsIdValue);
-            Assert.IsNotNull(itemReturned);
+            Assert.IsTrue(itemReturned);
 
             //use the value used in exists check
-            _getIdValue = itemReturned.Id;
+            _getIdValue = _addItem.Id;
             Assert.IsTrue(_getIdValue == _addedIdValue);
 
             //pull the item by Id
-            var resultGet = GetById(_getIdValue);
+            var resultGet = GetById<Address>(_getIdValue);
             Assert.IsNotNull(resultGet);
             _getIdValue = resultGet.Id;
             Assert.IsTrue(_getIdValue == _addedIdValue);
@@ -121,169 +99,16 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             Assert.IsTrue(_editIdValue == _addedIdValue);
 
             //do an update
-            Update(_editIdValue, _editItem);
+            var updateResponse = Update(_editIdValue, _editItem);
+            Assert.IsNotNull(updateResponse);
 
             //pass the item just updated
             _deletedIdValue = _editIdValue;
             Assert.IsTrue(_deletedIdValue == _addedIdValue);
 
             //delete this same item
-            Delete(_deletedIdValue);
-        }
-
-        private Address Add(Address item)
-        {
-            var response = default(HttpResponseMessage);
-            var error = default(AggregateException);
-
-            PostAsync(item).ContinueWith(
-                t =>
-                {
-                    if (t.IsCompleted)
-                    {
-                        if (t.Result != null)
-                            response = (t.Result as HttpResponseMessage);
-                    }
-
-                    if (t.IsFaulted)
-                    {
-                        error = t.Exception;
-                        Audit.Log.Error("POST Task Exception ::", error);
-                    }
-                }
-            ).Wait();
-
-            Assert.IsNotNull(response);
-            ScenarioContext.Current[AddItemKey] = response;
-
-            //grab the resulting added item
-            var resultAdd = PostResponse<Address, Address>(item);
-            if (resultAdd != null)
-            {
-                _addedIdValue = resultAdd.Id;
-                Assert.IsTrue(_addedIdValue > 0);
-
-                //Let's store the newly added Id in delete/edit, so we can later
-                //edit and delete this same record
-                _editIdValue = _addedIdValue;
-                _deletedIdValue = _addedIdValue;
-
-                ////validate values changed
-                Assert.AreEqual(item.Line1, resultAdd.Line1);
-            }
-
-            response = (ScenarioContext.Current[AddItemKey] as HttpResponseMessage);
-
-            Assert.IsNotNull(response);
-            Assert.IsTrue(response.StatusCode == HttpStatusCode.Created);
-
-            return resultAdd;
-        }
-
-        private Address Exists(int id)
-        {
-            //Check it exists
-            ScenarioContext.Current[ExistsItemKey] = GetResponseExists<bool>(id);
-
-            var resultExists = ScenarioContext.Current[ExistsItemKey];
-
-            //call manually to verify Exists returned correctly
-            var itemReturned = GetResponseById<Address>(id);
-
-            var truth = (itemReturned != null && itemReturned.Id == id);
-            Assert.AreEqual(truth, resultExists);
-
-            return itemReturned;
-        }
-
-        private Address GetById(int id)
-        {
-            ScenarioContext.Current[GetItemKey] = GetResponseById<Address>(id);
-
-            var resultGet = ScenarioContext.Current[GetItemKey];
-            var itemGet = (resultGet as Address);
-
-            Assert.IsNotNull(itemGet);
-            Assert.IsTrue(itemGet.Id == id);
-
-            return itemGet;
-        }
-
-        private void Update(int id, Address item)
-        {
-            var error = default(AggregateException);
-            var response = default(HttpResponseMessage);
-
-            PutAsync(item.Id, item).ContinueWith(
-                t =>
-                {
-                    if (t.IsCompleted)
-                    {
-                        if (t.Result != null)
-                            response = (t.Result as HttpResponseMessage);
-                    }
-
-                    if (t.IsFaulted)
-                    {
-                        error = t.Exception;
-                        Audit.Log.Error("PUT Task Exception ::", error);
-                    }
-                }
-            ).Wait();
-
-            Assert.IsNotNull(response);
-            ScenarioContext.Current[EditItemKey] = response;
-
-            //grab the resulting added item
-            response = (ScenarioContext.Current[EditItemKey] as HttpResponseMessage);
-            var resultEdit = PutResponse<Address, Address>(item.Id, item);
-            if (resultEdit != null)
-            {
-                Assert.IsTrue(id > 0);
-                Assert.AreEqual(id, resultEdit.Id);
-
-                //validate values changed
-                Assert.AreEqual(item.Line1, resultEdit.Line1);
-            }
-
-            Assert.IsNotNull(response);
-            Assert.IsTrue(response.StatusCode == HttpStatusCode.OK);
-        }
-
-        private void Delete(int id)
-        {
-            var error = default(AggregateException);
-            var response = default(HttpResponseMessage);
-
-            //Now, let's Delete the newly added item
-            DeleteAsync(id).ContinueWith(
-                t =>
-                {
-                    if (t.IsCompleted)
-                    {
-                        if (t.Result != null)
-                            response = (t.Result as HttpResponseMessage);
-                    }
-
-                    if (t.IsFaulted)
-                    {
-                        error = t.Exception;
-                        Audit.Log.Error("POST Task Exception ::", error);
-                    }
-                }
-            ).Wait();
-
-            Assert.IsNotNull(response);
-            ScenarioContext.Current[DeleteItemKey] = response;
-
-            //grab the resulting added item
-            var deleted = GetResponseById<Address>(id);
-            Assert.IsNull(deleted);
-
-            response = (ScenarioContext.Current[DeleteItemKey] as HttpResponseMessage);
-
-            Assert.IsNotNull(response);
-            Assert.IsTrue(response.StatusCode == HttpStatusCode.OK);
+            var deleteResponse = Delete(_deletedIdValue);
+            Assert.IsNotNull(deleteResponse);
         }
         //
         #endregion CRUD Tests
@@ -326,26 +151,16 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
 
         }
 
-        [When(@"I call the add Address Post api endpoint to add a address")]
+        [When(@"I call the add Address Post api endpoint to add a Address")]
         public void WhenICallTheAddAddressPostApiEndpointToAddAAddress()
         {
             var response = default(HttpResponseMessage);
-            var error = default(AggregateException);
+            AggregateException error;
 
             PostAsync(_addItem).ContinueWith(
                 t =>
                 {
-                    if (t.IsCompleted)
-                    {
-                        if (t.Result != null)
-                            response = (t.Result as HttpResponseMessage);
-                    }
-
-                    if (t.IsFaulted)
-                    {
-                        error = t.Exception;
-                        Audit.Log.Error("POST Task Exception ::", error);
-                    }
+                    response = ActionResponse(t, out error);
                 }
             ).Wait();
 
@@ -362,7 +177,6 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             var result = PostResponse<Address, Address>(_addItem);
             if (result != null)
             {
-
                 _addedIdValue = result.Id;
                 Assert.IsTrue(_addedIdValue > 0);
 
@@ -397,7 +211,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             ScenarioContext.Current[GetListKey] = GetResponse<IList<Address>>();
         }
 
-        [Then(@"the get result should be a list of addresses")]
+        [Then(@"the get result should be a list of Addresses")]
         public void ThenTheGetResultShouldBeAListOfAddresses()
         {
             var list = ScenarioContext.Current[GetListKey];
@@ -495,22 +309,12 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         public void WhenICallTheEditAddressPutApiEndpointToEditAAddress()
         {
             var response = default(HttpResponseMessage);
-            var error = default(AggregateException);
+            AggregateException error;
 
             PutAsync(_editItem.Id, _editItem).ContinueWith(
                 t =>
                 {
-                    if (t.IsCompleted)
-                    {
-                        if (t.Result != null)
-                            response = (t.Result as HttpResponseMessage);
-                    }
-
-                    if (t.IsFaulted)
-                    {
-                        error = t.Exception;
-                        Audit.Log.Error("PUT Task Exception ::", error);
-                    }
+                    response = ActionResponse(t, out error);
                 }
             ).Wait();
 
@@ -585,22 +389,12 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             _deletedIdValue = result.Id;
 
             var response = default(HttpResponseMessage);
-            var error = default(AggregateException);
+            AggregateException error;
 
             DeleteAsync(_deletedIdValue).ContinueWith(
                 t =>
                 {
-                    if (t.IsCompleted)
-                    {
-                        if (t.Result != null)
-                            response = (t.Result as HttpResponseMessage);
-                    }
-
-                    if (t.IsFaulted)
-                    {
-                        error = t.Exception;
-                        Audit.Log.Error("POST Task Exception ::", error);
-                    }
+                    response = ActionResponse(t, out error);
                 }
             ).Wait();
 
@@ -666,18 +460,5 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         #endregion Get - Exists, verify Exists function checks and return a valid bool for exists or not
 
         //
-
-        #region helpers
-        //
-        public int ConvertToIntValue(string value)
-        {
-            var result = -1;
-
-            int.TryParse(value, out result);
-
-            return result;
-        }
-        //
-        #endregion helpers
     }
 }

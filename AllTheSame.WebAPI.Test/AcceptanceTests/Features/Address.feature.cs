@@ -31,8 +31,8 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.Features
         public static void FeatureSetup(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Address", "In order to see a list of addresses\r\nAs a Community Administrator\r\nI want to load" +
-                    " a list of addresses", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Address", "In order to see a list of Addresses\r\nAs a Community Administrator\r\nI want to load" +
+                    " a list of Addresses", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -77,7 +77,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.Features
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Address--Add, Check, GetById, Update and Delete Address", new string[] {
                         "Address"});
-#line 9
+#line 8
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
@@ -94,12 +94,12 @@ this.ScenarioSetup(scenarioInfo);
                         "NY",
                         "USA",
                         "10221"});
-#line 10
+#line 9
  testRunner.Given("the following Address Add input", ((string)(null)), table1, "Given ");
-#line 13
+#line 12
  testRunner.When("I call the add Address Post api endpoint to add a Address it checks if exists pul" +
                     "ls item edits it and deletes it", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 14
+#line 13
  testRunner.Then("the add result should be a Address Id check exists get by id edit and delete with" +
                     " http response returns", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -107,19 +107,54 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Retrieve all addresses")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Retrieve all Addresses")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Address")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Addresses")]
         public virtual void RetrieveAllAddresses()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve all addresses", new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve all Addresses", new string[] {
                         "Addresses"});
-#line 18
+#line 17
 this.ScenarioSetup(scenarioInfo);
-#line 20
+#line 19
  testRunner.When("I call the Address Get api endpoint", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 21
- testRunner.Then("the get result should be a list of addresses", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 20
+ testRunner.Then("the get result should be a list of Addresses", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Add a Address")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Address")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Address")]
+        public virtual void AddAAddress()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add a Address", new string[] {
+                        "Address"});
+#line 24
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Line1",
+                        "Line2",
+                        "City",
+                        "State",
+                        "Country",
+                        "PostalCode"});
+            table2.AddRow(new string[] {
+                        "Spec Ave",
+                        "Flow Blvd",
+                        "NewCity",
+                        "NY",
+                        "USA",
+                        "10221"});
+#line 25
+ testRunner.Given("the following Address Add input", ((string)(null)), table2, "Given ");
+#line 28
+ testRunner.When("I call the add Address Post api endpoint to add a Address", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 29
+ testRunner.Then("the add result should be a Address Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

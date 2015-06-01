@@ -9,7 +9,7 @@ Scenario: Add a requirementType
 	Given the following RequirementType Add input
 		| FirstName | LastName | Email   | MobileNumber |
 		| Spec      | Flow     | x@y.com | 800-555-1212 |
-	When I call the add RequirementType Post api endpoint to add a requirementType
+	When I call the add RequirementType Post api endpoint to add a RequirementType
 	Then the add result should be a RequirementType Id
 
 @RequirementTypes 

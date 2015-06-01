@@ -31,8 +31,8 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.Features
         public static void FeatureSetup(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "CommunityAdmin", "In order to see a list of communityAdmins\r\nAs a Community Administrator\r\nI want t" +
-                    "o load a list of communityAdmins", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "CommunityAdmin", "In order to see a list of CommunityAdmin\r\nAs a Community Administrator\r\nI want to" +
+                    " load a list of CommunityAdmin", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -110,6 +110,31 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.When("I call the CommunityAdmin Get api endpoint", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 20
  testRunner.Then("the get result should be a list of communityAdmins", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Add a communityAdmin")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "CommunityAdmin")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("CommunityAdmin")]
+        public virtual void AddACommunityAdmin()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add a communityAdmin", new string[] {
+                        "CommunityAdmin"});
+#line 24
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Id"});
+            table2.AddRow(new string[] {
+                        "1"});
+#line 25
+ testRunner.Given("the following CommunityAdmin Add input", ((string)(null)), table2, "Given ");
+#line 28
+ testRunner.When("I call the add CommunityAdmin Post api endpoint to add a CommunityAdmin", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 29
+ testRunner.Then("the add result should be a CommunityAdmin Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

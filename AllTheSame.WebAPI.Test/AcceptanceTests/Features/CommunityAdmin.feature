@@ -1,9 +1,9 @@
 ﻿Feature: CommunityAdmin
-	In order to see a list of communityAdmins
+	In order to see a list of CommunityAdmin
 	As a Community Administrator
-	I want to load a list of communityAdmins
+	I want to load a list of CommunityAdmin
 
-	@CommunityAdmin 
+@CommunityAdmin 
 #[C]RUD - [Post] :: Create, Check, GetById, Update and Delete CommunityAdmin, by passing a newly populated CommunityAdmin
 Scenario: CommunityAdmin--Add, Check, GetById, Update and Delete CommunityAdmin
 	Given the following CommunityAdmin Add input
@@ -19,16 +19,15 @@ Scenario: CommunityAdmin--Retrieve all CommunityAdmins
 	When I call the CommunityAdmin Get api endpoint
 	Then the get result should be a list of communityAdmins
 
+@CommunityAdmin 
+#[C]RUD - [Post] :: Create a new CommunityAdmin, by passing a newly populated CommunityAdmin
+Scenario: Add a communityAdmin
+	Given the following CommunityAdmin Add input
+		| Id   | 
+		| 1    |
+	When I call the add CommunityAdmin Post api endpoint to add a CommunityAdmin
+	Then the add result should be a CommunityAdmin Id
 
-#@CommunityAdmin 
-##[C]RUD - [Post] :: Create a new communityAdmin, by passing a newly populated communityAdmin
-#Scenario: Add a communityAdmin
-#	Given the following CommunityAdmin Add input
-#		| FirstName | LastName | Email   | MobileNumber |
-#		| Spec      | Flow     | x@y.com | 800-555-1212 |
-#	When I call the add CommunityAdmin Post api endpoint to add a communityAdmin
-#	Then the add result should be a CommunityAdmin Id
-#
 #@CommunityAdmins 
 ##C[R]UD - [Get] :: Retrieve all communityAdmins, without passing anything
 #Scenario: Retrieve all communityAdmins

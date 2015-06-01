@@ -31,8 +31,8 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.Features
         public static void FeatureSetup(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "AppointmentType", "In order to see a list of appointmentTypes\r\nAs a Community Administrator\r\nI want " +
-                    "to load a list of appointmentTypes", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "AppointmentType", "In order to see a list of AppointmentTypes\r\nAs a Community Administrator\r\nI want " +
+                    "to load a list of AppointmentTypes", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -112,6 +112,33 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.When("I call the AppointmentType Get api endpoint", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 20
  testRunner.Then("the get result should be a list of AppointmentTypes", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Add a AppointmentType")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "AppointmentType")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("AppointmentType")]
+        public virtual void AddAAppointmentType()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add a AppointmentType", new string[] {
+                        "AppointmentType"});
+#line 24
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Code",
+                        "Label"});
+            table2.AddRow(new string[] {
+                        "SpecFlowCode",
+                        "SpecFlowLabel"});
+#line 25
+ testRunner.Given("the following AppointmentType Add input", ((string)(null)), table2, "Given ");
+#line 28
+ testRunner.When("I call the add AppointmentType Post api endpoint to add a AppointmentType", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 29
+ testRunner.Then("the add result should be a AppointmentType Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

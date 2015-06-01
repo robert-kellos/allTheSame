@@ -1,14 +1,14 @@
 ﻿Feature: Appointment
-	In order to see a list of appointments
+	In order to see a list of Appointments
 	As a Community Administrator
-	I want to load a list of appointments
+	I want to load a list of Appointments
 
 @Appointment 
 #[C]RUD - [Post] :: Create, Check, GetById, Update and Delete Appointment, by passing a newly populated Appointment
 Scenario: Appointment--Add, Check, GetById, Update and Delete Appointment
 	Given the following Appointment Add input
-		| Description	|
-		| SpecFlow Test	|
+		| Description	| AppointmentTypeId |
+		| SpecFlow Test	| 1                 |
 	When I call the add Appointment Post api endpoint to add a Appointment it checks if exists pulls item edits it and deletes it
 	Then the add result should be a Appointment Id check exists get by id edit and delete with http response returns
 
@@ -20,14 +20,14 @@ Scenario: Appointment--Retrieve all Appointments
 	Then the get result should be a list of Appointments
 
 #@Appointment 
-##[C]RUD - [Post] :: Create a new appointment, by passing a newly populated appointment
-#Scenario: Add a appointment
-#	Given the following Appointment Add input
-#		| Description	|
-#		| SpecFlow Test	|
-#	When I call the add Appointment Post api endpoint to add a appointment
-#	Then the add result should be a Appointment Id
-#
+#[C]RUD - [Post] :: Create a new Appointment, by passing a newly populated Appointment
+Scenario: Add a Appointment
+	Given the following Appointment Add input
+		| Description   | AppointmentTypeId |
+		| SpecFlow Test | 1                 |
+	When I call the add Appointment Post api endpoint to add a Appointment
+	Then the add result should be a Appointment Id
+
 #@Appointments 
 ##C[R]UD - [Get] :: Retrieve all appointments, without passing anything
 #Scenario: Retrieve all appointments

@@ -54,16 +54,71 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         private string _existsId = "-1";
         private int _existsIdValue = -1;
 
-        private string _line1 = "";
-        private string _line2 = "";
-        private string _city = "";
-        private string _state = "";
-        private string _country = "";
-        private string _postalCode = "";
+        private int _personId = 1;
+        private int _residentId = 20;
         //
         #endregion Local Properties/Fields
 
         public override string Uri => "/api/FamilyMember";
+
+        #region CRUD Tests
+        //
+
+        [When(@"I call the add FamilyMember Post api endpoint to add a FamilyMember it checks if exists pulls item edits it and deletes it")]
+        public void WhenICallTheAddFamilyMemberPostApiEndpointToAddAFamilyMemberItChecksIfExistsPullsItemEditsItAndDeletesIt()
+        {
+            HttpResponseMessage response;
+
+            _addItem = Add(_addItem, out response);
+
+            Assert.IsNotNull(response);
+            ScenarioContext.Current[AddItemKey] = response;
+        }
+
+        [Then(@"the add result should be a FamilyMember Id check exists get by id edit and delete with http response returns")]
+        public void ThenTheAddResultShouldBeAFamilyMemberIdCheckExistsGetByIdEditAndDeleteWithHttpResponseReturns()
+        {
+            //did we get a good result
+            Assert.IsTrue(_addItem != null && _addItem.Id > 0);
+
+            //set the returned AddID to current Get
+            _addedIdValue = _addItem.Id;
+            _getIdValue = _addedIdValue;
+            _existsIdValue = _getIdValue;
+
+            //check that the item exists
+            var itemReturned = Exists(_existsIdValue);
+            Assert.IsTrue(itemReturned);
+
+            //use the value used in exists check
+            _getIdValue = _addItem.Id;
+            Assert.IsTrue(_getIdValue == _addedIdValue);
+
+            //pull the item by Id
+            var resultGet = GetById<FamilyMember>(_getIdValue);
+            Assert.IsNotNull(resultGet);
+            _getIdValue = resultGet.Id;
+            Assert.IsTrue(_getIdValue == _addedIdValue);
+
+            //Now, let's Edit the newly added item
+            _editIdValue = _getIdValue;
+            _editItem = resultGet;
+            Assert.IsTrue(_editIdValue == _addedIdValue);
+
+            //do an update
+            var updateResponse = Update(_editIdValue, _editItem);
+            Assert.IsNotNull(updateResponse);
+
+            //pass the item just updated
+            _deletedIdValue = _editIdValue;
+            Assert.IsTrue(_deletedIdValue == _addedIdValue);
+
+            //delete this same item
+            var deleteResponse = Delete(_deletedIdValue);
+            Assert.IsNotNull(deleteResponse);
+        }
+        //
+        #endregion CRUD Tests
 
         #region Post - add a new item by a populated item
         //
@@ -73,45 +128,31 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             Assert.IsNotNull(table);
             foreach (var row in table.Rows)
             {
-                //_firstName = row["FirstName"];
-                //_lastName = row["LastName"];
-                //_email = row["Email"];
-                //_mobileNumber = row["MobileNumber"];
+                _personId = Convert.ToInt32(row["PersonId"]);
+                _residentId = Convert.ToInt32(row["ResidentId"]);
 
                 break;
             }
-            //Assert.IsNotNull(_firstName);
-            //Assert.IsNotNull(_email);
-            //Assert.IsNotNull(_email.IsValidEmailAddress());
 
             _addItem = new FamilyMember()
             {
-                
+                PersonId = _personId,
+                ResidentId = _residentId,
 
                 CreatedOn = DateTime.UtcNow,
             };
         }
 
-        [When(@"I call the add FamilyMember Post api endpoint to add a familyMember")]
+        [When(@"I call the add FamilyMember Post api endpoint to add a FamilyMember")]
         public void WhenICallTheAddFamilyMemberPostApiEndpointToAddAFamilyMember()
         {
             var response = default(HttpResponseMessage);
-            var error = default(AggregateException);
+            AggregateException error;
 
             PostAsync(_addItem).ContinueWith(
                 t =>
                 {
-                    if (t.IsCompleted)
-                    {
-                        if (t.Result != null)
-                            response = (t.Result as HttpResponseMessage);
-                    }
-
-                    if (t.IsFaulted)
-                    {
-                        error = t.Exception;
-                        Audit.Log.Error("POST Task Exception ::", error);
-                    }
+                    response = ActionResponse(t, out error);
                 }
             ).Wait();
 
@@ -128,15 +169,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             var result = PostResponse<FamilyMember, FamilyMember>(_addItem);
             if (result != null)
             {
-
                 _addedIdValue = result.Id;
                 Assert.IsTrue(_addedIdValue > 0);
 
                 //validate values changed
                 //Assert.AreEqual(_addFamilyMember.FirstName, result.FirstName);
-                //Assert.AreEqual(_addFamilyMember.LastName, result.LastName);
-                //Assert.AreEqual(_addFamilyMember.Email, result.Email);
-                //Assert.AreEqual(_addFamilyMember.MobilePhone, result.MobilePhone);
             }
 
             var response = (ScenarioContext.Current[AddItemKey] as HttpResponseMessage);
@@ -155,7 +192,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             ScenarioContext.Current[GetListKey] = GetResponse<IList<FamilyMember>>();
         }
 
-        [Then(@"the get result should be a list of familyMembers")]
+        [Then(@"the get result should be a list of FamilyMembers")]
         public void ThenTheGetResultShouldBeAListOfFamilyMembers()
         {
             var list = ScenarioContext.Current[GetListKey];
@@ -235,26 +272,16 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             
         }
 
-        [When(@"I call the edit FamilyMember Put api endpoint to edit a familyMember")]
+        [When(@"I call the edit FamilyMember Put api endpoint to edit a FamilyMember")]
         public void WhenICallTheEditFamilyMemberPutApiEndpointToEditAFamilyMember()
         {
             var response = default(HttpResponseMessage);
-            var error = default(AggregateException);
+            AggregateException error;
 
             PutAsync(_editItem.Id, _editItem).ContinueWith(
                 t =>
                 {
-                    if (t.IsCompleted)
-                    {
-                        if (t.Result != null)
-                            response = (t.Result as HttpResponseMessage);
-                    }
-
-                    if (t.IsFaulted)
-                    {
-                        error = t.Exception;
-                        Audit.Log.Error("PUT Task Exception ::", error);
-                    }
+                    response = ActionResponse(t, out error);
                 }
             ).Wait();
 
@@ -313,22 +340,12 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         public void WhenICallTheDeleteFamilyMemberPostApiEndpointToDeleteAFamilyMember()
         {
             var response = default(HttpResponseMessage);
-            var error = default(AggregateException);
+            AggregateException error;
 
             DeleteAsync(_deletedIdValue).ContinueWith(
                 t =>
                 {
-                    if (t.IsCompleted)
-                    {
-                        if (t.Result != null)
-                            response = (t.Result as HttpResponseMessage);
-                    }
-
-                    if (t.IsFaulted)
-                    {
-                        error = t.Exception;
-                        Audit.Log.Error("POST Task Exception ::", error);
-                    }
+                    response = ActionResponse(t, out error);
                 }
             ).Wait();
 
@@ -392,18 +409,5 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         #endregion Get - Exists, verify Exists function checks and return a valid bool for exists or not
 
         //
-
-        #region helpers
-        //
-        public int ConvertToIntValue(string value)
-        {
-            var result = -1;
-
-            int.TryParse(value, out result);
-
-            return result;
-        }
-        //
-        #endregion helpers
     }
 }

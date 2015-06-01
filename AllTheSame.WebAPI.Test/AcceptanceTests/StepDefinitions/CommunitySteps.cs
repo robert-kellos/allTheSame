@@ -1,22 +1,10 @@
 ﻿using System.Collections.Generic;
-using AllTheSame.Common.Extensions;
-using AllTheSame.Common.Helpers;
 using AllTheSame.Entity.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
-using AllTheSame.Common.Logging;
 using System.Net.Http;
-using System.Web.Http.Results;
 using System.Net;
 using System;
-using System.Net.Http.Headers;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Net.Http.Formatting;
-using Newtonsoft.Json;
-using System.Web.Http;
-using Newtonsoft.Json.Serialization;
-using AllTheSame.WebAPI.Models;
 
 namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
 {
@@ -53,9 +41,26 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
 
         private string _existsId = "-1";
         private int _existsIdValue = -1;
-
+        /*
+    [Id] [int] IDENTITY(1,1) NOT NULL,
+    [OrgId] [int] NOT NULL, //5
+    [CommunityTypeId] [int] NULL, //1
+    [IndustryId] [int] NULL, //1
+    [Name] [nvarchar](100) NOT NULL,
+    [Description] [nvarchar](500) NULL,
+    [Raiting] [int] NULL,
+    [NumBeds] [int] NULL,
+    [Version] [timestamp] NOT NULL,
+    [CreatedOn] [datetime] NULL DEFAULT(getutcdate()),
+    [UpdatedOn] [datetime] NULL,
+        */
+        private int _orgId = 5;
+        private int _communityTypeId = 1;
+        private int _industryId = 1;
         private string _name = "";
-        
+        private string _description = "test";
+        private int _numBeds = 100;
+        private int _raiting = 6;
         //
         #endregion Local Properties/Fields
 
@@ -68,25 +73,9 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         [When(@"I call the add Community Post api endpoint to add a Community it checks if exists pulls item edits it and deletes it")]
         public void WhenICallTheAddCommunityPostApiEndpointToAddACommunityItChecksIfExistsPullsItemEditsItAndDeletesIt()
         {
-            var response = default(HttpResponseMessage);
-            var error = default(AggregateException);
+            HttpResponseMessage response;
 
-            PostAsync(_addItem).ContinueWith(
-                t =>
-                {
-                    if (t.IsCompleted)
-                    {
-                        if (t.Result != null)
-                            response = (t.Result as HttpResponseMessage);
-                    }
-
-                    if (t.IsFaulted)
-                    {
-                        error = t.Exception;
-                        Audit.Log.Error("POST Task Exception ::", error);
-                    }
-                }
-            ).Wait();
+            _addItem = Add(_addItem, out response);
 
             Assert.IsNotNull(response);
             ScenarioContext.Current[AddItemKey] = response;
@@ -95,30 +84,24 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         [Then(@"the add result should be a Community Id check exists get by id edit and delete with http response returns")]
         public void ThenTheAddResultShouldBeACommunityIdCheckExistsGetByIdEditAndDeleteWithHttpResponseReturns()
         {
-            //is the item setup
-            Assert.IsTrue(_addItem != null);
-
-            //add the item
-            var resultAdd = Add(_addItem);
-
             //did we get a good result
-            Assert.IsTrue(resultAdd != null && resultAdd.Id > 0);
+            Assert.IsTrue(_addItem != null && _addItem.Id > 0);
 
-            //set te returned AddID to current Get
-            _addedIdValue = resultAdd.Id;
+            //set the returned AddID to current Get
+            _addedIdValue = _addItem.Id;
             _getIdValue = _addedIdValue;
             _existsIdValue = _getIdValue;
 
             //check that the item exists
             var itemReturned = Exists(_existsIdValue);
-            Assert.IsNotNull(itemReturned);
+            Assert.IsTrue(itemReturned);
 
             //use the value used in exists check
-            _getIdValue = itemReturned.Id;
+            _getIdValue = _addItem.Id;
             Assert.IsTrue(_getIdValue == _addedIdValue);
 
             //pull the item by Id
-            var resultGet = GetById(_getIdValue);
+            var resultGet = GetById<Community>(_getIdValue);
             Assert.IsNotNull(resultGet);
             _getIdValue = resultGet.Id;
             Assert.IsTrue(_getIdValue == _addedIdValue);
@@ -129,170 +112,20 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             Assert.IsTrue(_editIdValue == _addedIdValue);
 
             //do an update
-            Update(_editIdValue, _editItem);
+            var updateResponse = Update(_editIdValue, _editItem);
+            Assert.IsNotNull(updateResponse);
 
             //pass the item just updated
             _deletedIdValue = _editIdValue;
             Assert.IsTrue(_deletedIdValue == _addedIdValue);
 
             //delete this same item
-            Delete(_deletedIdValue);
-        }
-
-        private Community Add(Community item)
-        {
-            var response = default(HttpResponseMessage);
-            var error = default(AggregateException);
-
-            PostAsync(item).ContinueWith(
-                t =>
-                {
-                    if (t.IsCompleted)
-                    {
-                        if (t.Result != null)
-                            response = (t.Result as HttpResponseMessage);
-                    }
-
-                    if (t.IsFaulted)
-                    {
-                        error = t.Exception;
-                        Audit.Log.Error("POST Task Exception ::", error);
-                    }
-                }
-            ).Wait();
-
-            Assert.IsNotNull(response);
-            ScenarioContext.Current[AddItemKey] = response;
-
-            //grab the resulting added item
-            var resultAdd = PostResponse<Community, Community>(item);
-            if (resultAdd != null)
-            {
-                _addedIdValue = resultAdd.Id;
-                Assert.IsTrue(_addedIdValue > 0);
-
-                //Let's store the newly added Id in delete/edit, so we can later
-                //edit and delete this same record
-                _editIdValue = _addedIdValue;
-                _deletedIdValue = _addedIdValue;
-
-                ////validate values changed
-                Assert.AreEqual(item.Name, resultAdd.Name);
-            }
-
-            response = (ScenarioContext.Current[AddItemKey] as HttpResponseMessage);
-
-            Assert.IsNotNull(response);
-            Assert.IsTrue(response.StatusCode == HttpStatusCode.Created);
-
-            return resultAdd;
-        }
-
-        private Community Exists(int id)
-        {
-            //Check it exists
-            ScenarioContext.Current[ExistsItemKey] = GetResponseExists<bool>(id);
-
-            var resultExists = ScenarioContext.Current[ExistsItemKey];
-
-            //call manually to verify Exists returned correctly
-            var itemReturned = GetResponseById<Community>(id);
-
-            var truth = (itemReturned != null && itemReturned.Id == id);
-            Assert.AreEqual(truth, resultExists);
-
-            return itemReturned;
-        }
-
-        private Community GetById(int id)
-        {
-            ScenarioContext.Current[GetItemKey] = GetResponseById<Community>(id);
-
-            var resultGet = ScenarioContext.Current[GetItemKey];
-            var itemGet = (resultGet as Community);
-
-            Assert.IsNotNull(itemGet);
-            Assert.IsTrue(itemGet.Id == id);
-
-            return itemGet;
-        }
-
-        private void Update(int id, Community item)
-        {
-            var error = default(AggregateException);
-            var response = default(HttpResponseMessage);
-
-            PutAsync(item.Id, item).ContinueWith(
-                t =>
-                {
-                    if (t.IsCompleted)
-                    {
-                        if (t.Result != null)
-                            response = (t.Result as HttpResponseMessage);
-                    }
-
-                    if (t.IsFaulted)
-                    {
-                        error = t.Exception;
-                        Audit.Log.Error("PUT Task Exception ::", error);
-                    }
-                }
-            ).Wait();
-
-            Assert.IsNotNull(response);
-            ScenarioContext.Current[EditItemKey] = response;
-
-            //grab the resulting added item
-            response = (ScenarioContext.Current[EditItemKey] as HttpResponseMessage);
-            var resultEdit = PutResponse<Community, Community>(item.Id, item);
-            if (resultEdit != null)
-            {
-                Assert.IsTrue(id > 0);
-                Assert.AreEqual(id, resultEdit.Id);
-
-                //validate values changed
-                Assert.AreEqual(item.Name, resultEdit.Name);
-            }
-
-            Assert.IsNotNull(response);
-            Assert.IsTrue(response.StatusCode == HttpStatusCode.OK);
-        }
-
-        private void Delete(int id)
-        {
-            var error = default(AggregateException);
-            var response = default(HttpResponseMessage);
-
-            //Now, let's Delete the newly added item
-            DeleteAsync(id).ContinueWith(
-                t =>
-                {
-                    if (t.IsCompleted)
-                    {
-                        if (t.Result != null)
-                            response = (t.Result as HttpResponseMessage);
-                    }
-
-                    if (!t.IsFaulted) return;
-                    error = t.Exception;
-                    Audit.Log.Error("POST Task Exception ::", error);
-                }
-            ).Wait();
-
-            Assert.IsNotNull(response);
-            ScenarioContext.Current[DeleteItemKey] = response;
-
-            //grab the resulting added item
-            var deleted = GetResponseById<Community>(id);
-            Assert.IsNull(deleted);
-
-            response = (ScenarioContext.Current[DeleteItemKey] as HttpResponseMessage);
-
-            Assert.IsNotNull(response);
-            Assert.IsTrue(response.StatusCode == HttpStatusCode.OK);
+            var deleteResponse = Delete(_deletedIdValue);
+            Assert.IsNotNull(deleteResponse);
         }
         //
         #endregion CRUD Tests
+
 
         #region Post - add a new item by a populated item
         //
@@ -303,6 +136,9 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             foreach (var row in table.Rows)
             {
                 _name = row["Name"];
+                _description = row["Description"];
+                _numBeds = Convert.ToInt32(row["NumBeds"]);
+                _raiting = Convert.ToInt32(row["Raiting"]);
                 
                 break;
             }
@@ -310,32 +146,29 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             
             _addItem = new Community()
             {
-                Name = _name,
+                IndustryId = _industryId,
+                OrgId = _orgId,
+                CommunityTypeId = _communityTypeId,
 
+                Name = _name,
+                Raiting = _raiting,
+                Description = _description,
+                NumBeds = _numBeds,
+               
                 CreatedOn = DateTime.UtcNow,
             };
         }
 
-        [When(@"I call the add Community Post api endpoint to add a community")]
+        [When(@"I call the add Community Post api endpoint to add a Community")]
         public void WhenICallTheAddCommunityPostApiEndpointToAddACommunity()
         {
             var response = default(HttpResponseMessage);
-            var error = default(AggregateException);
+            AggregateException error;
 
             PostAsync(_addItem).ContinueWith(
                 t =>
                 {
-                    if (t.IsCompleted)
-                    {
-                        if (t.Result != null)
-                            response = (t.Result as HttpResponseMessage);
-                    }
-
-                    if (t.IsFaulted)
-                    {
-                        error = t.Exception;
-                        Audit.Log.Error("POST Task Exception ::", error);
-                    }
+                    response = ActionResponse(t, out error);
                 }
             ).Wait();
 
@@ -352,17 +185,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             PostAsync(_addItem).ContinueWith(
                 t =>
                 {
-                    if (t.IsCompleted)
-                    {
-                        if (t.Result != null)
-                            response = (t.Result as HttpResponseMessage);
-                    }
-
-                    if (t.IsFaulted)
-                    {
-                        error = t.Exception;
-                        Audit.Log.Error("POST Task Exception ::", error);
-                    }
+                    response = ActionResponse(t, out error);
                 }
             ).Wait();
 
@@ -379,15 +202,17 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             var result = PostResponse<Community, Community>(_addItem);
             if (result != null)
             {
-
                 _addedIdValue = result.Id;
                 Assert.IsTrue(_addedIdValue > 0);
 
                 ////validate values changed
-                //Assert.AreEqual(_addItem.FirstName, result.FirstName);
-                //Assert.AreEqual(_addItem.LastName, result.LastName);
-                //Assert.AreEqual(_addItem.Email, result.Email);
-                //Assert.AreEqual(_addItem.MobilePhone, result.MobilePhone);
+                Assert.AreEqual(_addItem.IndustryId, result.IndustryId);
+                Assert.AreEqual(_addItem.OrgId, result.OrgId);
+                Assert.AreEqual(_addItem.CommunityTypeId, result.CommunityTypeId);
+                Assert.AreEqual(_addItem.Name, result.Name);
+                Assert.AreEqual(_addItem.Description, result.Description);
+                Assert.AreEqual(_addItem.Raiting, result.Raiting);
+                Assert.AreEqual(_addItem.NumBeds, result.NumBeds);
             }
 
             var response = (ScenarioContext.Current[AddItemKey] as HttpResponseMessage);
@@ -407,7 +232,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             ScenarioContext.Current[GetListKey] = GetResponse<IList<Community>>();
         }
 
-        [Then(@"the get result should be a list of communities")]
+        [Then(@"the get result should be a list of Communities")]
         public void ThenTheGetResultShouldBeAListOfCommunities()
         {
             var list = ScenarioContext.Current[GetListKey];
@@ -540,18 +365,6 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         #endregion Get - Exists, verify Exists function checks and return a valid bool for exists or not
 
         //
-
-        #region helpers
-        //
-        public int ConvertToIntValue(string value)
-        {
-            var result = -1;
-
-            int.TryParse(value, out result);
-
-            return result;
-        }
-        //
-        #endregion helpers
+        
     }
 }

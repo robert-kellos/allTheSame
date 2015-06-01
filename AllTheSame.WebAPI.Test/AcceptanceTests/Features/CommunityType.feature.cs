@@ -31,8 +31,8 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.Features
         public static void FeatureSetup(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "CommunityType", "In order to see a list of communityTypes\r\nAs a CommunityType Administrator\r\nI wan" +
-                    "t to load a list of communityTypes", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "CommunityType", "In order to see a list of CommunityTypes\r\nAs a CommunityType Administrator\r\nI wan" +
+                    "t to load a list of CommunityTypes", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -82,7 +82,7 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
                         "Code",
-                        "FormatText"});
+                        "Label"});
             table1.AddRow(new string[] {
                         "SpecFlow",
                         "test"});
@@ -111,7 +111,34 @@ this.ScenarioSetup(scenarioInfo);
 #line 19
  testRunner.When("I call the CommunityType Get api endpoint", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 20
- testRunner.Then("the get result should be a list of communityTypes", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the get result should be a list of CommunityTypes", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Add a CommunityType")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "CommunityType")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("CommunityType")]
+        public virtual void AddACommunityType()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add a CommunityType", new string[] {
+                        "CommunityType"});
+#line 24
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Code",
+                        "Label"});
+            table2.AddRow(new string[] {
+                        "SpecFlowTest",
+                        "FlowTest"});
+#line 25
+ testRunner.Given("the following CommunityType Add input", ((string)(null)), table2, "Given ");
+#line 28
+ testRunner.When("I call the add CommunityType Post api endpoint to add a CommunityType", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 29
+ testRunner.Then("the add result should be a CommunityType Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

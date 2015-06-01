@@ -1,22 +1,10 @@
 ﻿using System.Collections.Generic;
-using AllTheSame.Common.Extensions;
-using AllTheSame.Common.Helpers;
 using AllTheSame.Entity.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
-using AllTheSame.Common.Logging;
 using System.Net.Http;
-using System.Web.Http.Results;
 using System.Net;
 using System;
-using System.Net.Http.Headers;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Net.Http.Formatting;
-using Newtonsoft.Json;
-using System.Web.Http;
-using Newtonsoft.Json.Serialization;
-using AllTheSame.WebAPI.Models;
 
 namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
 {
@@ -57,14 +45,17 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         private DateTime _startTime;
         private DateTime _endTime;
         private string _description = "";
+        private int _appointmentTypeId;
+        private int _residentId = 20;
+        private int _vendorWorkerId = 13;
         private bool _remindVendor;
         private bool _alertOnVendorSignIn;
         private bool _alertOnVendorSignOut;
         /*
         [Id] [int] IDENTITY(1,1) NOT NULL,
-	    [ResidentId] [int] NOT NULL,
-	    [VendorWorkerId] [int] NOT NULL,
-	    [AppointmentTypeId] [int] NOT NULL,
+	    [ResidentId] [int] NOT NULL, //20
+	    [VendorWorkerId] [int] NOT NULL, //13
+	    [AppointmentTypeId] [int] NOT NULL, //1
 	    [StartTime] [datetime] NOT NULL,
 	    [EndTime] [datetime] NOT NULL,
 	    [Description] [nvarchar](max) NULL,
@@ -86,25 +77,9 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         [When(@"I call the add Appointment Post api endpoint to add a Appointment it checks if exists pulls item edits it and deletes it")]
         public void WhenICallTheAddAppointmentPostApiEndpointToAddAAppointmentItChecksIfExistsPullsItemEditsItAndDeletesIt()
         {
-            var response = default(HttpResponseMessage);
-            var error = default(AggregateException);
+            HttpResponseMessage response;
 
-            PostAsync(_addItem).ContinueWith(
-                t =>
-                {
-                    if (t.IsCompleted)
-                    {
-                        if (t.Result != null)
-                            response = (t.Result as HttpResponseMessage);
-                    }
-
-                    if (t.IsFaulted)
-                    {
-                        error = t.Exception;
-                        Audit.Log.Error("POST Task Exception ::", error);
-                    }
-                }
-            ).Wait();
+            _addItem = Add(_addItem, out response);
 
             Assert.IsNotNull(response);
             ScenarioContext.Current[AddItemKey] = response;
@@ -113,30 +88,24 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         [Then(@"the add result should be a Appointment Id check exists get by id edit and delete with http response returns")]
         public void ThenTheAddResultShouldBeAAppointmentIdCheckExistsGetByIdEditAndDeleteWithHttpResponseReturns()
         {
-            //is the item setup
-            Assert.IsTrue(_addItem != null);
-
-            //add the item
-            var resultAdd = Add(_addItem);
-
             //did we get a good result
-            Assert.IsTrue(resultAdd != null && resultAdd.Id > 0);
+            Assert.IsTrue(_addItem != null && _addItem.Id > 0);
 
-            //set te returned AddID to current Get
-            _addedIdValue = resultAdd.Id;
+            //set the returned AddID to current Get
+            _addedIdValue = _addItem.Id;
             _getIdValue = _addedIdValue;
             _existsIdValue = _getIdValue;
 
             //check that the item exists
             var itemReturned = Exists(_existsIdValue);
-            Assert.IsNotNull(itemReturned);
+            Assert.IsTrue(itemReturned);
 
             //use the value used in exists check
-            _getIdValue = itemReturned.Id;
+            _getIdValue = _addItem.Id;
             Assert.IsTrue(_getIdValue == _addedIdValue);
 
             //pull the item by Id
-            var resultGet = GetById(_getIdValue);
+            var resultGet = GetById<Appointment>(_getIdValue);
             Assert.IsNotNull(resultGet);
             _getIdValue = resultGet.Id;
             Assert.IsTrue(_getIdValue == _addedIdValue);
@@ -147,169 +116,16 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             Assert.IsTrue(_editIdValue == _addedIdValue);
 
             //do an update
-            Update(_editIdValue, _editItem);
+            var updateResponse = Update(_editIdValue, _editItem);
+            Assert.IsNotNull(updateResponse);
 
             //pass the item just updated
             _deletedIdValue = _editIdValue;
             Assert.IsTrue(_deletedIdValue == _addedIdValue);
 
             //delete this same item
-            Delete(_deletedIdValue);
-        }
-
-        private Appointment Add(Appointment item)
-        {
-            var response = default(HttpResponseMessage);
-            var error = default(AggregateException);
-
-            PostAsync(item).ContinueWith(
-                t =>
-                {
-                    if (t.IsCompleted)
-                    {
-                        if (t.Result != null)
-                            response = (t.Result as HttpResponseMessage);
-                    }
-
-                    if (t.IsFaulted)
-                    {
-                        error = t.Exception;
-                        Audit.Log.Error("POST Task Exception ::", error);
-                    }
-                }
-            ).Wait();
-
-            Assert.IsNotNull(response);
-            ScenarioContext.Current[AddItemKey] = response;
-
-            //grab the resulting added item
-            var resultAdd = PostResponse<Appointment, Appointment>(item);
-            if (resultAdd != null)
-            {
-                _addedIdValue = resultAdd.Id;
-                Assert.IsTrue(_addedIdValue > 0);
-
-                //Let's store the newly added Id in delete/edit, so we can later
-                //edit and delete this same record
-                _editIdValue = _addedIdValue;
-                _deletedIdValue = _addedIdValue;
-
-                ////validate values changed
-                Assert.AreEqual(item.Description, resultAdd.Description);
-            }
-
-            response = (ScenarioContext.Current[AddItemKey] as HttpResponseMessage);
-
-            Assert.IsNotNull(response);
-            Assert.IsTrue(response.StatusCode == HttpStatusCode.Created);
-
-            return resultAdd;
-        }
-
-        private Appointment Exists(int id)
-        {
-            //Check it exists
-            ScenarioContext.Current[ExistsItemKey] = GetResponseExists<bool>(id);
-
-            var resultExists = ScenarioContext.Current[ExistsItemKey];
-
-            //call manually to verify Exists returned correctly
-            var itemReturned = GetResponseById<Appointment>(id);
-
-            var truth = (itemReturned != null && itemReturned.Id == id);
-            Assert.AreEqual(truth, resultExists);
-
-            return itemReturned;
-        }
-
-        private Appointment GetById(int id)
-        {
-            ScenarioContext.Current[GetItemKey] = GetResponseById<Appointment>(id);
-
-            var resultGet = ScenarioContext.Current[GetItemKey];
-            var itemGet = (resultGet as Appointment);
-
-            Assert.IsNotNull(itemGet);
-            Assert.IsTrue(itemGet.Id == id);
-
-            return itemGet;
-        }
-
-        private void Update(int id, Appointment item)
-        {
-            var error = default(AggregateException);
-            var response = default(HttpResponseMessage);
-
-            PutAsync(item.Id, item).ContinueWith(
-                t =>
-                {
-                    if (t.IsCompleted)
-                    {
-                        if (t.Result != null)
-                            response = (t.Result as HttpResponseMessage);
-                    }
-
-                    if (t.IsFaulted)
-                    {
-                        error = t.Exception;
-                        Audit.Log.Error("PUT Task Exception ::", error);
-                    }
-                }
-            ).Wait();
-
-            Assert.IsNotNull(response);
-            ScenarioContext.Current[EditItemKey] = response;
-
-            //grab the resulting added item
-            response = (ScenarioContext.Current[EditItemKey] as HttpResponseMessage);
-            var resultEdit = PutResponse<Appointment, Appointment>(item.Id, item);
-            if (resultEdit != null)
-            {
-                Assert.IsTrue(id > 0);
-                Assert.AreEqual(id, resultEdit.Id);
-
-                //validate values changed
-                Assert.AreEqual(item.Description, resultEdit.Description);
-            }
-
-            Assert.IsNotNull(response);
-            Assert.IsTrue(response.StatusCode == HttpStatusCode.OK);
-        }
-
-        private void Delete(int id)
-        {
-            var error = default(AggregateException);
-            var response = default(HttpResponseMessage);
-
-            //Now, let's Delete the newly added item
-            DeleteAsync(id).ContinueWith(
-                t =>
-                {
-                    if (t.IsCompleted)
-                    {
-                        if (t.Result != null)
-                            response = (t.Result as HttpResponseMessage);
-                    }
-
-                    if (t.IsFaulted)
-                    {
-                        error = t.Exception;
-                        Audit.Log.Error("POST Task Exception ::", error);
-                    }
-                }
-            ).Wait();
-
-            Assert.IsNotNull(response);
-            ScenarioContext.Current[DeleteItemKey] = response;
-
-            //grab the resulting added item
-            var deleted = GetResponseById<Appointment>(id);
-            Assert.IsNull(deleted);
-
-            response = (ScenarioContext.Current[DeleteItemKey] as HttpResponseMessage);
-
-            Assert.IsNotNull(response);
-            Assert.IsTrue(response.StatusCode == HttpStatusCode.OK);
+            var deleteResponse = Delete(_deletedIdValue);
+            Assert.IsNotNull(deleteResponse);
         }
         //
         #endregion CRUD Tests
@@ -326,14 +142,15 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
                 //row["StartTime"],
                 //row["EndTime"],
                 _description = row["Description"];
+                _appointmentTypeId = Convert.ToInt32(row["AppointmentTypeId"]);
                 //row["RemindVendor"];
                 //row["AlertOnVendorSignIn"];
                 //row["AlertOnVendorSignOut"];
 
                 break;
             }
-            _startTime = DateTime.UtcNow;
-            _endTime = DateTime.UtcNow.AddHours(4);
+            _startTime = DateTime.Now;
+            _endTime = DateTime.Now.AddHours(4);
             _remindVendor = true;
             _alertOnVendorSignIn = true;
             _alertOnVendorSignOut = true;
@@ -342,8 +159,12 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
 
             _addItem = new Appointment()
             {
+                ResidentId = _residentId,
+                VendorWorkerId = _vendorWorkerId,
+
                 StartTime = _startTime,
                 EndTime = _endTime,
+                AppointmentTypeId = _appointmentTypeId,
                 Description = _description,
                 RemindVendor = _remindVendor,
                 AlertOnVendorSignIn = _alertOnVendorSignIn,
@@ -357,22 +178,12 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         public void WhenICallTheAddAppointmentPostApiEndpointToAddAAppointment()
         {
             var response = default(HttpResponseMessage);
-            var error = default(AggregateException);
+            AggregateException error;
 
             PostAsync(_addItem).ContinueWith(
                 t =>
                 {
-                    if (t.IsCompleted)
-                    {
-                        if (t.Result != null)
-                            response = (t.Result as HttpResponseMessage);
-                    }
-
-                    if (t.IsFaulted)
-                    {
-                        error = t.Exception;
-                        Audit.Log.Error("POST Task Exception ::", error);
-                    }
+                    response = ActionResponse(t, out error);
                 }
             ).Wait();
 
@@ -384,22 +195,12 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         public void ThenTheAddResultShouldBeAAppointmentId()
         {
             var response = default(HttpResponseMessage);
-            var error = default(AggregateException);
+            AggregateException error;
 
             PostAsync(_addItem).ContinueWith(
                 t =>
                 {
-                    if (t.IsCompleted)
-                    {
-                        if (t.Result != null)
-                            response = (t.Result as HttpResponseMessage);
-                    }
-
-                    if (t.IsFaulted)
-                    {
-                        error = t.Exception;
-                        Audit.Log.Error("POST Task Exception ::", error);
-                    }
+                    response = ActionResponse(t, out error);
                 }
             ).Wait();
 
@@ -524,22 +325,12 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         public void WhenICallTheEditAppointmentPutApiEndpointToEditAAppointment()
         {
             var response = default(HttpResponseMessage);
-            var error = default(AggregateException);
+            AggregateException error;
 
             PutAsync(_editItem.Id, _editItem).ContinueWith(
                 t =>
                 {
-                    if (t.IsCompleted)
-                    {
-                        if (t.Result != null)
-                            response = (t.Result as HttpResponseMessage);
-                    }
-
-                    if (t.IsFaulted)
-                    {
-                        error = t.Exception;
-                        Audit.Log.Error("PUT Task Exception ::", error);
-                    }
+                    response = ActionResponse(t, out error);
                 }
             ).Wait();
 
@@ -606,22 +397,12 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             _deletedIdValue = result.Id;
 
             var response = default(HttpResponseMessage);
-            var error = default(AggregateException);
+            AggregateException error;
 
             DeleteAsync(_deletedIdValue).ContinueWith(
                 t =>
                 {
-                    if (t.IsCompleted)
-                    {
-                        if (t.Result != null)
-                            response = (t.Result as HttpResponseMessage);
-                    }
-
-                    if (t.IsFaulted)
-                    {
-                        error = t.Exception;
-                        Audit.Log.Error("POST Task Exception ::", error);
-                    }
+                    response = ActionResponse(t, out error);
                 }
             ).Wait();
 
@@ -667,20 +448,6 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
 
         //
         #endregion Get - Exists, verify Exists function checks and return a valid bool for exists or not
-
-        //
-
-        #region helpers
-        //
-        public int ConvertToIntValue(string value)
-        {
-            var result = -1;
-
-            int.TryParse(value, out result);
-
-            return result;
-        }
-        //
-        #endregion helpers
+        
     }
 }

@@ -54,12 +54,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         private string _existsId = "-1";
         private int _existsIdValue = -1;
 
-        private string _line1 = "";
-        private string _line2 = "";
-        private string _city = "";
-        private string _state = "";
-        private string _country = "";
-        private string _postalCode = "";
+        private string _name = "";
         //
         #endregion Local Properties/Fields
 
@@ -73,12 +68,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             Assert.IsNotNull(table);
             foreach (var row in table.Rows)
             {
-                //_line1 = row["Line1"];
-                //_line2 = row["Line2"];
-                //_city = row["City"];
-                //_state = row["State"];
-                //_country = row["Country"];
-                //_postalCode = row["PostalCode"];
+                _name = row["Name"];
 
                 break;
             }
@@ -88,12 +78,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
 
             _addItem = new Organization()
             {
-                //Line1 = _line1,
-                //Line2 = _line2,
-                //City = _city,
-                //State = _state,
-                //Country = _country,
-                //PostalCode = _postalCode,
+                Name = _name,
 
                 CreatedOn = DateTime.UtcNow,
             };
@@ -103,22 +88,12 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         public void WhenICallTheAddOrganizationPostApiEndpointToAddAOrganization()
         {
             var response = default(HttpResponseMessage);
-            var error = default(AggregateException);
+            AggregateException error;
 
             PostAsync(_addItem).ContinueWith(
                 t =>
                 {
-                    if (t.IsCompleted)
-                    {
-                        if (t.Result != null)
-                            response = (t.Result as HttpResponseMessage);
-                    }
-
-                    if (t.IsFaulted)
-                    {
-                        error = t.Exception;
-                        Audit.Log.Error("POST Task Exception ::", error);
-                    }
+                    response = ActionResponse(t, out error);
                 }
             ).Wait();
 
@@ -130,22 +105,12 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         public void ThenTheAddResultShouldBeAOrganizationId()
         {
             var response = default(HttpResponseMessage);
-            var error = default(AggregateException);
+            AggregateException error;
 
             PostAsync(_addItem).ContinueWith(
                 t =>
                 {
-                    if (t.IsCompleted)
-                    {
-                        if (t.Result != null)
-                            response = (t.Result as HttpResponseMessage);
-                    }
-
-                    if (t.IsFaulted)
-                    {
-                        error = t.Exception;
-                        Audit.Log.Error("POST Task Exception ::", error);
-                    }
+                    response = ActionResponse(t, out error);
                 }
             ).Wait();
 
@@ -162,15 +127,11 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             var result = PostResponse<Organization, Organization>(_addItem);
             if (result != null)
             {
-
                 _addedIdValue = result.Id;
                 Assert.IsTrue(_addedIdValue > 0);
 
                 ////validate values changed
                 //Assert.AreEqual(_addItem.FirstName, result.FirstName);
-                //Assert.AreEqual(_addItem.LastName, result.LastName);
-                //Assert.AreEqual(_addItem.Email, result.Email);
-                //Assert.AreEqual(_addItem.MobilePhone, result.MobilePhone);
             }
 
             var response = (ScenarioContext.Current[AddItemKey] as HttpResponseMessage);
@@ -208,22 +169,12 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         public void GivenTheFollowingOrganizationGetByIdInput(Table table)
         {
             var response = default(HttpResponseMessage);
-            var error = default(AggregateException);
+            AggregateException error;
 
             PostAsync(_addItem).ContinueWith(
                 t =>
                 {
-                    if (t.IsCompleted)
-                    {
-                        if (t.Result != null)
-                            response = (t.Result as HttpResponseMessage);
-                    }
-
-                    if (t.IsFaulted)
-                    {
-                        error = t.Exception;
-                        Audit.Log.Error("POST Task Exception ::", error);
-                    }
+                    response = ActionResponse(t, out error);
                 }
             ).Wait();
 
@@ -321,18 +272,5 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         #endregion Get - Exists, verify Exists function checks and return a valid bool for exists or not
 
         //
-
-        #region helpers
-        //
-        public int ConvertToIntValue(string value)
-        {
-            var result = -1;
-
-            int.TryParse(value, out result);
-
-            return result;
-        }
-        //
-        #endregion helpers
     }
 }

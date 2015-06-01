@@ -53,13 +53,15 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
 
         private string _existsId = "-1";
         private int _existsIdValue = -1;
-
-        private string _line1 = "";
-        private string _line2 = "";
-        private string _city = "";
-        private string _state = "";
-        private string _country = "";
-        private string _postalCode = "";
+        /*
+        [Id] [int] IDENTITY(1,1) NOT NULL,
+	    [Code] [varchar](50) NOT NULL,
+	    [Label] [nvarchar](100) NULL,
+	    [CreatedOn] [datetime] NULL DEFAULT (getutcdate()),
+	    [UpdatedOn] [datetime] NULL,
+        */
+        private string _code = "";
+        private string _label = "";
         //
         #endregion Local Properties/Fields
 
@@ -72,25 +74,9 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         [When(@"I call the add CommunityType Post api endpoint to add a CommunityType it checks if exists pulls item edits it and deletes it")]
         public void WhenICallTheAddCommunityTypePostApiEndpointToAddACommunityTypeItChecksIfExistsPullsItemEditsItAndDeletesIt()
         {
-            var response = default(HttpResponseMessage);
-            var error = default(AggregateException);
+            HttpResponseMessage response;
 
-            PostAsync(_addItem).ContinueWith(
-                t =>
-                {
-                    if (t.IsCompleted)
-                    {
-                        if (t.Result != null)
-                            response = (t.Result as HttpResponseMessage);
-                    }
-
-                    if (t.IsFaulted)
-                    {
-                        error = t.Exception;
-                        Audit.Log.Error("POST Task Exception ::", error);
-                    }
-                }
-            ).Wait();
+            _addItem = Add(_addItem, out response);
 
             Assert.IsNotNull(response);
             ScenarioContext.Current[AddItemKey] = response;
@@ -99,30 +85,24 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         [Then(@"the add result should be a CommunityType Id check exists get by id edit and delete with http response returns")]
         public void ThenTheAddResultShouldBeACommunityTypeIdCheckExistsGetByIdEditAndDeleteWithHttpResponseReturns()
         {
-            //is the item setup
-            Assert.IsTrue(_addItem != null);
-
-            //add the item
-            var resultAdd = Add(_addItem);
-
             //did we get a good result
-            Assert.IsTrue(resultAdd != null && resultAdd.Id > 0);
+            Assert.IsTrue(_addItem != null && _addItem.Id > 0);
 
-            //set te returned AddID to current Get
-            _addedIdValue = resultAdd.Id;
+            //set the returned AddID to current Get
+            _addedIdValue = _addItem.Id;
             _getIdValue = _addedIdValue;
             _existsIdValue = _getIdValue;
 
             //check that the item exists
             var itemReturned = Exists(_existsIdValue);
-            Assert.IsNotNull(itemReturned);
+            Assert.IsTrue(itemReturned);
 
             //use the value used in exists check
-            _getIdValue = itemReturned.Id;
+            _getIdValue = _addItem.Id;
             Assert.IsTrue(_getIdValue == _addedIdValue);
 
             //pull the item by Id
-            var resultGet = GetById(_getIdValue);
+            var resultGet = GetById<CommunityType>(_getIdValue);
             Assert.IsNotNull(resultGet);
             _getIdValue = resultGet.Id;
             Assert.IsTrue(_getIdValue == _addedIdValue);
@@ -133,170 +113,20 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             Assert.IsTrue(_editIdValue == _addedIdValue);
 
             //do an update
-            Update(_editIdValue, _editItem);
+            var updateResponse = Update(_editIdValue, _editItem);
+            Assert.IsNotNull(updateResponse);
 
             //pass the item just updated
             _deletedIdValue = _editIdValue;
             Assert.IsTrue(_deletedIdValue == _addedIdValue);
 
             //delete this same item
-            Delete(_deletedIdValue);
-        }
-
-        private CommunityType Add(CommunityType item)
-        {
-            var response = default(HttpResponseMessage);
-            var error = default(AggregateException);
-
-            PostAsync(item).ContinueWith(
-                t =>
-                {
-                    if (t.IsCompleted)
-                    {
-                        if (t.Result != null)
-                            response = (t.Result as HttpResponseMessage);
-                    }
-
-                    if (!t.IsFaulted) return;
-                    error = t.Exception;
-                    Audit.Log.Error("POST Task Exception ::", error);
-                }
-            ).Wait();
-
-            Assert.IsNotNull(response);
-            ScenarioContext.Current[AddItemKey] = response;
-
-            //grab the resulting added item
-            var resultAdd = PostResponse<CommunityType, CommunityType>(item);
-            if (resultAdd != null)
-            {
-                _addedIdValue = resultAdd.Id;
-                Assert.IsTrue(_addedIdValue > 0);
-
-                //Let's store the newly added Id in delete/edit, so we can later
-                //edit and delete this same record
-                _editIdValue = _addedIdValue;
-                _deletedIdValue = _addedIdValue;
-
-                ////validate values changed
-                Assert.AreEqual(item.Code, resultAdd.Code);
-            }
-
-            response = (ScenarioContext.Current[AddItemKey] as HttpResponseMessage);
-
-            Assert.IsNotNull(response);
-            Assert.IsTrue(response.StatusCode == HttpStatusCode.Created);
-
-            return resultAdd;
-        }
-
-        private CommunityType Exists(int id)
-        {
-            //Check it exists
-            ScenarioContext.Current[ExistsItemKey] = GetResponseExists<bool>(id);
-
-            var resultExists = ScenarioContext.Current[ExistsItemKey];
-
-            //call manually to verify Exists returned correctly
-            var itemReturned = GetResponseById<CommunityType>(id);
-
-            var truth = (itemReturned != null && itemReturned.Id == id);
-            Assert.AreEqual(truth, resultExists);
-
-            return itemReturned;
-        }
-
-        private CommunityType GetById(int id)
-        {
-            ScenarioContext.Current[GetItemKey] = GetResponseById<CommunityType>(id);
-
-            var resultGet = ScenarioContext.Current[GetItemKey];
-            var itemGet = (resultGet as CommunityType);
-
-            Assert.IsNotNull(itemGet);
-            Assert.IsTrue(itemGet.Id == id);
-
-            return itemGet;
-        }
-
-        private void Update(int id, CommunityType item)
-        {
-            var error = default(AggregateException);
-            var response = default(HttpResponseMessage);
-
-            PutAsync(item.Id, item).ContinueWith(
-                t =>
-                {
-                    if (t.IsCompleted)
-                    {
-                        if (t.Result != null)
-                            response = (t.Result as HttpResponseMessage);
-                    }
-
-                    if (t.IsFaulted)
-                    {
-                        error = t.Exception;
-                        Audit.Log.Error("PUT Task Exception ::", error);
-                    }
-                }
-            ).Wait();
-
-            Assert.IsNotNull(response);
-            ScenarioContext.Current[EditItemKey] = response;
-
-            //grab the resulting added item
-            response = (ScenarioContext.Current[EditItemKey] as HttpResponseMessage);
-            var resultEdit = PutResponse<CommunityType, CommunityType>(item.Id, item);
-            if (resultEdit != null)
-            {
-                Assert.IsTrue(id > 0);
-                Assert.AreEqual(id, resultEdit.Id);
-
-                //validate values changed
-                Assert.AreEqual(item.Code, resultEdit.Code);
-            }
-
-            Assert.IsNotNull(response);
-            Assert.IsTrue(response.StatusCode == HttpStatusCode.OK);
-        }
-
-        private void Delete(int id)
-        {
-            var error = default(AggregateException);
-            var response = default(HttpResponseMessage);
-
-            //Now, let's Delete the newly added item
-            DeleteAsync(id).ContinueWith(
-                t =>
-                {
-                    if (t.IsCompleted)
-                    {
-                        if (t.Result != null)
-                            response = (t.Result as HttpResponseMessage);
-                    }
-
-                    if (t.IsFaulted)
-                    {
-                        error = t.Exception;
-                        Audit.Log.Error("POST Task Exception ::", error);
-                    }
-                }
-            ).Wait();
-
-            Assert.IsNotNull(response);
-            ScenarioContext.Current[DeleteItemKey] = response;
-
-            //grab the resulting added item
-            var deleted = GetResponseById<CommunityType>(id);
-            Assert.IsNull(deleted);
-
-            response = (ScenarioContext.Current[DeleteItemKey] as HttpResponseMessage);
-
-            Assert.IsNotNull(response);
-            Assert.IsTrue(response.StatusCode == HttpStatusCode.OK);
+            var deleteResponse = Delete(_deletedIdValue);
+            Assert.IsNotNull(deleteResponse);
         }
         //
         #endregion CRUD Tests
+
 
         #region Post - add a new item by a populated item
         //
@@ -306,52 +136,33 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             Assert.IsNotNull(table);
             foreach (var row in table.Rows)
             {
-                //_line1 = row["Line1"];
-                //_line2 = row["Line2"];
-                //_city = row["City"];
-                //_state = row["State"];
-                //_country = row["Country"];
-                //_postalCode = row["PostalCode"];
+                _code = row["Code"];
+                _label = row["Label"];
 
                 break;
             }
-            //Assert.IsNotNull(_line1);
-            //Assert.IsNotNull(_city);
-            //Assert.IsNotNull(_city.IsValidEmailAddress());
+            Assert.IsNotNull(_code);
+            Assert.IsNotNull(_label);
 
             _addItem = new CommunityType()
             {
-                //Line1 = _line1,
-                //Line2 = _line2,
-                //City = _city,
-                //State = _state,
-                //Country = _country,
-                //PostalCode = _postalCode,
+                Code = _code,
+                Label = _label,
 
                 CreatedOn = DateTime.UtcNow,
             };
         }
 
-        [When(@"I call the add CommunityType Post api endpoint to add a communityTypes")]
+        [When(@"I call the add CommunityType Post api endpoint to add a CommunityType")]
         public void WhenICallTheAddCommunityTypePostApiEndpointToAddACommunityType()
         {
             var response = default(HttpResponseMessage);
-            var error = default(AggregateException);
+            AggregateException error;
 
             PostAsync(_addItem).ContinueWith(
                 t =>
                 {
-                    if (t.IsCompleted)
-                    {
-                        if (t.Result != null)
-                            response = (t.Result as HttpResponseMessage);
-                    }
-
-                    if (t.IsFaulted)
-                    {
-                        error = t.Exception;
-                        Audit.Log.Error("POST Task Exception ::", error);
-                    }
+                    response = ActionResponse(t, out error);
                 }
             ).Wait();
 
@@ -363,53 +174,17 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         public void ThenTheAddResultShouldBeACommunityTypeId()
         {
             var response = default(HttpResponseMessage);
-            var error = default(AggregateException);
+            AggregateException error;
 
             PostAsync(_addItem).ContinueWith(
                 t =>
                 {
-                    if (t.IsCompleted)
-                    {
-                        if (t.Result != null)
-                            response = (t.Result as HttpResponseMessage);
-                    }
-
-                    if (t.IsFaulted)
-                    {
-                        error = t.Exception;
-                        Audit.Log.Error("POST Task Exception ::", error);
-                    }
+                    response = ActionResponse(t, out error);
                 }
             ).Wait();
 
             Assert.IsNotNull(response);
             ScenarioContext.Current[AddItemKey] = response;
-        }
-
-        [Then(@"the add result should be a Item Id")]
-        public void ThenTheAddResultShouldBeAItemId()
-        {
-            _addedIdValue = -1;
-
-            //grab the resulting added item
-            var result = PostResponse<CommunityType, CommunityType>(_addItem);
-            if (result != null)
-            {
-
-                _addedIdValue = result.Id;
-                Assert.IsTrue(_addedIdValue > 0);
-
-                ////validate values changed
-                //Assert.AreEqual(_addItem.FirstName, result.FirstName);
-                //Assert.AreEqual(_addItem.LastName, result.LastName);
-                //Assert.AreEqual(_addItem.Email, result.Email);
-                //Assert.AreEqual(_addItem.MobilePhone, result.MobilePhone);
-            }
-
-            var response = (ScenarioContext.Current[AddItemKey] as HttpResponseMessage);
-
-            Assert.IsNotNull(response);
-            Assert.IsTrue(response.StatusCode == HttpStatusCode.Created);
         }
 
         //
@@ -423,7 +198,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             ScenarioContext.Current[GetListKey] = GetResponse<IList<CommunityType>>();
         }
 
-        [Then(@"the get result should be a list of communityTypes")]
+        [Then(@"the get result should be a list of CommunityTypes")]
         public void ThenTheGetResultShouldBeAListOfCommunityTypes()
         {
          
@@ -441,22 +216,12 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         public void GivenTheFollowingCommunityTypeGetByIdInput(Table table)
         {
             var response = default(HttpResponseMessage);
-            var error = default(AggregateException);
+            AggregateException error;
 
             PostAsync(_addItem).ContinueWith(
                 t =>
                 {
-                    if (t.IsCompleted)
-                    {
-                        if (t.Result != null)
-                            response = (t.Result as HttpResponseMessage);
-                    }
-
-                    if (t.IsFaulted)
-                    {
-                        error = t.Exception;
-                        Audit.Log.Error("POST Task Exception ::", error);
-                    }
+                    response = ActionResponse(t, out error);
                 }
             ).Wait();
 
@@ -476,7 +241,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             //
         }
 
-        [When(@"I call the edit CommunityType Put api endpoint to edit a communityTypes")]
+        [When(@"I call the edit CommunityType Put api endpoint to edit a CommunityType")]
         public void WhenICallTheEditCommunityTypePutApiEndpointToEditACommunityType()
         {
             ScenarioContext.Current[ExistsItemKey] = GetResponseExists<bool>(_existsIdValue);
@@ -556,18 +321,5 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         #endregion Get - Exists, verify Exists function checks and return a valid bool for exists or not
 
         //
-
-        #region helpers
-        //
-        public int ConvertToIntValue(string value)
-        {
-            var result = -1;
-
-            int.TryParse(value, out result);
-
-            return result;
-        }
-        //
-        #endregion helpers
     }
 }

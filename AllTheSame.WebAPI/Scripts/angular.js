@@ -16672,7 +16672,7 @@ function $FilterProvider($provide) {
  *
  *   - `function(value, index)`: A predicate function can be used to write arbitrary filters. The
  *     function is called for each element of `array`. The final result is an array of those
- *     elements that the predicate returned true for.
+ *     elements that the predicathe returned true for.
  *
  * @param {function(actual, expected)|true|undefined} comparator Comparator which is used in
  *     determining if the expected value (from the filter expression) and actual value (from

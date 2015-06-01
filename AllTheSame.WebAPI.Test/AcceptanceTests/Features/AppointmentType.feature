@@ -1,14 +1,14 @@
 ﻿Feature: AppointmentType
-	In order to see a list of appointmentTypes
+	In order to see a list of AppointmentTypes
 	As a Community Administrator
-	I want to load a list of appointmentTypes
+	I want to load a list of AppointmentTypes
 
 @AppointmentType 
 #[C]RUD - [Post] :: Create, Check, GetById, Update and Delete AppointmentType, by passing a newly populated AppointmentType
 Scenario: AppointmentType--Add, Check, GetById, Update and Delete AppointmentType
 	Given the following AppointmentType Add input
 		| Code		  | Label	|
-		| SpecFlow    | test		|
+		| SpecFlow    | test	|
 	When I call the add AppointmentType Post api endpoint to add a AppointmentType it checks if exists pulls item edits it and deletes it
 	Then the add result should be a AppointmentType Id check exists get by id edit and delete with http response returns
 
@@ -19,15 +19,15 @@ Scenario: AppointmentType--Retrieve all AppointmentTypes
 	When I call the AppointmentType Get api endpoint
 	Then the get result should be a list of AppointmentTypes
 
-#@AppointmentType 
-##[C]RUD - [Post] :: Create a new appointmentType, by passing a newly populated appointmentType
-#Scenario: Add a appointmentType
-#	Given the following AppointmentType Add input
-#		| Code			| Label				| 
-#		| SpecFlowCode  | SpecFlowLabel     |
-#	When I call the add AppointmentType Post api endpoint to add a appointmentType
-#	Then the add result should be a AppointmentType Id
-#
+@AppointmentType 
+#[C]RUD - [Post] :: Create a new AppointmentType, by passing a newly populated AppointmentType
+Scenario: Add a AppointmentType
+	Given the following AppointmentType Add input
+		| Code			| Label				| 
+		| SpecFlowCode  | SpecFlowLabel     |
+	When I call the add AppointmentType Post api endpoint to add a AppointmentType
+	Then the add result should be a AppointmentType Id
+
 #@AppointmentTypes 
 ##C[R]UD - [Get] :: Retrieve all appointmentTypes, without passing anything
 #Scenario: Retrieve all appointmentTypes

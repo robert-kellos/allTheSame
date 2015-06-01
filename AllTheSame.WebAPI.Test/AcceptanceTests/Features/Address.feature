@@ -1,8 +1,7 @@
 ﻿Feature: Address
-	In order to see a list of addresses
+	In order to see a list of Addresses
 	As a Community Administrator
-	I want to load a list of addresses
-
+	I want to load a list of Addresses
 
 @Address 
 #[C]RUD - [Post] :: Create, Check, GetById, Update and Delete Address, by passing a newly populated Address
@@ -14,21 +13,21 @@ Scenario: Address--Add, Check, GetById, Update and Delete Address
 	Then the add result should be a Address Id check exists get by id edit and delete with http response returns
 
 @Addresses 
-#C[R]UD - [Get] :: Retrieve all addresses, without passing anything
-Scenario: Retrieve all addresses
+#C[R]UD - [Get] :: Retrieve all Addresses, without passing anything
+Scenario: Retrieve all Addresses
 	#Given I am an authenticated user
 	When I call the Address Get api endpoint
-	Then the get result should be a list of addresses
+	Then the get result should be a list of Addresses
 
-#@Address 
-##[C]RUD - [Post] :: Create a new address, by passing a newly populated address
-#Scenario: Add a address
-#	Given the following Address Add input
-#		| Line1    | Line2     | City		  | State	| Country	| PostalCode |
-#		| Spec Ave | Flow Blvd | NewCity      |  NY     |	USA		|10221		 |
-#	When I call the add Address Post api endpoint to add a address
-#	Then the add result should be a Address Id
-#
+@Address 
+#[C]RUD - [Post] :: Create a new Address, by passing a newly populated Address
+Scenario: Add a Address
+	Given the following Address Add input
+		| Line1    | Line2     | City		  | State	| Country	| PostalCode |
+		| Spec Ave | Flow Blvd | NewCity      |  NY     |	USA		|10221		 |
+	When I call the add Address Post api endpoint to add a Address
+	Then the add result should be a Address Id
+
 #@Addresses 
 ##C[R]UD - [Get] :: Retrieve all addresses, without passing anything
 #Scenario: Retrieve all addresses

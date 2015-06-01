@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Configuration;
+using System.Diagnostics;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Threading.Tasks;
+using System.Web.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using AllTheSame.Common.Logging;
@@ -60,7 +63,7 @@ namespace AllTheSame.WebAPI.Test
         }
 
         /// <summary>
-        /// Teardowns this instance.
+        /// Tear-downs this instance.
         /// </summary>
         [TestCleanup]
         public void Teardown()
@@ -187,10 +190,8 @@ namespace AllTheSame.WebAPI.Test
         /// <returns></returns>
         protected virtual async Task<HttpResponseMessage> PostAsync<TModel>(TModel model)
         {
-            var formatter = new JsonMediaTypeFormatter();
-            
-            formatter.UseDataContractJsonSerializer = true;
-            formatter.Indent = false;
+            var formatter = new JsonMediaTypeFormatter {UseDataContractJsonSerializer = true, Indent = false};
+
             var canWrite = formatter.CanWriteType(typeof(TModel));
 
             return await Client.PostAsync(string.Format("{0}{1}", ClientUrl, Uri),
@@ -207,10 +208,8 @@ namespace AllTheSame.WebAPI.Test
         protected virtual async Task<HttpResponseMessage> PutAsync<TModel>(long? id, TModel model)
         {
             var endpoint = string.Format("{0}{1}/{2}",ClientUrl, Uri, id);
-            var formatter = new JsonMediaTypeFormatter();
+            var formatter = new JsonMediaTypeFormatter {UseDataContractJsonSerializer = true, Indent = false};
 
-            formatter.UseDataContractJsonSerializer = true;
-            formatter.Indent = false;
 
             var canWrite = formatter.CanWriteType(typeof(TModel));
             
@@ -221,14 +220,114 @@ namespace AllTheSame.WebAPI.Test
         /// <summary>
         /// Deletes the asynchronous.
         /// </summary>
-        /// <typeparam name="TModel">The type of the model.</typeparam>
         /// <param name="id">The identifier.</param>
-        /// <param name="model">The model.</param>
         /// <returns></returns>
         protected virtual async Task<HttpResponseMessage> DeleteAsync(long? id)
         {
             return await Client.DeleteAsync(string.Format("{0}{1}/{2}",ClientUrl, Uri, id));
         }
+
+        #region Helpers
+        /// <summary>
+        /// Actions the response.
+        /// </summary>
+        /// <param name="task">The task.</param>
+        /// <param name="error">The error.</param>
+        /// <returns></returns>
+        protected static HttpResponseMessage ActionResponse(Task<HttpResponseMessage> task, out AggregateException error)
+        {
+            HttpResponseMessage response = null;
+            if (task.IsCompleted)
+            {
+                if (task.Result != null)
+                    response = task.Result;
+            }
+
+            if (!task.IsFaulted)
+            {
+                error = null;
+                return response;
+            }
+            error = task.Exception;
+            Audit.Log.Error("ACTION Task Exception ::", error);
+
+            return response;
+        }
+        protected virtual TModel Add<TModel>(TModel model, out HttpResponseMessage response)
+        {
+            var result = default(TModel);
+            AggregateException error;
+            var actionResponse = default(HttpResponseMessage);
+
+            //Now, let's Delete the newly added item
+            PostAsync(model).ContinueWith(
+                t =>
+                {
+                    actionResponse = ActionResponse(t, out error);
+                }
+            ).Wait();
+
+            response = actionResponse;
+            
+            if(response.IsSuccessStatusCode)
+                result = PostResponse<TModel, TModel>(model);
+
+            return result;
+        }
+        protected virtual bool Exists(int id)
+        {
+            var response = GetResponseExists<bool>(id);
+
+            return response;
+        }
+
+        protected virtual TModel GetById<TModel>(int id)
+        {
+            var response = GetResponseById<TModel>(id);
+
+            return response;
+        }
+
+        protected virtual HttpResponseMessage Update<TModel>(int id, TModel model)
+        {
+            AggregateException error;
+            var response = default(HttpResponseMessage);
+
+            //Now, let's Delete the newly added item
+            PutAsync(id, model).ContinueWith(
+                t =>
+                {
+                    response = ActionResponse(t, out error);
+                }
+            ).Wait();
+
+            return response;
+        }
+        protected virtual HttpResponseMessage Delete(int id)
+        {
+            AggregateException error;
+            var response = default(HttpResponseMessage);
+
+            //Now, let's Delete the newly added item
+            DeleteAsync(id).ContinueWith(
+                t =>
+                {
+                    response = ActionResponse(t, out error);
+                }
+            ).Wait();
+
+            return response;
+        }
+        public virtual int ConvertToIntValue(string value)
+        {
+            var result = -1;
+
+            int.TryParse(value, out result);
+
+            return result;
+        }
+        //
+        #endregion Helpers
 
         /// <summary>
         /// Posts the setup.
@@ -245,10 +344,7 @@ namespace AllTheSame.WebAPI.Test
         {
             if (disposing)
             {
-                if (Client != null)
-                {
-                    Client.Dispose();
-                }
+                Client?.Dispose();
             }
         }
 

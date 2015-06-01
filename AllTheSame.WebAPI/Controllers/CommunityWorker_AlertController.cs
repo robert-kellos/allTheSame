@@ -77,7 +77,7 @@ namespace AllTheSame.WebAPI.Controllers
         /// <returns>
         ///     Newly created Id in a returned wrapper.
         /// </returns>
-        [ResponseType(typeof (IdReturnModel))]
+        [ResponseType(typeof (IHttpActionResult))]
         [HttpPost]
         public override IHttpActionResult Post([FromBody] CommunityWorker_Alert item)
         {

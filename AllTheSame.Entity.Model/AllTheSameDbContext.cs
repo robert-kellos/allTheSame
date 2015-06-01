@@ -64,7 +64,7 @@ namespace AllTheSame.Entity.Model
                 if (modCount <= 0) return base.SaveChanges();
 
                 var enumerable = default(IList<string>);
-                foreach (var error in dbEntityEntries.Select(
+                foreach (var err in dbEntityEntries.Select(
                     entry => entry.GetValidationResult())
                     .Where(vr => !vr.IsValid)
                     .Select(vr => vr.ValidationErrors
@@ -75,12 +75,9 @@ namespace AllTheSame.Entity.Model
                         return enumerable;
 
 
-                    }))
+                    }).SelectMany(error => enumerable))
                 {
-                    foreach (var err in enumerable)
-                    {
-                        Audit.Log.Error(string.Format("Validation Error: {0}", err));
-                    }
+                    Audit.Log.Error(string.Format("Validation Error: {0}", err));
                 }
 
                 return base.SaveChanges();

@@ -1,14 +1,14 @@
 ﻿Feature: Community
-	In order to see a list of communities
+	In order to see a list of Communities
 	As a Community Administrator
-	I want to load a list of communities
+	I want to load a list of Communities
 
 @Community 
 #[C]RUD - [Post] :: Create, Check, GetById, Update and Delete Community, by passing a newly populated Community
 Scenario: Community--Add, Check, GetById, Update and Delete Community
 	Given the following Community Add input
-		| Name		  | 
-		| SpecFlow    | 
+		| Name     | Description | NumBeds | Raiting |
+		| SpecFlow | test        | 200     | 6		 |
 	When I call the add Community Post api endpoint to add a Community it checks if exists pulls item edits it and deletes it
 	Then the add result should be a Community Id check exists get by id edit and delete with http response returns
 
@@ -17,17 +17,17 @@ Scenario: Community--Add, Check, GetById, Update and Delete Community
 Scenario: Community--Retrieve all Communities
 	#Given I am an authenticated user
 	When I call the Community Get api endpoint
-	Then the get result should be a list of communities
+	Then the get result should be a list of Communities
 
-#@Community 
-##[C]RUD - [Post] :: Create a new community, by passing a newly populated community
-#Scenario: Add a community
-#	Given the following Community Add input
-#		| FirstName | LastName | Email   | MobileNumber |
-#		| Spec      | Flow     | x@y.com | 800-555-1212 |
-#	When I call the add Community Post api endpoint to add a community
-#	Then the add result should be a Community Id
-#
+@Community 
+#[C]RUD - [Post] :: Create a new Community, by passing a newly populated Community
+Scenario: Add a Community
+	Given the following Community Add input
+		| Name     | Description | NumBeds | Raiting |
+		| SpecFlow | test        | 200     | 6		 |
+	When I call the add Community Post api endpoint to add a Community
+	Then the add result should be a Community Id
+
 #@Communities 
 ##C[R]UD - [Get] :: Retrieve all communities, without passing anything
 #Scenario: Retrieve all communities

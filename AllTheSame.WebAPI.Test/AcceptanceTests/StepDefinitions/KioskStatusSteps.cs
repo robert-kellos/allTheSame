@@ -1,22 +1,9 @@
 ﻿using System.Collections.Generic;
-using AllTheSame.Common.Extensions;
-using AllTheSame.Common.Helpers;
 using AllTheSame.Entity.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
-using AllTheSame.Common.Logging;
 using System.Net.Http;
-using System.Web.Http.Results;
-using System.Net;
 using System;
-using System.Net.Http.Headers;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Net.Http.Formatting;
-using Newtonsoft.Json;
-using System.Web.Http;
-using Newtonsoft.Json.Serialization;
-using AllTheSame.WebAPI.Models;
 
 namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
 {
@@ -54,16 +41,71 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         private string _existsId = "-1";
         private int _existsIdValue = -1;
 
-        private string _line1 = "";
-        private string _line2 = "";
-        private string _city = "";
-        private string _state = "";
-        private string _country = "";
-        private string _postalCode = "";
+        private string _code = "";
+        private string _label = "";
         //
         #endregion Local Properties/Fields
 
         public override string Uri => "/api/KioskStatus";
+
+        #region CRUD Tests
+        //
+
+        [When(@"I call the add KioskStatus Post api endpoint to add a KioskStatus it checks if exists pulls item edits it and deletes it")]
+        public void WhenICallTheAddKioskStatusPostApiEndpointToAddAKioskStatusItChecksIfExistsPullsItemEditsItAndDeletesIt()
+        {
+            HttpResponseMessage response;
+
+            _addItem = Add(_addItem, out response);
+
+            Assert.IsNotNull(response);
+            ScenarioContext.Current[AddItemKey] = response;
+        }
+
+        [Then(@"the add result should be a KioskStatus Id check exists get by id edit and delete with http response returns")]
+        public void ThenTheAddResultShouldBeAKioskStatusIdCheckExistsGetByIdEditAndDeleteWithHttpResponseReturns()
+        {
+            //did we get a good result
+            Assert.IsTrue(_addItem != null && _addItem.Id > 0);
+
+            //set the returned AddID to current Get
+            _addedIdValue = _addItem.Id;
+            _getIdValue = _addedIdValue;
+            _existsIdValue = _getIdValue;
+
+            //check that the item exists
+            var itemReturned = Exists(_existsIdValue);
+            Assert.IsTrue(itemReturned);
+
+            //use the value used in exists check
+            _getIdValue = _addItem.Id;
+            Assert.IsTrue(_getIdValue == _addedIdValue);
+
+            //pull the item by Id
+            var resultGet = GetById<KioskStatus>(_getIdValue);
+            Assert.IsNotNull(resultGet);
+            _getIdValue = resultGet.Id;
+            Assert.IsTrue(_getIdValue == _addedIdValue);
+
+            //Now, let's Edit the newly added item
+            _editIdValue = _getIdValue;
+            _editItem = resultGet;
+            Assert.IsTrue(_editIdValue == _addedIdValue);
+
+            //do an update
+            var updateResponse = Update(_editIdValue, _editItem);
+            Assert.IsNotNull(updateResponse);
+
+            //pass the item just updated
+            _deletedIdValue = _editIdValue;
+            Assert.IsTrue(_deletedIdValue == _addedIdValue);
+
+            //delete this same item
+            var deleteResponse = Delete(_deletedIdValue);
+            Assert.IsNotNull(deleteResponse);
+        }
+        //
+        #endregion CRUD Tests
 
         #region Post - add a new item by a populated item
         //
@@ -73,52 +115,31 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             Assert.IsNotNull(table);
             foreach (var row in table.Rows)
             {
-                //_line1 = row["Line1"];
-                //_line2 = row["Line2"];
-                //_city = row["City"];
-                //_state = row["State"];
-                //_country = row["Country"];
-                //_postalCode = row["PostalCode"];
+                _code = row["Code"];
+                _label = row["Label"];
 
                 break;
             }
-            //Assert.IsNotNull(_line1);
-            //Assert.IsNotNull(_city);
-            //Assert.IsNotNull(_city.IsValidEmailAddress());
 
             _addItem = new KioskStatus()
             {
-                //Line1 = _line1,
-                //Line2 = _line2,
-                //City = _city,
-                //State = _state,
-                //Country = _country,
-                //PostalCode = _postalCode,
+                Code = _code,
+                Label = _label,
 
                 CreatedOn = DateTime.UtcNow,
             };
         }
 
-        [When(@"I call the add KioskStatus Post api endpoint to add a kioskStatus")]
+        [When(@"I call the add KioskStatus Post api endpoint to add a KioskStatus")]
         public void WhenICallTheAddKioskStatusPostApiEndpointToAddAKioskStatus()
         {
             var response = default(HttpResponseMessage);
-            var error = default(AggregateException);
+            AggregateException error;
 
             PostAsync(_addItem).ContinueWith(
                 t =>
                 {
-                    if (t.IsCompleted)
-                    {
-                        if (t.Result != null)
-                            response = (t.Result as HttpResponseMessage);
-                    }
-
-                    if (t.IsFaulted)
-                    {
-                        error = t.Exception;
-                        Audit.Log.Error("POST Task Exception ::", error);
-                    }
+                    response = ActionResponse(t, out error);
                 }
             ).Wait();
 
@@ -130,22 +151,12 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         public void ThenTheAddResultShouldBeAKioskStatusId()
         {
             var response = default(HttpResponseMessage);
-            var error = default(AggregateException);
+            AggregateException error;
 
             PostAsync(_addItem).ContinueWith(
                 t =>
                 {
-                    if (t.IsCompleted)
-                    {
-                        if (t.Result != null)
-                            response = (t.Result as HttpResponseMessage);
-                    }
-
-                    if (t.IsFaulted)
-                    {
-                        error = t.Exception;
-                        Audit.Log.Error("POST Task Exception ::", error);
-                    }
+                    response = ActionResponse(t, out error);
                 }
             ).Wait();
 
@@ -153,32 +164,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             ScenarioContext.Current[AddItemKey] = response;
         }
 
-        [Then(@"the add result should be a Item Id")]
-        public void ThenTheAddResultShouldBeAItemId()
-        {
-            _addedIdValue = -1;
-
-            //grab the resulting added item
-            var result = PostResponse<KioskStatus, KioskStatus>(_addItem);
-            if (result != null)
-            {
-
-                _addedIdValue = result.Id;
-                Assert.IsTrue(_addedIdValue > 0);
-
-                ////validate values changed
-                //Assert.AreEqual(_addItem.FirstName, result.FirstName);
-                //Assert.AreEqual(_addItem.LastName, result.LastName);
-                //Assert.AreEqual(_addItem.Email, result.Email);
-                //Assert.AreEqual(_addItem.MobilePhone, result.MobilePhone);
-            }
-
-            var response = (ScenarioContext.Current[AddItemKey] as HttpResponseMessage);
-
-            Assert.IsNotNull(response);
-            Assert.IsTrue(response.StatusCode == HttpStatusCode.Created);
-        }
-
+       
         //
         #endregion Post - add a new item by a populated item
 
@@ -190,7 +176,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             ScenarioContext.Current[GetListKey] = GetResponse<IList<KioskStatus>>();
         }
 
-        [Then(@"the get result should be a list of kioskStatuses")]
+        [Then(@"the get result should be a list of KioskStatuses")]
         public void ThenTheGetResultShouldBeAListOfKioskStatuses()
         {
             //
@@ -208,22 +194,12 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         public void GivenTheFollowingKioskStatusGetByIdInput(Table table)
         {
             var response = default(HttpResponseMessage);
-            var error = default(AggregateException);
+            AggregateException error;
 
             PostAsync(_addItem).ContinueWith(
                 t =>
                 {
-                    if (t.IsCompleted)
-                    {
-                        if (t.Result != null)
-                            response = (t.Result as HttpResponseMessage);
-                    }
-
-                    if (t.IsFaulted)
-                    {
-                        error = t.Exception;
-                        Audit.Log.Error("POST Task Exception ::", error);
-                    }
+                    response = ActionResponse(t, out error);
                 }
             ).Wait();
 
@@ -242,7 +218,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             //
         }
 
-        [When(@"I call the edit KioskStatus Put api endpoint to edit a kioskStatus")]
+        [When(@"I call the edit KioskStatus Put api endpoint to edit a KioskStatus")]
         public void WhenICallTheEditKioskStatusPutApiEndpointToEditAKioskStatus()
         {
             //
@@ -265,7 +241,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             //
         }
 
-        [When(@"I call the delete KioskStatus Post api endpoint to delete a kioskStatus")]
+        [When(@"I call the delete KioskStatus Post api endpoint to delete a KioskStatus")]
         public void WhenICallTheDeleteKioskStatusPostApiEndpointToDeleteAKioskStatus()
         {
             //
@@ -321,18 +297,5 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         #endregion Get - Exists, verify Exists function checks and return a valid bool for exists or not
 
         //
-
-        #region helpers
-        //
-        public int ConvertToIntValue(string value)
-        {
-            var result = -1;
-
-            int.TryParse(value, out result);
-
-            return result;
-        }
-        //
-        #endregion helpers
     }
 }

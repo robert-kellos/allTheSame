@@ -54,16 +54,70 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         private string _existsId = "-1";
         private int _existsIdValue = -1;
 
-        private string _line1 = "";
-        private string _line2 = "";
-        private string _city = "";
-        private string _state = "";
-        private string _country = "";
-        private string _postalCode = "";
+        private int _kioskId = 2;
         //
         #endregion Local Properties/Fields
 
         public override string Uri => "/api/DataSync";
+
+        #region CRUD Tests
+        //
+
+        [When(@"I call the add DataSync Post api endpoint to add a DataSync it checks if exists pulls item edits it and deletes it")]
+        public void WhenICallTheAddDataSyncPostApiEndpointToAddADataSyncItChecksIfExistsPullsItemEditsItAndDeletesIt()
+        {
+            HttpResponseMessage response;
+
+            _addItem = Add(_addItem, out response);
+
+            Assert.IsNotNull(response);
+            ScenarioContext.Current[AddItemKey] = response;
+        }
+
+        [Then(@"the add result should be a DataSync Id check exists get by id edit and delete with http response returns")]
+        public void ThenTheAddResultShouldBeADataSyncIdCheckExistsGetByIdEditAndDeleteWithHttpResponseReturns()
+        {
+            //did we get a good result
+            Assert.IsTrue(_addItem != null && _addItem.Id > 0);
+
+            //set the returned AddID to current Get
+            _addedIdValue = _addItem.Id;
+            _getIdValue = _addedIdValue;
+            _existsIdValue = _getIdValue;
+
+            //check that the item exists
+            var itemReturned = Exists(_existsIdValue);
+            Assert.IsTrue(itemReturned);
+
+            //use the value used in exists check
+            _getIdValue = _addItem.Id;
+            Assert.IsTrue(_getIdValue == _addedIdValue);
+
+            //pull the item by Id
+            var resultGet = GetById<DataSync>(_getIdValue);
+            Assert.IsNotNull(resultGet);
+            _getIdValue = resultGet.Id;
+            Assert.IsTrue(_getIdValue == _addedIdValue);
+
+            //Now, let's Edit the newly added item
+            _editIdValue = _getIdValue;
+            _editItem = resultGet;
+            Assert.IsTrue(_editIdValue == _addedIdValue);
+
+            //do an update
+            var updateResponse = Update(_editIdValue, _editItem);
+            Assert.IsNotNull(updateResponse);
+
+            //pass the item just updated
+            _deletedIdValue = _editIdValue;
+            Assert.IsTrue(_deletedIdValue == _addedIdValue);
+
+            //delete this same item
+            var deleteResponse = Delete(_deletedIdValue);
+            Assert.IsNotNull(deleteResponse);
+        }
+        //
+        #endregion CRUD Tests
 
         #region Post - add a new item by a populated item
         //
@@ -73,44 +127,29 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             Assert.IsNotNull(table);
             foreach (var row in table.Rows)
             {
-                //_firstName = row["FirstName"];
-                //_lastName = row["LastName"];
-                //_email = row["Email"];
-                //_mobileNumber = row["MobileNumber"];
+                _kioskId = Convert.ToInt32(row["KioskId"]);
 
                 break;
             }
-            //Assert.IsNotNull(_firstName);
-            //Assert.IsNotNull(_email);
-            //Assert.IsNotNull(_email.IsValidEmailAddress());
 
             _addItem = new DataSync()
             {
+                KioskId = _kioskId,
 
                 CreatedOn = DateTime.UtcNow,
             };
         }
 
-        [When(@"I call the add DataSync Post api endpoint to add a dataSync")]
+        [When(@"I call the add DataSync Post api endpoint to add a DataSync")]
         public void WhenICallTheAddDataSyncPostApiEndpointToAddADataSync()
         {
             var response = default(HttpResponseMessage);
-            var error = default(AggregateException);
+            AggregateException error;
 
             PostAsync(_addItem).ContinueWith(
                 t =>
                 {
-                    if (t.IsCompleted)
-                    {
-                        if (t.Result != null)
-                            response = (t.Result as HttpResponseMessage);
-                    }
-
-                    if (t.IsFaulted)
-                    {
-                        error = t.Exception;
-                        Audit.Log.Error("POST Task Exception ::", error);
-                    }
+                    response = ActionResponse(t, out error);
                 }
             ).Wait();
 
@@ -133,9 +172,6 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
 
                 //validate values changed
                 //Assert.AreEqual(_addDataSync.FirstName, result.FirstName);
-                //Assert.AreEqual(_addDataSync.LastName, result.LastName);
-                //Assert.AreEqual(_addDataSync.Email, result.Email);
-                //Assert.AreEqual(_addDataSync.MobilePhone, result.MobilePhone);
             }
 
             var response = (ScenarioContext.Current[AddItemKey] as HttpResponseMessage);
@@ -234,26 +270,16 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             
         }
 
-        [When(@"I call the edit DataSync Put api endpoint to edit a dataSync")]
+        [When(@"I call the edit DataSync Put api endpoint to edit a DataSync")]
         public void WhenICallTheEditDataSyncPutApiEndpointToEditADataSync()
         {
             var response = default(HttpResponseMessage);
-            var error = default(AggregateException);
+            AggregateException error;
 
             PutAsync(_editItem.Id, _editItem).ContinueWith(
                 t =>
                 {
-                    if (t.IsCompleted)
-                    {
-                        if (t.Result != null)
-                            response = (t.Result as HttpResponseMessage);
-                    }
-
-                    if (t.IsFaulted)
-                    {
-                        error = t.Exception;
-                        Audit.Log.Error("PUT Task Exception ::", error);
-                    }
+                    response = ActionResponse(t, out error);
                 }
             ).Wait();
 
@@ -303,31 +329,21 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
 
             Assert.IsTrue(_deletedIdValue > -1);
 
-            var last = GetResponse<List<DataSync>>();
-            var l = last[last.Count - 1];
-            _deletedIdValue = l.Id;
+            //var last = GetResponse<List<DataSync>>();
+            //var l = last[last.Count - 1];
+            //_deletedIdValue = l.Id;
         }
 
-        [When(@"I call the delete DataSync Post api endpoint to delete a dataSync")]
+        [When(@"I call the delete DataSync Post api endpoint to delete a DataSync")]
         public void WhenICallTheDeleteDataSyncPostApiEndpointToDeleteADataSync()
         {
             var response = default(HttpResponseMessage);
-            var error = default(AggregateException);
+            AggregateException error;
 
             DeleteAsync(_deletedIdValue).ContinueWith(
                 t =>
                 {
-                    if (t.IsCompleted)
-                    {
-                        if (t.Result != null)
-                            response = (t.Result as HttpResponseMessage);
-                    }
-
-                    if (t.IsFaulted)
-                    {
-                        error = t.Exception;
-                        Audit.Log.Error("POST Task Exception ::", error);
-                    }
+                    response = ActionResponse(t, out error);
                 }
             ).Wait();
 
@@ -391,18 +407,5 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         #endregion Get - Exists, verify Exists function checks and return a valid bool for exists or not
 
         //
-
-        #region helpers
-        //
-        public int ConvertToIntValue(string value)
-        {
-            var result = -1;
-
-            int.TryParse(value, out result);
-
-            return result;
-        }
-        //
-        #endregion helpers
     }
 }

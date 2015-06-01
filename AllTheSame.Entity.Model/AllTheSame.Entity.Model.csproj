@@ -116,11 +116,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AllTheSame.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="AllTheSame.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AllTheSame.tt</DependentUpon>
-    </Compile>
     <Compile Include="AllTheSame.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

@@ -93,7 +93,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 9
  testRunner.Given("the following RequirementType Add input", ((string)(null)), table1, "Given ");
 #line 12
- testRunner.When("I call the add RequirementType Post api endpoint to add a requirementType", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I call the add RequirementType Post api endpoint to add a RequirementType", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 13
  testRunner.Then("the add result should be a RequirementType Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden

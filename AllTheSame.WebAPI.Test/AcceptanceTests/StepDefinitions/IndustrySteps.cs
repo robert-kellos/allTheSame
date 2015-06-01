@@ -65,6 +65,65 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
 
         public override string Uri => "/api/Industry";
 
+        #region CRUD Tests
+        //
+
+        [When(@"I call the add Industry Post api endpoint to add a Industry it checks if exists pulls item edits it and deletes it")]
+        public void WhenICallTheAddIndustryPostApiEndpointToAddAIndustryItChecksIfExistsPullsItemEditsItAndDeletesIt()
+        {
+            HttpResponseMessage response;
+
+            _addItem = Add(_addItem, out response);
+
+            Assert.IsNotNull(response);
+            ScenarioContext.Current[AddItemKey] = response;
+        }
+
+        [Then(@"the add result should be a Industry Id check exists get by id edit and delete with http response returns")]
+        public void ThenTheAddResultShouldBeAIndustryIdCheckExistsGetByIdEditAndDeleteWithHttpResponseReturns()
+        {
+            //did we get a good result
+            Assert.IsTrue(_addItem != null && _addItem.Id > 0);
+
+            //set the returned AddID to current Get
+            _addedIdValue = _addItem.Id;
+            _getIdValue = _addedIdValue;
+            _existsIdValue = _getIdValue;
+
+            //check that the item exists
+            var itemReturned = Exists(_existsIdValue);
+            Assert.IsTrue(itemReturned);
+
+            //use the value used in exists check
+            _getIdValue = _addItem.Id;
+            Assert.IsTrue(_getIdValue == _addedIdValue);
+
+            //pull the item by Id
+            var resultGet = GetById<Industry>(_getIdValue);
+            Assert.IsNotNull(resultGet);
+            _getIdValue = resultGet.Id;
+            Assert.IsTrue(_getIdValue == _addedIdValue);
+
+            //Now, let's Edit the newly added item
+            _editIdValue = _getIdValue;
+            _editItem = resultGet;
+            Assert.IsTrue(_editIdValue == _addedIdValue);
+
+            //do an update
+            var updateResponse = Update(_editIdValue, _editItem);
+            Assert.IsNotNull(updateResponse);
+
+            //pass the item just updated
+            _deletedIdValue = _editIdValue;
+            Assert.IsTrue(_deletedIdValue == _addedIdValue);
+
+            //delete this same item
+            var deleteResponse = Delete(_deletedIdValue);
+            Assert.IsNotNull(deleteResponse);
+        }
+        //
+        #endregion CRUD Tests
+
         #region Post - add a new item by a populated item
         //
         [Given(@"the following Industry Add input")]
@@ -99,26 +158,16 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             };
         }
 
-        [When(@"I call the add Industry Post api endpoint to add a industry")]
+        [When(@"I call the add Industry Post api endpoint to add a Industry")]
         public void WhenICallTheAddIndustryPostApiEndpointToAddAIndustry()
         {
             var response = default(HttpResponseMessage);
-            var error = default(AggregateException);
+            AggregateException error;
 
             PostAsync(_addItem).ContinueWith(
                 t =>
                 {
-                    if (t.IsCompleted)
-                    {
-                        if (t.Result != null)
-                            response = (t.Result as HttpResponseMessage);
-                    }
-
-                    if (t.IsFaulted)
-                    {
-                        error = t.Exception;
-                        Audit.Log.Error("POST Task Exception ::", error);
-                    }
+                    response = ActionResponse(t, out error);
                 }
             ).Wait();
 
@@ -130,53 +179,17 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         public void ThenTheAddResultShouldBeAIndustryId()
         {
             var response = default(HttpResponseMessage);
-            var error = default(AggregateException);
+            AggregateException error;
 
             PostAsync(_addItem).ContinueWith(
                 t =>
                 {
-                    if (t.IsCompleted)
-                    {
-                        if (t.Result != null)
-                            response = (t.Result as HttpResponseMessage);
-                    }
-
-                    if (t.IsFaulted)
-                    {
-                        error = t.Exception;
-                        Audit.Log.Error("POST Task Exception ::", error);
-                    }
+                    response = ActionResponse(t, out error);
                 }
             ).Wait();
 
             Assert.IsNotNull(response);
             ScenarioContext.Current[AddItemKey] = response;
-        }
-
-        [Then(@"the add result should be a Item Id")]
-        public void ThenTheAddResultShouldBeAItemId()
-        {
-            _addedIdValue = -1;
-
-            //grab the resulting added item
-            var result = PostResponse<Industry, Industry>(_addItem);
-            if (result != null)
-            {
-
-                _addedIdValue = result.Id;
-                Assert.IsTrue(_addedIdValue > 0);
-
-                ////validate values changed
-                //Assert.AreEqual(_addItem.FirstName, result.FirstName);
-                //Assert.AreEqual(_addItem.LastName, result.LastName);
-                //Assert.AreEqual(_addItem.Email, result.Email);
-                //Assert.AreEqual(_addItem.MobilePhone, result.MobilePhone);
-            }
-
-            var response = (ScenarioContext.Current[AddItemKey] as HttpResponseMessage);
-
-            Assert.IsNotNull(response);
-            Assert.IsTrue(response.StatusCode == HttpStatusCode.Created);
         }
 
         //
@@ -190,7 +203,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             ScenarioContext.Current[GetListKey] = GetResponse<IList<Industry>>();
         }
 
-        [Then(@"the get result should be a list of industries")]
+        [Then(@"the get result should be a list of Industries")]
         public void ThenTheGetResultShouldBeAListOfIndustries()
         {
             //
@@ -208,22 +221,12 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         public void GivenTheFollowingIndustryGetByIdInput(Table table)
         {
             var response = default(HttpResponseMessage);
-            var error = default(AggregateException);
+            AggregateException error;
 
             PostAsync(_addItem).ContinueWith(
                 t =>
                 {
-                    if (t.IsCompleted)
-                    {
-                        if (t.Result != null)
-                            response = (t.Result as HttpResponseMessage);
-                    }
-
-                    if (t.IsFaulted)
-                    {
-                        error = t.Exception;
-                        Audit.Log.Error("POST Task Exception ::", error);
-                    }
+                    response = ActionResponse(t, out error);
                 }
             ).Wait();
 
@@ -242,7 +245,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             //
         }
 
-        [When(@"I call the edit Industry Put api endpoint to edit a industry")]
+        [When(@"I call the edit Industry Put api endpoint to edit a Industry")]
         public void WhenICallTheEditIndustryPutApiEndpointToEditAIndustry()
         {
             //
@@ -265,7 +268,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             //
         }
 
-        [When(@"I call the delete Industry Post api endpoint to delete a industry")]
+        [When(@"I call the delete Industry Post api endpoint to delete a Industry")]
         public void WhenICallTheDeleteIndustryPostApiEndpointToDeleteAIndustry()
         {
             //
@@ -321,18 +324,5 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         #endregion Get - Exists, verify Exists function checks and return a valid bool for exists or not
 
         //
-
-        #region helpers
-        //
-        public int ConvertToIntValue(string value)
-        {
-            var result = -1;
-
-            int.TryParse(value, out result);
-
-            return result;
-        }
-        //
-        #endregion helpers
     }
 }

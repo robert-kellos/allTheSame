@@ -1,7 +1,7 @@
 ﻿Feature: Alert
-	In order to see a list of alerts
+	In order to see a list of Alerts
 	As a Community Administrator
-	I want to load a list of alerts
+	I want to load a list of Alerts
 
 @Alert 
 #[C]RUD - [Post] :: Create, Check, GetById, Update and Delete alert, by passing a newly populated alert
@@ -14,11 +14,20 @@ Scenario: Alert--Add, Check, GetById, Update and Delete alert
 
 @Alerts 
 #C[R]UD - [Get] :: Retrieve all alerts, without passing anything
-Scenario: Alert--Retrieve all alerts
+Scenario: Alert--Retrieve all Alerts
 	#Given I am an authenticated user
 	When I call the Alert Get api endpoint
-	Then the get result should be a list of alerts
-#
+	Then the get result should be a list of Alerts
+
+@Alert 
+#[C]RUD - [Post] :: Create a new Alert, by passing a newly populated Alert
+Scenario: Add a Alert
+	Given the following Alert Add input
+		| Description | AlertTypeId |
+		| SpecFlow    | 1           |
+	When I call the add Alert Post api endpoint to add a Alert
+	Then the add result should be a Alert Id
+
 #@Alert 
 ##C[R]UD - [Get] :: Retrieve an existing alert, by passing a alert Id
 #Scenario: Retrieve a alert by Id
