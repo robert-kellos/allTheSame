@@ -16,12 +16,12 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         //
         private const string HttpResponseKey = "http_response";
 
-        private const string GetListKey = "visit_get_list";
-        private const string GetItemKey = "visit_get_item";
-        private const string AddItemKey = "visit_add_item";
-        private const string EditItemKey = "visit_edit_item";
-        private const string DeleteItemKey = "visit_delete_item";
-        private const string ExistsItemKey = "visit_exists_item";
+        private const string GetListKey = "Visit_get_list";
+        private const string GetItemKey = "Visit_get_item";
+        private const string AddItemKey = "Visit_add_item";
+        private const string EditItemKey = "Visit_edit_item";
+        private const string DeleteItemKey = "Visit_delete_item";
+        private const string ExistsItemKey = "Visit_exists_item";
 
         private Visit _getItem;
         private Visit _addItem;
@@ -43,16 +43,75 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         private string _existsId = "-1";
         private int _existsIdValue = -1;
 
-        private string _line1 = "";
-        private string _line2 = "";
-        private string _city = "";
-        private string _state = "";
-        private string _country = "";
-        private string _postalCode = "";
+  //      | ResidentId | VendorWorkerId | VisitorId | TimeIn                  | TimeOut                 |
+		//| 20         | 13             | 1         | 2015-06-01 12:00:00.000 | 2015-06-01 01:00:00.000 |
+        private int _residentId = 20;
+        private int _vendorWorkerId = 1;
+        private DateTime _timeIn = DateTime.UtcNow;
+        private DateTime _timeOut = DateTime.UtcNow.AddHours(4);
         //
         #endregion Local Properties/Fields
 
         public override string Uri => "/api/Visit";
+
+        #region CRUD Tests
+        //
+
+        [When(@"I call the add Visit Post api endpoint to add a Visit it checks if exists pulls item edits it and deletes it")]
+        public void WhenICallTheAddVisitPostApiEndpointToAddAVisitItChecksIfExistsPullsItemEditsItAndDeletesIt()
+        {
+            HttpResponseMessage response;
+
+            _addItem = Add(_addItem, out response);
+
+            Assert.IsNotNull(response);
+            ScenarioContext.Current[AddItemKey] = response;
+        }
+
+        [Then(@"the add result should be a Visit Id check exists get by id edit and delete with http response returns")]
+        public void ThenTheAddResultShouldBeAVisitIdCheckExistsGetByIdEditAndDeleteWithHttpResponseReturns()
+        {
+            //did we get a good result
+            Assert.IsTrue(_addItem != null && _addItem.Id > 0);
+
+            //set the returned AddID to current Get
+            _addedIdValue = _addItem.Id;
+            _getIdValue = _addedIdValue;
+            _existsIdValue = _getIdValue;
+
+            //check that the item exists
+            var itemReturned = Exists(_existsIdValue);
+            Assert.IsTrue(itemReturned);
+
+            //use the value used in exists check
+            _getIdValue = _addItem.Id;
+            Assert.IsTrue(_getIdValue == _addedIdValue);
+
+            //pull the item by Id
+            var resultGet = GetById<Visit>(_getIdValue);
+            Assert.IsNotNull(resultGet);
+            _getIdValue = resultGet.Id;
+            Assert.IsTrue(_getIdValue == _addedIdValue);
+
+            //Now, let's Edit the newly added item
+            _editIdValue = _getIdValue;
+            _editItem = resultGet;
+            Assert.IsTrue(_editIdValue == _addedIdValue);
+
+            //do an update
+            var updateResponse = Update(_editIdValue, _editItem);
+            Assert.IsNotNull(updateResponse);
+
+            //pass the item just updated
+            _deletedIdValue = _editIdValue;
+            Assert.IsTrue(_deletedIdValue == _addedIdValue);
+
+            //delete this same item
+            var deleteResponse = Delete(_deletedIdValue);
+            Assert.IsNotNull(deleteResponse);
+        }
+        //
+        #endregion CRUD Tests
 
         #region Post - add a new item by a populated item
         //
@@ -62,33 +121,24 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             Assert.IsNotNull(table);
             foreach (var row in table.Rows)
             {
-                //_line1 = row["Line1"];
-                //_line2 = row["Line2"];
-                //_city = row["City"];
-                //_state = row["State"];
-                //_country = row["Country"];
-                //_postalCode = row["PostalCode"];
-
+                _residentId = Convert.ToInt32(row["ResidentId"]);
+                _vendorWorkerId = Convert.ToInt32(row["VendorWorkerId"]);
+                
                 break;
             }
-            //Assert.IsNotNull(_line1);
-            //Assert.IsNotNull(_city);
-            //Assert.IsNotNull(_city.IsValidEmailAddress());
 
             _addItem = new Visit()
             {
-                //Line1 = _line1,
-                //Line2 = _line2,
-                //City = _city,
-                //State = _state,
-                //Country = _country,
-                //PostalCode = _postalCode,
-
+                ResidentId = _residentId,
+                VendorWorkerId = _vendorWorkerId,
+                TimeIn = _timeIn,
+                TimeOut = _timeOut,
+                
                 CreatedOn = DateTime.UtcNow,
             };
         }
 
-        [When(@"I call the add Visit Post api endpoint to add a visit")]
+        [When(@"I call the add Visit Post api endpoint to add a Visit")]
         public void WhenICallTheAddVisitPostApiEndpointToAddAVisit()
         {
             var response = default(HttpResponseMessage);
@@ -156,10 +206,10 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
                 Assert.IsTrue(_addedIdValue > 0);
 
                 ////validate values changed
-                //Assert.AreEqual(_addItem.FirstName, result.FirstName);
-                //Assert.AreEqual(_addItem.LastName, result.LastName);
-                //Assert.AreEqual(_addItem.Email, result.Email);
-                //Assert.AreEqual(_addItem.MobilePhone, result.MobilePhone);
+                Assert.AreEqual(_addItem.ResidentId, result.ResidentId);
+                Assert.AreEqual(_addItem.VendorWorkerId, result.VendorWorkerId);
+                Assert.AreEqual(_addItem.TimeIn, result.TimeIn);
+                Assert.AreEqual(_addItem.TimeOut, result.TimeOut);
             }
 
             var response = (ScenarioContext.Current[AddItemKey] as HttpResponseMessage);
@@ -179,7 +229,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             ScenarioContext.Current[GetListKey] = GetResponse<IList<Visit>>();
         }
 
-        [Then(@"the get result should be a list of visits")]
+        [Then(@"the get result should be a list of Visits")]
         public void ThenTheGetResultShouldBeAListOfVisits()
         {
             var list = ScenarioContext.Current[GetListKey];
@@ -219,31 +269,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             ScenarioContext.Current[AddItemKey] = response;
         }
 
-        //[Then(@"the add result should be a Item Id")]
-        //public void ThenTheAddResultShouldBeAItemId()
-        //{
-        //    _addedIdValue = -1;
-
-        //    //grab the resulting added item
-        //    var result = PostResponse<Item, Item>(_addItem);
-        //    if (result != null)
-        //    {
-
-        //        _addedIdValue = result.Id;
-        //        Assert.IsTrue(_addedIdValue > 0);
-
-        //        ////validate values changed
-        //        //Assert.AreEqual(_addItem.FirstName, result.FirstName);
-        //        //Assert.AreEqual(_addItem.LastName, result.LastName);
-        //        //Assert.AreEqual(_addItem.Email, result.Email);
-        //        //Assert.AreEqual(_addItem.MobilePhone, result.MobilePhone);
-        //    }
-
-        //    var response = (ScenarioContext.Current[AddItemKey] as HttpResponseMessage);
-
-        //    Assert.IsNotNull(response);
-        //    Assert.IsTrue(response.StatusCode == HttpStatusCode.Created);
-        //}
+        
         //
         #endregion Post - add a new item by a populated item
 
@@ -255,7 +281,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             //
         }
 
-        [When(@"I call the edit Visit Put api endpoint to edit a visit")]
+        [When(@"I call the edit Visit Put api endpoint to edit a Visit")]
         public void WhenICallTheEditVisitPutApiEndpointToEditAVisit()
         {
             //
@@ -278,7 +304,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             //
         }
 
-        [When(@"I call the delete Visit Post api endpoint to delete a visit")]
+        [When(@"I call the delete Visit Post api endpoint to delete a Visit")]
         public void WhenICallTheDeleteVisitPostApiEndpointToDeleteAVisit()
         {
             //
@@ -334,19 +360,6 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         #endregion Get - Exists, verify Exists function checks and return a valid bool for exists or not
 
         //
-
-        #region helpers
-        //
-        public int ConvertToIntValue(string value)
-        {
-            var result = -1;
-
-            int.TryParse(value, out result);
-
-            return result;
-        }
-        //
-        #endregion helpers
 
     }
 }

@@ -16,12 +16,12 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         //
         private const string HttpResponseKey = "http_response";
 
-        private const string GetListKey = "vendorCredential_get_list";
-        private const string GetItemKey = "vendorCredential_get_item";
-        private const string AddItemKey = "vendorCredential_add_item";
-        private const string EditItemKey = "vendorCredential_edit_item";
-        private const string DeleteItemKey = "vendorCredential_delete_item";
-        private const string ExistsItemKey = "vendorCredential_exists_item";
+        private const string GetListKey = "VendorCredential_get_list";
+        private const string GetItemKey = "VendorCredential_get_item";
+        private const string AddItemKey = "VendorCredential_add_item";
+        private const string EditItemKey = "VendorCredential_edit_item";
+        private const string DeleteItemKey = "VendorCredential_delete_item";
+        private const string ExistsItemKey = "VendorCredential_exists_item";
 
         private VendorCredential _getItem;
         private VendorCredential _addItem;
@@ -43,16 +43,75 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         private string _existsId = "-1";
         private int _existsIdValue = -1;
 
-        private string _line1 = "";
-        private string _line2 = "";
-        private string _city = "";
-        private string _state = "";
-        private string _country = "";
-        private string _postalCode = "";
+        private int _vendorWorkerId = 13;
+        private int _requirementId = 1;
+        private bool _isAttested = true;
+        private bool _isConfirmed = true;
+        private DateTime _confirmedOn = DateTime.UtcNow;
+        //private int _userId = 1;
         //
         #endregion Local Properties/Fields
 
         public override string Uri => "/api/VendorCredential";
+
+        #region CRUD Tests
+        //
+
+        [When(@"I call the add VendorCredential Post api endpoint to add a VendorCredential it checks if exists pulls item edits it and deletes it")]
+        public void WhenICallTheAddVendorCredentialPostApiEndpointToAddAVendorCredentialItChecksIfExistsPullsItemEditsItAndDeletesIt()
+        {
+            HttpResponseMessage response;
+
+            _addItem = Add(_addItem, out response);
+
+            Assert.IsNotNull(response);
+            ScenarioContext.Current[AddItemKey] = response;
+        }
+
+        [Then(@"the add result should be a VendorCredential Id check exists get by id edit and delete with http response returns")]
+        public void ThenTheAddResultShouldBeAVendorCredentialIdCheckExistsGetByIdEditAndDeleteWithHttpResponseReturns()
+        {
+            //did we get a good result
+            Assert.IsTrue(_addItem != null && _addItem.Id > 0);
+
+            //set the returned AddID to current Get
+            _addedIdValue = _addItem.Id;
+            _getIdValue = _addedIdValue;
+            _existsIdValue = _getIdValue;
+
+            //check that the item exists
+            var itemReturned = Exists(_existsIdValue);
+            Assert.IsTrue(itemReturned);
+
+            //use the value used in exists check
+            _getIdValue = _addItem.Id;
+            Assert.IsTrue(_getIdValue == _addedIdValue);
+
+            //pull the item by Id
+            var resultGet = GetById<VendorCredential>(_getIdValue);
+            Assert.IsNotNull(resultGet);
+            _getIdValue = resultGet.Id;
+            Assert.IsTrue(_getIdValue == _addedIdValue);
+
+            //Now, let's Edit the newly added item
+            _editIdValue = _getIdValue;
+            _editItem = resultGet;
+            Assert.IsTrue(_editIdValue == _addedIdValue);
+
+            //do an update
+            var updateResponse = Update(_editIdValue, _editItem);
+            Assert.IsNotNull(updateResponse);
+
+            //pass the item just updated
+            _deletedIdValue = _editIdValue;
+            Assert.IsTrue(_deletedIdValue == _addedIdValue);
+
+            //delete this same item
+            var deleteResponse = Delete(_deletedIdValue);
+            Assert.IsNotNull(deleteResponse);
+        }
+        //
+        #endregion CRUD Tests
 
         #region Post - add a new item by a populated item
         //
@@ -62,33 +121,25 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             Assert.IsNotNull(table);
             foreach (var row in table.Rows)
             {
-                //_line1 = row["Line1"];
-                //_line2 = row["Line2"];
-                //_city = row["City"];
-                //_state = row["State"];
-                //_country = row["Country"];
-                //_postalCode = row["PostalCode"];
+                _isAttested = Convert.ToBoolean(row["IsAttested"]);
+                _isConfirmed = Convert.ToBoolean(row["IsConfirmed"]);
 
                 break;
             }
-            //Assert.IsNotNull(_line1);
-            //Assert.IsNotNull(_city);
-            //Assert.IsNotNull(_city.IsValidEmailAddress());
 
             _addItem = new VendorCredential()
             {
-                //Line1 = _line1,
-                //Line2 = _line2,
-                //City = _city,
-                //State = _state,
-                //Country = _country,
-                //PostalCode = _postalCode,
+                RequirementId = _requirementId,
+                VendorWorkerId = _vendorWorkerId,
+                IsAttested = _isAttested,
+                IsConfirmed = _isConfirmed,
+                ConfirmedOn = _confirmedOn,
 
                 CreatedOn = DateTime.UtcNow,
             };
         }
 
-        [When(@"I call the add VendorCredential Post api endpoint to add a vendorCredential")]
+        [When(@"I call the add VendorCredential Post api endpoint to add a VendorCredential")]
         public void WhenICallTheAddVendorCredentialPostApiEndpointToAddAVendorCredential()
         {
             var response = default(HttpResponseMessage);
@@ -156,10 +207,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
                 Assert.IsTrue(_addedIdValue > 0);
 
                 ////validate values changed
-                //Assert.AreEqual(_addItem.FirstName, result.FirstName);
-                //Assert.AreEqual(_addItem.LastName, result.LastName);
-                //Assert.AreEqual(_addItem.Email, result.Email);
-                //Assert.AreEqual(_addItem.MobilePhone, result.MobilePhone);
+                //Assert.AreEqual(_addItem.RequirementId, result.RequirementId);
             }
 
             var response = (ScenarioContext.Current[AddItemKey] as HttpResponseMessage);
@@ -179,7 +227,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             ScenarioContext.Current[GetListKey] = GetResponse<IList<VendorCredential>>();
         }
 
-        [Then(@"the get result should be a list of vendorCredentials")]
+        [Then(@"the get result should be a list of VendorCredentials")]
         public void ThenTheGetResultShouldBeAListOfVendorCredentials()
         {
             //
@@ -231,7 +279,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             //
         }
 
-        [When(@"I call the edit VendorCredential Put api endpoint to edit a vendorCredential")]
+        [When(@"I call the edit VendorCredential Put api endpoint to edit a VendorCredential")]
         public void WhenICallTheEditVendorCredentialPutApiEndpointToEditAVendorCredential()
         {
             //
@@ -254,7 +302,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             //
         }
 
-        [When(@"I call the delete VendorCredential Post api endpoint to delete a vendorCredential")]
+        [When(@"I call the delete VendorCredential Post api endpoint to delete a VendorCredential")]
         public void WhenICallTheDeleteVendorCredentialPostApiEndpointToDeleteAVendorCredential()
         {
             //
@@ -310,19 +358,6 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         #endregion Get - Exists, verify Exists function checks and return a valid bool for exists or not
 
         //
-
-        #region helpers
-        //
-        public int ConvertToIntValue(string value)
-        {
-            var result = -1;
-
-            int.TryParse(value, out result);
-
-            return result;
-        }
-        //
-        #endregion helpers
 
     }
 }

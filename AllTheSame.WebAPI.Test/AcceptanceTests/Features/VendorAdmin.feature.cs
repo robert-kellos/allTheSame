@@ -31,8 +31,8 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.Features
         public static void FeatureSetup(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "VendorAdmin", "In order to see a list of vendorAdmins\r\nAs a Community Administrator\r\nI want to l" +
-                    "oad a list of vendorAdmins", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "VendorAdmin", "In order to see a list of VendorAdmins\r\nAs a Community Administrator\r\nI want to l" +
+                    "oad a list of VendorAdmins", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -70,158 +70,75 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.Features
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Add a vendorAdmin")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("VendorAdmin--Add, Check, GetById, Update and Delete VendorAdmin")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "VendorAdmin")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("VendorAdmin")]
-        public virtual void AddAVendorAdmin()
+        public virtual void VendorAdmin_AddCheckGetByIdUpdateAndDeleteVendorAdmin()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add a vendorAdmin", new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("VendorAdmin--Add, Check, GetById, Update and Delete VendorAdmin", new string[] {
                         "VendorAdmin"});
 #line 8
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
-                        "FirstName",
-                        "LastName",
-                        "Email",
-                        "MobileNumber"});
+                        "PersonId",
+                        "VendorId"});
             table1.AddRow(new string[] {
-                        "Spec",
-                        "Flow",
-                        "x@y.com",
-                        "800-555-1212"});
+                        "1",
+                        "1"});
 #line 9
  testRunner.Given("the following VendorAdmin Add input", ((string)(null)), table1, "Given ");
 #line 12
- testRunner.When("I call the add VendorAdmin Post api endpoint to add a vendorAdmin", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I call the add VendorAdmin Post api endpoint to add a VendorAdmin it checks if ex" +
+                    "ists pulls item edits it and deletes it", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 13
- testRunner.Then("the add result should be a VendorAdmin Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the add result should be a VendorAdmin Id check exists get by id edit and delete " +
+                    "with http response returns", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Retrieve all vendorAdmins")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("VendorAdmin--Retrieve all VendorAdmins")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "VendorAdmin")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("VendorAdmins")]
-        public virtual void RetrieveAllVendorAdmins()
+        public virtual void VendorAdmin_RetrieveAllVendorAdmins()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve all vendorAdmins", new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("VendorAdmin--Retrieve all VendorAdmins", new string[] {
                         "VendorAdmins"});
 #line 17
 this.ScenarioSetup(scenarioInfo);
 #line 19
  testRunner.When("I call the VendorAdmin Get api endpoint", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 20
- testRunner.Then("the get result should be a list of vendorAdmins", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the get result should be a list of VendorAdmins", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Retrieve a vendorAdmin by Id")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Add a VendorAdmin")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "VendorAdmin")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("VendorAdmin")]
-        public virtual void RetrieveAVendorAdminById()
+        public virtual void AddAVendorAdmin()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve a vendorAdmin by Id", new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add a VendorAdmin", new string[] {
                         "VendorAdmin"});
 #line 24
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Id"});
+                        "PersonId",
+                        "VendorId"});
             table2.AddRow(new string[] {
+                        "2",
                         "2"});
 #line 25
- testRunner.Given("the following VendorAdmin GetById input", ((string)(null)), table2, "Given ");
+ testRunner.Given("the following VendorAdmin Add input", ((string)(null)), table2, "Given ");
 #line 28
- testRunner.When("I call the VendorAdmin Get api endpoint by Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I call the add VendorAdmin Post api endpoint to add a VendorAdmin", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 29
- testRunner.Then("the get by id result should be a VendorAdmin", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Update a vendorAdmin")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "VendorAdmin")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("VendorAdmin")]
-        public virtual void UpdateAVendorAdmin()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update a vendorAdmin", new string[] {
-                        "VendorAdmin"});
-#line 33
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Id",
-                        "FirstName",
-                        "LastName",
-                        "Email",
-                        "MobileNumber"});
-            table3.AddRow(new string[] {
-                        "2",
-                        "Spec",
-                        "Flow",
-                        "x@y.com",
-                        "800-555-1212"});
-#line 34
- testRunner.Given("the following VendorAdmin Edit input", ((string)(null)), table3, "Given ");
-#line 37
- testRunner.When("I call the edit VendorAdmin Put api endpoint to edit a vendorAdmin", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 38
- testRunner.Then("the edit result should be an updated VendorAdmin", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete a vendorAdmin")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "VendorAdmin")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("VendorAdmin")]
-        public virtual void DeleteAVendorAdmin()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete a vendorAdmin", new string[] {
-                        "VendorAdmin"});
-#line 42
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Id"});
-            table4.AddRow(new string[] {
-                        "0"});
-#line 43
- testRunner.Given("the following VendorAdmin Delete input", ((string)(null)), table4, "Given ");
-#line 47
- testRunner.When("I call the delete VendorAdmin Post api endpoint to delete a vendorAdmin", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 48
- testRunner.Then("the delete result should be an deleted VendorAdmin", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Check if a vendorAdmin exists")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "VendorAdmin")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("VendorAdmin")]
-        public virtual void CheckIfAVendorAdminExists()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Check if a vendorAdmin exists", new string[] {
-                        "VendorAdmin"});
-#line 52
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Id"});
-            table5.AddRow(new string[] {
-                        "2"});
-#line 53
- testRunner.Given("the following VendorAdmin Id input", ((string)(null)), table5, "Given ");
-#line 56
- testRunner.When("I call the VendorAdmin Exists Get api endpoint by Id to verify if it exists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 57
- testRunner.Then("the VendorAdmin exists result should be bool true or false", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the add result should be a VendorAdmin Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

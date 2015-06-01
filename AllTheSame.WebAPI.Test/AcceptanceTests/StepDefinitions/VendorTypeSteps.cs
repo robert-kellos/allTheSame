@@ -43,16 +43,72 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         private string _existsId = "-1";
         private int _existsIdValue = -1;
 
-        private string _line1 = "";
-        private string _line2 = "";
-        private string _city = "";
-        private string _state = "";
-        private string _country = "";
-        private string _postalCode = "";
+        private string _code = "";
+        private string _label = "";
         //
         #endregion Local Properties/Fields
 
         public override string Uri => "/api/VendorType";
+
+        #region CRUD Tests
+        //
+
+        [When(@"I call the add VendorType Post api endpoint to add a VendorType it checks if exists pulls item edits it and deletes it")]
+        public void WhenICallTheAddVendorTypePostApiEndpointToAddAVendorTypeItChecksIfExistsPullsItemEditsItAndDeletesIt()
+        {
+            HttpResponseMessage response;
+
+            _addItem = Add(_addItem, out response);
+
+            Assert.IsNotNull(response);
+            ScenarioContext.Current[AddItemKey] = response;
+        }
+
+        [Then(@"the add result should be a VendorType Id check exists get by id edit and delete with http response returns")]
+        public void ThenTheAddResultShouldBeAVendorTypeIdCheckExistsGetByIdEditAndDeleteWithHttpResponseReturns()
+        {
+            //did we get a good result
+            Assert.IsTrue(_addItem != null && _addItem.Id > 0);
+
+            //set the returned AddID to current Get
+            _addedIdValue = _addItem.Id;
+            _getIdValue = _addedIdValue;
+            _existsIdValue = _getIdValue;
+
+            //check that the item exists
+            var itemReturned = Exists(_existsIdValue);
+            Assert.IsTrue(itemReturned);
+
+            //use the value used in exists check
+            _getIdValue = _addItem.Id;
+            Assert.IsTrue(_getIdValue == _addedIdValue);
+
+            //pull the item by Id
+            var resultGet = GetById<VendorType>(_getIdValue);
+            Assert.IsNotNull(resultGet);
+            _getIdValue = resultGet.Id;
+            Assert.IsTrue(_getIdValue == _addedIdValue);
+
+            //Now, let's Edit the newly added item
+            _editIdValue = _getIdValue;
+            _editItem = resultGet;
+            Assert.IsTrue(_editIdValue == _addedIdValue);
+
+            //do an update
+            var updateResponse = Update(_editIdValue, _editItem);
+            Assert.IsNotNull(updateResponse);
+
+            //pass the item just updated
+            _deletedIdValue = _editIdValue;
+            Assert.IsTrue(_deletedIdValue == _addedIdValue);
+
+            //delete this same item
+            var deleteResponse = Delete(_deletedIdValue);
+            Assert.IsNotNull(deleteResponse);
+        }
+        //
+        #endregion CRUD Tests
+
 
         #region Post - add a new item by a populated item
         //
@@ -62,33 +118,24 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             Assert.IsNotNull(table);
             foreach (var row in table.Rows)
             {
-                //_line1 = row["Line1"];
-                //_line2 = row["Line2"];
-                //_city = row["City"];
-                //_state = row["State"];
-                //_country = row["Country"];
-                //_postalCode = row["PostalCode"];
+                _code = row["Code"];
+                _label = row["Label"];
 
                 break;
             }
-            //Assert.IsNotNull(_line1);
-            //Assert.IsNotNull(_city);
-            //Assert.IsNotNull(_city.IsValidEmailAddress());
+            Assert.IsNotNull(_code);
+            Assert.IsNotNull(_label);
 
             _addItem = new VendorType()
             {
-                //Line1 = _line1,
-                //Line2 = _line2,
-                //City = _city,
-                //State = _state,
-                //Country = _country,
-                //PostalCode = _postalCode,
+                Code = _code,
+                Label = _label,
 
                 CreatedOn = DateTime.UtcNow,
             };
         }
 
-        [When(@"I call the add VendorType Post api endpoint to add a vendorType")]
+        [When(@"I call the add VendorType Post api endpoint to add a VendorType")]
         public void WhenICallTheAddVendorTypePostApiEndpointToAddAVendorType()
         {
             var response = default(HttpResponseMessage);
@@ -156,10 +203,8 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
                 Assert.IsTrue(_addedIdValue > 0);
 
                 ////validate values changed
-                //Assert.AreEqual(_addItem.FirstName, result.FirstName);
-                //Assert.AreEqual(_addItem.LastName, result.LastName);
-                //Assert.AreEqual(_addItem.Email, result.Email);
-                //Assert.AreEqual(_addItem.MobilePhone, result.MobilePhone);
+                Assert.AreEqual(_addItem.Code, result.Code);
+                Assert.AreEqual(_addItem.Label, result.Label);
             }
 
             var response = (ScenarioContext.Current[AddItemKey] as HttpResponseMessage);
@@ -179,7 +224,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             ScenarioContext.Current[GetListKey] = GetResponse<IList<VendorType>>();
         }
 
-        [Then(@"the get result should be a list of vendorTypes")]
+        [Then(@"the get result should be a list of VendorTypes")]
         public void ThenTheGetResultShouldBeAListOfVendorTypes()
         {
             //
@@ -219,32 +264,6 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             Assert.IsNotNull(response);
             ScenarioContext.Current[AddItemKey] = response;
         }
-
-        //[Then(@"the add result should be a Item Id")]
-        //public void ThenTheAddResultShouldBeAItemId()
-        //{
-        //    _addedIdValue = -1;
-
-        //    //grab the resulting added item
-        //    var result = PostResponse<Item, Item>(_addItem);
-        //    if (result != null)
-        //    {
-
-        //        _addedIdValue = result.Id;
-        //        Assert.IsTrue(_addedIdValue > 0);
-
-        //        ////validate values changed
-        //        //Assert.AreEqual(_addItem.FirstName, result.FirstName);
-        //        //Assert.AreEqual(_addItem.LastName, result.LastName);
-        //        //Assert.AreEqual(_addItem.Email, result.Email);
-        //        //Assert.AreEqual(_addItem.MobilePhone, result.MobilePhone);
-        //    }
-
-        //    var response = (ScenarioContext.Current[AddItemKey] as HttpResponseMessage);
-
-        //    Assert.IsNotNull(response);
-        //    Assert.IsTrue(response.StatusCode == HttpStatusCode.Created);
-        //}
         //
         #endregion Post - add a new item by a populated item
 
@@ -256,7 +275,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             //
         }
 
-        [When(@"I call the edit VendorType Put api endpoint to edit a vendorType")]
+        [When(@"I call the edit VendorType Put api endpoint to edit a VendorType")]
         public void WhenICallTheEditVendorTypePutApiEndpointToEditAVendorType()
         {
             //
@@ -279,7 +298,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             //
         }
 
-        [When(@"I call the delete VendorType Post api endpoint to delete a vendorType")]
+        [When(@"I call the delete VendorType Post api endpoint to delete a VendorType")]
         public void WhenICallTheDeleteVendorTypePostApiEndpointToDeleteAVendorType()
         {
             //
@@ -335,18 +354,5 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         #endregion Get - Exists, verify Exists function checks and return a valid bool for exists or not
 
         //
-
-        #region helpers
-        //
-        public int ConvertToIntValue(string value)
-        {
-            var result = -1;
-
-            int.TryParse(value, out result);
-
-            return result;
-        }
-        //
-        #endregion helpers
     }
 }

@@ -3,14 +3,14 @@
 	As a Community Administrator
 	I want to load a list of organizations
 
-@Organization 
-#[C]RUD - [Post] :: Create a new organization, by passing a newly populated organization
-Scenario: Add a organization
-	Given the following Organization Add input
-		| FirstName | LastName | Email   | MobileNumber |
-		| Spec      | Flow     | x@y.com | 800-555-1212 |
-	When I call the add Organization Post api endpoint to add a organization
-	Then the add result should be a Organization Id
+#@Organization 
+##[C]RUD - [Post] :: Create a new organization, by passing a newly populated organization
+#Scenario: Add a organization
+#	Given the following Organization Add input
+#		| Code | Label | Email   | MobileNumber |
+#		| Spec      | Flow     | x@y.com | 800-555-1212 |
+#	When I call the add Organization Post api endpoint to add a organization
+#	Then the add result should be a Organization Id
 
 @Organizations 
 #C[R]UD - [Get] :: Retrieve all organizations, without passing anything
@@ -24,7 +24,7 @@ Scenario: Retrieve all organizations
 Scenario: Retrieve a organization by Id
 	Given the following Organization GetById input
 		| Id |
-		| 2  |
+		| 5  |
 	When I call the Organization Get api endpoint by Id
 	Then the get by id result should be a Organization
 
@@ -32,8 +32,8 @@ Scenario: Retrieve a organization by Id
 #CR[U]D - [Put] :: Update an existing organization, by passing changes populated in organization and its Id
 Scenario: Update a organization
 	Given the following Organization Edit input
-		| Id | FirstName | LastName | Email   | MobileNumber |
-		| 2  | Spec      | Flow     | x@y.com | 800-555-1212 |
+		| Id | Level |
+		| 12  | 3	 |
 	When I call the edit Organization Put api endpoint to edit a organization
 	Then the edit result should be an updated Organization
 
@@ -52,6 +52,6 @@ Scenario: Delete a organization
 Scenario: Check if a organization exists
 	Given the following Organization Id input
 		| Id | 
-		| 2  | 
+		| 12  | 
 	When I call the Organization Exists Get api endpoint by Id to verify if it exists
 	Then the Organization exists result should be bool true or false

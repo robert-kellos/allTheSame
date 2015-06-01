@@ -24,7 +24,7 @@ Scenario: DataSync--Retrieve all DataSyncs
 Scenario: Add a DataSync
 	Given the following DataSync Add input
 		| KioskId |
-		| 3		  |
+		| 2		  |
 	When I call the add DataSync Post api endpoint to add a DataSync
 	Then the add result should be a DataSync Id
 

@@ -31,8 +31,8 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.Features
         public static void FeatureSetup(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "VendorWorker", "In order to see a list of vendorWorkers\r\nAs a Community Administrator\r\nI want to " +
-                    "load a list of vendorWorkers", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "VendorWorker", "In order to see a list of VendorWorkers\r\nAs a Community Administrator\r\nI want to " +
+                    "load a list of VendorWorkers", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -70,158 +70,79 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.Features
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Add a vendorWorker")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("VendorWorker--Add, Check, GetById, Update and Delete VendorWorker")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "VendorWorker")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("VendorWorker")]
-        public virtual void AddAVendorWorker()
+        public virtual void VendorWorker_AddCheckGetByIdUpdateAndDeleteVendorWorker()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add a vendorWorker", new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("VendorWorker--Add, Check, GetById, Update and Delete VendorWorker", new string[] {
                         "VendorWorker"});
 #line 8
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
-                        "FirstName",
-                        "LastName",
-                        "Email",
-                        "MobileNumber"});
+                        "PersonId",
+                        "VendorId",
+                        "VendorTypeId"});
             table1.AddRow(new string[] {
-                        "Spec",
-                        "Flow",
-                        "x@y.com",
-                        "800-555-1212"});
+                        "2",
+                        "1",
+                        "1"});
 #line 9
  testRunner.Given("the following VendorWorker Add input", ((string)(null)), table1, "Given ");
 #line 12
- testRunner.When("I call the add VendorWorker Post api endpoint to add a vendorWorker", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I call the add VendorWorker Post api endpoint to add a VendorWorker it checks if " +
+                    "exists pulls item edits it and deletes it", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 13
- testRunner.Then("the add result should be a VendorWorker Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the add result should be a VendorWorker Id check exists get by id edit and delete" +
+                    " with http response returns", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Retrieve all vendorWorkers")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("VendorWorker--Retrieve all VendorWorkers")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "VendorWorker")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("VendorWorkers")]
-        public virtual void RetrieveAllVendorWorkers()
+        public virtual void VendorWorker_RetrieveAllVendorWorkers()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve all vendorWorkers", new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("VendorWorker--Retrieve all VendorWorkers", new string[] {
                         "VendorWorkers"});
 #line 17
 this.ScenarioSetup(scenarioInfo);
 #line 19
  testRunner.When("I call the VendorWorker Get api endpoint", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 20
- testRunner.Then("the get result should be a list of vendorWorkers", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the get result should be a list of VendorWorkers", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Retrieve a vendorWorker by Id")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Add a VendorWorker")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "VendorWorker")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("VendorWorker")]
-        public virtual void RetrieveAVendorWorkerById()
+        public virtual void AddAVendorWorker()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve a vendorWorker by Id", new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add a VendorWorker", new string[] {
                         "VendorWorker"});
 #line 24
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Id"});
+                        "PersonId",
+                        "VendorId",
+                        "VendorTypeId"});
             table2.AddRow(new string[] {
+                        "2",
+                        "1",
                         "2"});
 #line 25
- testRunner.Given("the following VendorWorker GetById input", ((string)(null)), table2, "Given ");
+ testRunner.Given("the following VendorWorker Add input", ((string)(null)), table2, "Given ");
 #line 28
- testRunner.When("I call the VendorWorker Get api endpoint by Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I call the add VendorWorker Post api endpoint to add a VendorWorker", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 29
- testRunner.Then("the get by id result should be a VendorWorker", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Update a vendorWorker")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "VendorWorker")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("VendorWorker")]
-        public virtual void UpdateAVendorWorker()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update a vendorWorker", new string[] {
-                        "VendorWorker"});
-#line 33
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Id",
-                        "FirstName",
-                        "LastName",
-                        "Email",
-                        "MobileNumber"});
-            table3.AddRow(new string[] {
-                        "2",
-                        "Spec",
-                        "Flow",
-                        "x@y.com",
-                        "800-555-1212"});
-#line 34
- testRunner.Given("the following VendorWorker Edit input", ((string)(null)), table3, "Given ");
-#line 37
- testRunner.When("I call the edit VendorWorker Put api endpoint to edit a vendorWorker", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 38
- testRunner.Then("the edit result should be an updated VendorWorker", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete a vendorWorker")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "VendorWorker")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("VendorWorker")]
-        public virtual void DeleteAVendorWorker()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete a vendorWorker", new string[] {
-                        "VendorWorker"});
-#line 42
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Id"});
-            table4.AddRow(new string[] {
-                        "0"});
-#line 43
- testRunner.Given("the following VendorWorker Delete input", ((string)(null)), table4, "Given ");
-#line 47
- testRunner.When("I call the delete VendorWorker Post api endpoint to delete a vendorWorker", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 48
- testRunner.Then("the delete result should be an deleted VendorWorker", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Check if a vendorWorker exists")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "VendorWorker")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("VendorWorker")]
-        public virtual void CheckIfAVendorWorkerExists()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Check if a vendorWorker exists", new string[] {
-                        "VendorWorker"});
-#line 52
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Id"});
-            table5.AddRow(new string[] {
-                        "2"});
-#line 53
- testRunner.Given("the following VendorWorker Id input", ((string)(null)), table5, "Given ");
-#line 56
- testRunner.When("I call the VendorWorker Exists Get api endpoint by Id to verify if it exists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 57
- testRunner.Then("the VendorWorker exists result should be bool true or false", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the add result should be a VendorWorker Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

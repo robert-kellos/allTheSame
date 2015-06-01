@@ -31,8 +31,8 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.Features
         public static void FeatureSetup(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "RequirementType", "In order to see a list of requirementTypes\r\nAs a Community Administrator\r\nI want " +
-                    "to load a list of requirementTypes", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "RequirementType", "In order to see a list of RequirementTypes\r\nAs a Community Administrator\r\nI want " +
+                    "to load a list of RequirementTypes", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -70,158 +70,75 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.Features
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Add a requirementType")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("RequirementType--Add, Check, GetById, Update and Delete RequirementType")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "RequirementType")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("RequirementType")]
-        public virtual void AddARequirementType()
+        public virtual void RequirementType_AddCheckGetByIdUpdateAndDeleteRequirementType()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add a requirementType", new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("RequirementType--Add, Check, GetById, Update and Delete RequirementType", new string[] {
                         "RequirementType"});
 #line 8
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
-                        "FirstName",
-                        "LastName",
-                        "Email",
-                        "MobileNumber"});
+                        "Code",
+                        "Label"});
             table1.AddRow(new string[] {
                         "Spec",
-                        "Flow",
-                        "x@y.com",
-                        "800-555-1212"});
+                        "Flow"});
 #line 9
  testRunner.Given("the following RequirementType Add input", ((string)(null)), table1, "Given ");
 #line 12
- testRunner.When("I call the add RequirementType Post api endpoint to add a RequirementType", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I call the add RequirementType Post api endpoint to add a RequirementType it chec" +
+                    "ks if exists pulls item edits it and deletes it", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 13
- testRunner.Then("the add result should be a RequirementType Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the add result should be a RequirementType Id check exists get by id edit and del" +
+                    "ete with http response returns", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Retrieve all requirementTypes")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("RequirementType--Retrieve all RequirementTypes")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "RequirementType")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("RequirementTypes")]
-        public virtual void RetrieveAllRequirementTypes()
+        public virtual void RequirementType_RetrieveAllRequirementTypes()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve all requirementTypes", new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("RequirementType--Retrieve all RequirementTypes", new string[] {
                         "RequirementTypes"});
 #line 17
 this.ScenarioSetup(scenarioInfo);
 #line 19
  testRunner.When("I call the RequirementType Get api endpoint", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 20
- testRunner.Then("the get result should be a list of requirementTypes", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the get result should be a list of RequirementTypes", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Retrieve a requirementType by Id")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Add a RequirementType")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "RequirementType")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("RequirementType")]
-        public virtual void RetrieveARequirementTypeById()
+        public virtual void AddARequirementType()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve a requirementType by Id", new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add a RequirementType", new string[] {
                         "RequirementType"});
 #line 24
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Id"});
+                        "Code",
+                        "Label"});
             table2.AddRow(new string[] {
-                        "2"});
-#line 25
- testRunner.Given("the following RequirementType GetById input", ((string)(null)), table2, "Given ");
-#line 28
- testRunner.When("I call the RequirementType Get api endpoint by Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 29
- testRunner.Then("the get by id result should be a RequirementType", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Update a requirementType")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "RequirementType")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("RequirementType")]
-        public virtual void UpdateARequirementType()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update a requirementType", new string[] {
-                        "RequirementType"});
-#line 33
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Id",
-                        "FirstName",
-                        "LastName",
-                        "Email",
-                        "MobileNumber"});
-            table3.AddRow(new string[] {
-                        "2",
                         "Spec",
-                        "Flow",
-                        "x@y.com",
-                        "800-555-1212"});
-#line 34
- testRunner.Given("the following RequirementType Edit input", ((string)(null)), table3, "Given ");
-#line 37
- testRunner.When("I call the edit RequirementType Put api endpoint to edit a requirementType", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 38
- testRunner.Then("the edit result should be an updated RequirementType", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete a requirementType")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "RequirementType")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("RequirementType")]
-        public virtual void DeleteARequirementType()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete a requirementType", new string[] {
-                        "RequirementType"});
-#line 42
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Id"});
-            table4.AddRow(new string[] {
-                        "0"});
-#line 43
- testRunner.Given("the following RequirementType Delete input", ((string)(null)), table4, "Given ");
-#line 47
- testRunner.When("I call the delete RequirementType Post api endpoint to delete a requirementType", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 48
- testRunner.Then("the delete result should be an deleted RequirementType", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Check if a requirementType exists")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "RequirementType")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("RequirementType")]
-        public virtual void CheckIfARequirementTypeExists()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Check if a requirementType exists", new string[] {
-                        "RequirementType"});
-#line 52
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Id"});
-            table5.AddRow(new string[] {
-                        "2"});
-#line 53
- testRunner.Given("the following RequirementType Id input", ((string)(null)), table5, "Given ");
-#line 56
- testRunner.When("I call the RequirementType Exists Get api endpoint by Id to verify if it exists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 57
- testRunner.Then("the RequirementType exists result should be bool true or false", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+                        "FlowTest"});
+#line 25
+ testRunner.Given("the following RequirementType Add input", ((string)(null)), table2, "Given ");
+#line 28
+ testRunner.When("I call the add RequirementType Post api endpoint to add a RequirementType", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 29
+ testRunner.Then("the add result should be a RequirementType Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

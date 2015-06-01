@@ -54,12 +54,8 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         private string _existsId = "-1";
         private int _existsIdValue = -1;
 
-        private string _line1 = "";
-        private string _line2 = "";
-        private string _city = "";
-        private string _state = "";
-        private string _country = "";
-        private string _postalCode = "";
+        private string _code = "";
+        private string _label = "";
         //
         #endregion Local Properties/Fields
 
@@ -132,27 +128,18 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             Assert.IsNotNull(table);
             foreach (var row in table.Rows)
             {
-                //_line1 = row["Line1"];
-                //_line2 = row["Line2"];
-                //_city = row["City"];
-                //_state = row["State"];
-                //_country = row["Country"];
-                //_postalCode = row["PostalCode"];
+                _code = row["Code"];
+                _label = row["Label"];
 
                 break;
             }
-            //Assert.IsNotNull(_line1);
-            //Assert.IsNotNull(_city);
-            //Assert.IsNotNull(_city.IsValidEmailAddress());
+            Assert.IsNotNull(_code);
+            Assert.IsNotNull(_label);
 
             _addItem = new Industry()
             {
-                //Line1 = _line1,
-                //Line2 = _line2,
-                //City = _city,
-                //State = _state,
-                //Country = _country,
-                //PostalCode = _postalCode,
+                Code = _code,
+                Label = _label,
 
                 CreatedOn = DateTime.UtcNow,
             };

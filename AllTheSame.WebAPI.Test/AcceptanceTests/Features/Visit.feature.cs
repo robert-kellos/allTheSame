@@ -31,8 +31,8 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.Features
         public static void FeatureSetup(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Visit", "In order to see a list of visits\r\nAs a Community Administrator\r\nI want to load a " +
-                    "list of visits", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Visit", "In order to see a list of Visits\r\nAs a Community Administrator\r\nI want to load a " +
+                    "list of Visits", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -70,158 +70,87 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.Features
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Add a visit")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Visit--Add, Check, GetById, Update and Delete Visit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Visit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Visit")]
-        public virtual void AddAVisit()
+        public virtual void Visit_AddCheckGetByIdUpdateAndDeleteVisit()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add a visit", new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Visit--Add, Check, GetById, Update and Delete Visit", new string[] {
                         "Visit"});
 #line 8
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
-                        "FirstName",
-                        "LastName",
-                        "Email",
-                        "MobileNumber"});
+                        "ResidentId",
+                        "VendorWorkerId",
+                        "VisitorId",
+                        "TimeIn",
+                        "TimeOut"});
             table1.AddRow(new string[] {
-                        "Spec",
-                        "Flow",
-                        "x@y.com",
-                        "800-555-1212"});
+                        "20",
+                        "13",
+                        "1",
+                        "2015-06-01 12:00:00.000",
+                        "2015-06-01 01:00:00.000"});
 #line 9
  testRunner.Given("the following Visit Add input", ((string)(null)), table1, "Given ");
 #line 12
- testRunner.When("I call the add Visit Post api endpoint to add a visit", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I call the add Visit Post api endpoint to add a Visit it checks if exists pulls i" +
+                    "tem edits it and deletes it", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 13
- testRunner.Then("the add result should be a Visit Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the add result should be a Visit Id check exists get by id edit and delete with h" +
+                    "ttp response returns", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Retrieve all visits")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Visit--Retrieve all Visits")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Visit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Visits")]
-        public virtual void RetrieveAllVisits()
+        public virtual void Visit_RetrieveAllVisits()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve all visits", new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Visit--Retrieve all Visits", new string[] {
                         "Visits"});
 #line 17
 this.ScenarioSetup(scenarioInfo);
 #line 19
  testRunner.When("I call the Visit Get api endpoint", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 20
- testRunner.Then("the get result should be a list of visits", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the get result should be a list of Visits", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Retrieve a visit by Id")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Add a Visit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Visit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Visit")]
-        public virtual void RetrieveAVisitById()
+        public virtual void AddAVisit()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve a visit by Id", new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add a Visit", new string[] {
                         "Visit"});
 #line 24
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Id"});
+                        "ResidentId",
+                        "VendorWorkerId",
+                        "VisitorId",
+                        "TimeIn",
+                        "TimeOut"});
             table2.AddRow(new string[] {
-                        "2"});
+                        "20",
+                        "13",
+                        "1",
+                        "2015-06-01 1:00:00.000",
+                        "2015-06-01 02:00:00.000"});
 #line 25
- testRunner.Given("the following Visit GetById input", ((string)(null)), table2, "Given ");
+ testRunner.Given("the following Visit Add input", ((string)(null)), table2, "Given ");
 #line 28
- testRunner.When("I call the Visit Get api endpoint by Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I call the add Visit Post api endpoint to add a Visit", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 29
- testRunner.Then("the get by id result should be a Visit", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Update a visit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Visit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Visit")]
-        public virtual void UpdateAVisit()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update a visit", new string[] {
-                        "Visit"});
-#line 33
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Id",
-                        "FirstName",
-                        "LastName",
-                        "Email",
-                        "MobileNumber"});
-            table3.AddRow(new string[] {
-                        "2",
-                        "Spec",
-                        "Flow",
-                        "x@y.com",
-                        "800-555-1212"});
-#line 34
- testRunner.Given("the following Visit Edit input", ((string)(null)), table3, "Given ");
-#line 37
- testRunner.When("I call the edit Visit Put api endpoint to edit a visit", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 38
- testRunner.Then("the edit result should be an updated Visit", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete a visit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Visit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Visit")]
-        public virtual void DeleteAVisit()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete a visit", new string[] {
-                        "Visit"});
-#line 42
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Id"});
-            table4.AddRow(new string[] {
-                        "0"});
-#line 43
- testRunner.Given("the following Visit Delete input", ((string)(null)), table4, "Given ");
-#line 47
- testRunner.When("I call the delete Visit Post api endpoint to delete a visit", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 48
- testRunner.Then("the delete result should be an deleted Visit", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Check if a visit exists")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Visit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Visit")]
-        public virtual void CheckIfAVisitExists()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Check if a visit exists", new string[] {
-                        "Visit"});
-#line 52
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Id"});
-            table5.AddRow(new string[] {
-                        "2"});
-#line 53
- testRunner.Given("the following Visit Id input", ((string)(null)), table5, "Given ");
-#line 56
- testRunner.When("I call the Visit Exists Get api endpoint by Id to verify if it exists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 57
- testRunner.Then("the Visit exists result should be bool true or false", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the add result should be a Visit Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

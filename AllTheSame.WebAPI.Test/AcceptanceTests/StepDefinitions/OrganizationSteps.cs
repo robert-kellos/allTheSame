@@ -168,22 +168,34 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         [Given(@"the following Organization GetById input")]
         public void GivenTheFollowingOrganizationGetByIdInput(Table table)
         {
-            var response = default(HttpResponseMessage);
-            AggregateException error;
+            Assert.IsNotNull(table);
+            foreach (var row in table.Rows)
+            {
+                _getId = row["Id"];
 
-            PostAsync(_addItem).ContinueWith(
-                t =>
-                {
-                    response = ActionResponse(t, out error);
-                }
-            ).Wait();
-
-            Assert.IsNotNull(response);
-            ScenarioContext.Current[AddItemKey] = response;
+                break;
+            }
+            Assert.IsNotNull(_getId);
+            _getIdValue = ConvertToIntValue(_getId);
+            Assert.IsTrue(_getIdValue > 0);
+        }
+        [When(@"I call the Organization Get api endpoint by Id")]
+        public void WhenICallTheOrganizationGetApiEndpointById()
+        {
+            ScenarioContext.Current[GetItemKey] = GetResponseById<Organization>(_getIdValue);
         }
 
+        [Then(@"the get by id result should be a Organization")]
+        public void ThenTheGetByIdResultShouldBeAOrganization()
+        {
+            var result = ScenarioContext.Current[GetItemKey];
+            var item = (result as Organization);
+
+            Assert.IsNotNull(item);
+            Assert.IsTrue(item.Id == _getIdValue);
+        }
         //
-        #endregion Post - add a new item by a populated item
+        #endregion Get - get an item by Id
 
         #region Put - edit an existing item by a populated item, and its Id
         //

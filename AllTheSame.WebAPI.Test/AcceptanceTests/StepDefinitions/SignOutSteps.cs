@@ -65,6 +65,65 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
 
         public override string Uri => "/api/SignOut";
 
+        #region CRUD Tests
+        //
+
+        [When(@"I call the add SignOut Post api endpoint to add a SignOut it checks if exists pulls item edits it and deletes it")]
+        public void WhenICallTheAddSignOutPostApiEndpointToAddASignOutItChecksIfExistsPullsItemEditsItAndDeletesIt()
+        {
+            HttpResponseMessage response;
+
+            _addItem = Add(_addItem, out response);
+
+            Assert.IsNotNull(response);
+            ScenarioContext.Current[AddItemKey] = response;
+        }
+
+        [Then(@"the add result should be a SignOut Id check exists get by id edit and delete with http response returns")]
+        public void ThenTheAddResultShouldBeASignOutIdCheckExistsGetByIdEditAndDeleteWithHttpResponseReturns()
+        {
+            //did we get a good result
+            Assert.IsTrue(_addItem != null && _addItem.Id > 0);
+
+            //set the returned AddID to current Get
+            _addedIdValue = _addItem.Id;
+            _getIdValue = _addedIdValue;
+            _existsIdValue = _getIdValue;
+
+            //check that the item exists
+            var itemReturned = Exists(_existsIdValue);
+            Assert.IsTrue(itemReturned);
+
+            //use the value used in exists check
+            _getIdValue = _addItem.Id;
+            Assert.IsTrue(_getIdValue == _addedIdValue);
+
+            //pull the item by Id
+            var resultGet = GetById<SignOut>(_getIdValue);
+            Assert.IsNotNull(resultGet);
+            _getIdValue = resultGet.Id;
+            Assert.IsTrue(_getIdValue == _addedIdValue);
+
+            //Now, let's Edit the newly added item
+            _editIdValue = _getIdValue;
+            _editItem = resultGet;
+            Assert.IsTrue(_editIdValue == _addedIdValue);
+
+            //do an update
+            var updateResponse = Update(_editIdValue, _editItem);
+            Assert.IsNotNull(updateResponse);
+
+            //pass the item just updated
+            _deletedIdValue = _editIdValue;
+            Assert.IsTrue(_deletedIdValue == _addedIdValue);
+
+            //delete this same item
+            var deleteResponse = Delete(_deletedIdValue);
+            Assert.IsNotNull(deleteResponse);
+        }
+        //
+        #endregion CRUD Tests
+
         #region Post - add a new item by a populated item
         //
         [Given(@"the following SignOut Add input")]
@@ -99,7 +158,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             };
         }
 
-        [When(@"I call the add SignOut Post api endpoint to add a signOut")]
+        [When(@"I call the add SignOut Post api endpoint to add a SignOut")]
         public void WhenICallTheAddSignOutPostApiEndpointToAddASignOut()
         {
             var response = default(HttpResponseMessage);
@@ -190,7 +249,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             ScenarioContext.Current[GetListKey] = GetResponse<IList<SignOut>>();
         }
 
-        [Then(@"the get result should be a list of signOuts")]
+        [Then(@"the get result should be a list of SignOuts")]
         public void ThenTheGetResultShouldBeAListOfSignOuts()
         {
             //
@@ -321,18 +380,5 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         #endregion Get - Exists, verify Exists function checks and return a valid bool for exists or not
 
         //
-
-        #region helpers
-        //
-        public int ConvertToIntValue(string value)
-        {
-            var result = -1;
-
-            int.TryParse(value, out result);
-
-            return result;
-        }
-        //
-        #endregion helpers
     }
 }

@@ -128,7 +128,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
                         "KioskId"});
             table2.AddRow(new string[] {
-                        "3"});
+                        "2"});
 #line 25
  testRunner.Given("the following DataSync Add input", ((string)(null)), table2, "Given ");
 #line 28

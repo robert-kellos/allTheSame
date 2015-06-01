@@ -54,16 +54,71 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         private string _existsId = "-1";
         private int _existsIdValue = -1;
 
-        private string _line1 = "";
-        private string _line2 = "";
-        private string _city = "";
-        private string _state = "";
-        private string _country = "";
-        private string _postalCode = "";
+        private int _communityId = 17;
+        private int _personId = 1;
         //
         #endregion Local Properties/Fields
 
         public override string Uri => "/api/Resident";
+
+        #region CRUD Tests
+        //
+
+        [When(@"I call the add Resident Post api endpoint to add a Resident it checks if exists pulls item edits it and deletes it")]
+        public void WhenICallTheAddResidentPostApiEndpointToAddAResidentItChecksIfExistsPullsItemEditsItAndDeletesIt()
+        {
+            HttpResponseMessage response;
+
+            _addItem = Add(_addItem, out response);
+
+            Assert.IsNotNull(response);
+            ScenarioContext.Current[AddItemKey] = response;
+        }
+
+        [Then(@"the add result should be a Resident Id check exists get by id edit and delete with http response returns")]
+        public void ThenTheAddResultShouldBeAResidentIdCheckExistsGetByIdEditAndDeleteWithHttpResponseReturns()
+        {
+            //did we get a good result
+            Assert.IsTrue(_addItem != null && _addItem.Id > 0);
+
+            //set the returned AddID to current Get
+            _addedIdValue = _addItem.Id;
+            _getIdValue = _addedIdValue;
+            _existsIdValue = _getIdValue;
+
+            //check that the item exists
+            var itemReturned = Exists(_existsIdValue);
+            Assert.IsTrue(itemReturned);
+
+            //use the value used in exists check
+            _getIdValue = _addItem.Id;
+            Assert.IsTrue(_getIdValue == _addedIdValue);
+
+            //pull the item by Id
+            var resultGet = GetById<Resident>(_getIdValue);
+            Assert.IsNotNull(resultGet);
+            _getIdValue = resultGet.Id;
+            Assert.IsTrue(_getIdValue == _addedIdValue);
+
+            //Now, let's Edit the newly added item
+            _editIdValue = _getIdValue;
+            _editItem = resultGet;
+            Assert.IsTrue(_editIdValue == _addedIdValue);
+
+            //do an update
+            var updateResponse = Update(_editIdValue, _editItem);
+            Assert.IsNotNull(updateResponse);
+
+            //pass the item just updated
+            _deletedIdValue = _editIdValue;
+            Assert.IsTrue(_deletedIdValue == _addedIdValue);
+
+            //delete this same item
+            var deleteResponse = Delete(_deletedIdValue);
+            Assert.IsNotNull(deleteResponse);
+        }
+        //
+        #endregion CRUD Tests
 
         #region Post - add a new item by a populated item
         //
@@ -73,33 +128,22 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             Assert.IsNotNull(table);
             foreach (var row in table.Rows)
             {
-                //_line1 = row["Line1"];
-                //_line2 = row["Line2"];
-                //_city = row["City"];
-                //_state = row["State"];
-                //_country = row["Country"];
-                //_postalCode = row["PostalCode"];
+                _communityId = Convert.ToInt32(row["CommunityId"]);
+                _personId = Convert.ToInt32(row["PersonId"]);
 
                 break;
             }
-            //Assert.IsNotNull(_line1);
-            //Assert.IsNotNull(_city);
-            //Assert.IsNotNull(_city.IsValidEmailAddress());
 
             _addItem = new Resident()
             {
-                //Line1 = _line1,
-                //Line2 = _line2,
-                //City = _city,
-                //State = _state,
-                //Country = _country,
-                //PostalCode = _postalCode,
+                CommunityId = _communityId,
+                PersonId = _personId,
 
                 CreatedOn = DateTime.UtcNow,
             };
         }
 
-        [When(@"I call the add Resident Post api endpoint to add a resident")]
+        [When(@"I call the add Resident Post api endpoint to add a Resident")]
         public void WhenICallTheAddResidentPostApiEndpointToAddAResident()
         {
             var response = default(HttpResponseMessage);
@@ -168,9 +212,6 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
 
                 ////validate values changed
                 //Assert.AreEqual(_addItem.FirstName, result.FirstName);
-                //Assert.AreEqual(_addItem.LastName, result.LastName);
-                //Assert.AreEqual(_addItem.Email, result.Email);
-                //Assert.AreEqual(_addItem.MobilePhone, result.MobilePhone);
             }
 
             var response = (ScenarioContext.Current[AddItemKey] as HttpResponseMessage);
@@ -190,7 +231,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             ScenarioContext.Current[GetListKey] = GetResponse<IList<Resident>>();
         }
 
-        [Then(@"the get result should be a list of residents")]
+        [Then(@"the get result should be a list of Residents")]
         public void ThenTheGetResultShouldBeAListOfResidents()
         {
             //
@@ -321,18 +362,5 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         #endregion Get - Exists, verify Exists function checks and return a valid bool for exists or not
 
         //
-
-        #region helpers
-        //
-        public int ConvertToIntValue(string value)
-        {
-            var result = -1;
-
-            int.TryParse(value, out result);
-
-            return result;
-        }
-        //
-        #endregion helpers
     }
 }

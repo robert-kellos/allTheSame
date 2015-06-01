@@ -31,8 +31,8 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.Features
         public static void FeatureSetup(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "VendorCredDocument", "In order to see a list of vendorCredDocuments\r\nAs a Community Administrator\r\nI wa" +
-                    "nt to load a list of vendorCredDocuments", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "VendorCredDocument", "In order to see a list of VendorCredDocuments\r\nAs a Community Administrator\r\nI wa" +
+                    "nt to load a list of VendorCredDocuments", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -70,160 +70,79 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.Features
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Add a vendorCredDocument")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("VendorCredDocument--Add, Check, GetById, Update and Delete VendorCredDocument")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "VendorCredDocument")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("VendorCredDocument")]
-        public virtual void AddAVendorCredDocument()
+        public virtual void VendorCredDocument_AddCheckGetByIdUpdateAndDeleteVendorCredDocument()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add a vendorCredDocument", new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("VendorCredDocument--Add, Check, GetById, Update and Delete VendorCredDocument", new string[] {
                         "VendorCredDocument"});
 #line 8
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
-                        "FirstName",
-                        "LastName",
-                        "Email",
-                        "MobileNumber"});
+                        "Title",
+                        "URL",
+                        "Text"});
             table1.AddRow(new string[] {
-                        "Spec",
-                        "Flow",
-                        "x@y.com",
-                        "800-555-1212"});
+                        "SpecFlow",
+                        "www.google.com",
+                        "SpecTest"});
 #line 9
  testRunner.Given("the following VendorCredDocument Add input", ((string)(null)), table1, "Given ");
 #line 12
- testRunner.When("I call the add VendorCredDocument Post api endpoint to add a vendorCredDocument", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I call the add VendorCredDocument Post api endpoint to add a VendorCredDocument i" +
+                    "t checks if exists pulls item edits it and deletes it", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 13
- testRunner.Then("the add result should be a VendorCredDocument Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the add result should be a VendorCredDocument Id check exists get by id edit and " +
+                    "delete with http response returns", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Retrieve all vendorCredDocuments")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("VendorCredDocument--Retrieve all VendorCredDocuments")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "VendorCredDocument")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("VendorCredDocuments")]
-        public virtual void RetrieveAllVendorCredDocuments()
+        public virtual void VendorCredDocument_RetrieveAllVendorCredDocuments()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve all vendorCredDocuments", new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("VendorCredDocument--Retrieve all VendorCredDocuments", new string[] {
                         "VendorCredDocuments"});
 #line 17
 this.ScenarioSetup(scenarioInfo);
 #line 19
  testRunner.When("I call the VendorCredDocument Get api endpoint", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 20
- testRunner.Then("the get result should be a list of vendorCredDocuments", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the get result should be a list of VendorCredDocuments", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Retrieve a vendorCredDocument by Id")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Add a VendorCredDocument")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "VendorCredDocument")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("VendorCredDocument")]
-        public virtual void RetrieveAVendorCredDocumentById()
+        public virtual void AddAVendorCredDocument()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve a vendorCredDocument by Id", new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add a VendorCredDocument", new string[] {
                         "VendorCredDocument"});
 #line 24
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Id"});
+                        "Title",
+                        "URL",
+                        "Text"});
             table2.AddRow(new string[] {
-                        "2"});
+                        "SpecFlowTest",
+                        "www.google.com",
+                        "SpecTest"});
 #line 25
- testRunner.Given("the following VendorCredDocument GetById input", ((string)(null)), table2, "Given ");
+ testRunner.Given("the following VendorCredDocument Add input", ((string)(null)), table2, "Given ");
 #line 28
- testRunner.When("I call the VendorCredDocument Get api endpoint by Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I call the add VendorCredDocument Post api endpoint to add a VendorCredDocument", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 29
- testRunner.Then("the get by id result should be a VendorCredDocument", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Update a vendorCredDocument")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "VendorCredDocument")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("VendorCredDocument")]
-        public virtual void UpdateAVendorCredDocument()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update a vendorCredDocument", new string[] {
-                        "VendorCredDocument"});
-#line 33
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Id",
-                        "FirstName",
-                        "LastName",
-                        "Email",
-                        "MobileNumber"});
-            table3.AddRow(new string[] {
-                        "2",
-                        "Spec",
-                        "Flow",
-                        "x@y.com",
-                        "800-555-1212"});
-#line 34
- testRunner.Given("the following VendorCredDocument Edit input", ((string)(null)), table3, "Given ");
-#line 37
- testRunner.When("I call the edit VendorCredDocument Put api endpoint to edit a vendorCredDocument", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 38
- testRunner.Then("the edit result should be an updated VendorCredDocument", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete a vendorCredDocument")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "VendorCredDocument")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("VendorCredDocument")]
-        public virtual void DeleteAVendorCredDocument()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete a vendorCredDocument", new string[] {
-                        "VendorCredDocument"});
-#line 42
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Id"});
-            table4.AddRow(new string[] {
-                        "0"});
-#line 43
- testRunner.Given("the following VendorCredDocument Delete input", ((string)(null)), table4, "Given ");
-#line 47
- testRunner.When("I call the delete VendorCredDocument Post api endpoint to delete a vendorCredDocu" +
-                    "ment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 48
- testRunner.Then("the delete result should be an deleted VendorCredDocument", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Check if a vendorCredDocument exists")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "VendorCredDocument")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("VendorCredDocument")]
-        public virtual void CheckIfAVendorCredDocumentExists()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Check if a vendorCredDocument exists", new string[] {
-                        "VendorCredDocument"});
-#line 52
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Id"});
-            table5.AddRow(new string[] {
-                        "2"});
-#line 53
- testRunner.Given("the following VendorCredDocument Id input", ((string)(null)), table5, "Given ");
-#line 56
- testRunner.When("I call the VendorCredDocument Exists Get api endpoint by Id to verify if it exist" +
-                    "s", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 57
- testRunner.Then("the VendorCredDocument exists result should be bool true or false", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the add result should be a VendorCredDocument Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

@@ -70,37 +70,6 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.Features
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Add a organization")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Organization")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Organization")]
-        public virtual void AddAOrganization()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add a organization", new string[] {
-                        "Organization"});
-#line 8
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
-                        "FirstName",
-                        "LastName",
-                        "Email",
-                        "MobileNumber"});
-            table1.AddRow(new string[] {
-                        "Spec",
-                        "Flow",
-                        "x@y.com",
-                        "800-555-1212"});
-#line 9
- testRunner.Given("the following Organization Add input", ((string)(null)), table1, "Given ");
-#line 12
- testRunner.When("I call the add Organization Post api endpoint to add a organization", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 13
- testRunner.Then("the add result should be a Organization Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Retrieve all organizations")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Organization")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Organizations")]
@@ -129,12 +98,12 @@ this.ScenarioSetup(scenarioInfo);
 #line 24
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id"});
-            table2.AddRow(new string[] {
-                        "2"});
+            table1.AddRow(new string[] {
+                        "5"});
 #line 25
- testRunner.Given("the following Organization GetById input", ((string)(null)), table2, "Given ");
+ testRunner.Given("the following Organization GetById input", ((string)(null)), table1, "Given ");
 #line 28
  testRunner.When("I call the Organization Get api endpoint by Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 29
@@ -154,20 +123,14 @@ this.ScenarioSetup(scenarioInfo);
 #line 33
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id",
-                        "FirstName",
-                        "LastName",
-                        "Email",
-                        "MobileNumber"});
-            table3.AddRow(new string[] {
-                        "2",
-                        "Spec",
-                        "Flow",
-                        "x@y.com",
-                        "800-555-1212"});
+                        "Level"});
+            table2.AddRow(new string[] {
+                        "12",
+                        "3"});
 #line 34
- testRunner.Given("the following Organization Edit input", ((string)(null)), table3, "Given ");
+ testRunner.Given("the following Organization Edit input", ((string)(null)), table2, "Given ");
 #line 37
  testRunner.When("I call the edit Organization Put api endpoint to edit a organization", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 38
@@ -187,12 +150,12 @@ this.ScenarioSetup(scenarioInfo);
 #line 42
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id"});
-            table4.AddRow(new string[] {
+            table3.AddRow(new string[] {
                         "0"});
 #line 43
- testRunner.Given("the following Organization Delete input", ((string)(null)), table4, "Given ");
+ testRunner.Given("the following Organization Delete input", ((string)(null)), table3, "Given ");
 #line 47
  testRunner.When("I call the delete Organization Post api endpoint to delete a organization", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 48
@@ -212,12 +175,12 @@ this.ScenarioSetup(scenarioInfo);
 #line 52
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id"});
-            table5.AddRow(new string[] {
-                        "2"});
+            table4.AddRow(new string[] {
+                        "12"});
 #line 53
- testRunner.Given("the following Organization Id input", ((string)(null)), table5, "Given ");
+ testRunner.Given("the following Organization Id input", ((string)(null)), table4, "Given ");
 #line 56
  testRunner.When("I call the Organization Exists Get api endpoint by Id to verify if it exists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 57
