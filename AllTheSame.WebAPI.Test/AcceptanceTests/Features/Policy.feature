@@ -8,7 +8,7 @@
 Scenario: Policy--Add, Check, GetById, Update and Delete Policy
 	Given the following Policy Add input
 		| CommunityId | Description |
-		| 17          | SpecFlow    |
+		| 1          | SpecFlow    |
 	When I call the add Policy Post api endpoint to add a Policy it checks if exists pulls item edits it and deletes it
 	Then the add result should be a Policy Id check exists get by id edit and delete with http response returns
 
@@ -24,7 +24,7 @@ Scenario: Policy--Retrieve all Policies
 Scenario: Add a Policy
 	Given the following Policy Add input
 		| CommunityId | Description		|
-		| 17          | SpecFlowTest    |
+		| 2          | SpecFlowTest    |
 	When I call the add Policy Post api endpoint to add a Policy
 	Then the add result should be a Policy Id
 

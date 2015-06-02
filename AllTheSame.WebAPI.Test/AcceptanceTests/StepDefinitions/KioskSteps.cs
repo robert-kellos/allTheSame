@@ -66,7 +66,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         private string _existsId = "-1";
         private int _existsIdValue = -1;
 
-        private int _communityId = 17;
+        private int _communityId = 1;
         private int _kioskStatusId = 1;
         private string _name = "test";
         //

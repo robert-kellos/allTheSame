@@ -8,7 +8,7 @@
 Scenario: Requirement--Add, Check, GetById, Update and Delete Requirement
 	Given the following Requirement Add input
 		| CommunityId | RequirementTypeId | Description  |
-		| 17          | 1                 | SpecFlowTest |
+		| 1          | 1                 | SpecFlowTest |
 	When I call the add Requirement Post api endpoint to add a Requirement it checks if exists pulls item edits it and deletes it
 	Then the add result should be a Requirement Id check exists get by id edit and delete with http response returns
 
@@ -24,7 +24,7 @@ Scenario: Requirement--Retrieve all Requirements
 Scenario: Add a Requirement
 	Given the following Requirement Add input
 		| CommunityId | RequirementTypeId | Description  |
-		| 17          | 1                 | SpecTest	 |
+		| 2          | 2                 | SpecTest	 |
 	When I call the add Requirement Post api endpoint to add a Requirement
 	Then the add result should be a Requirement Id
 #

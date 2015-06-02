@@ -85,7 +85,7 @@ this.ScenarioSetup(scenarioInfo);
                         "OrgId"});
             table1.AddRow(new string[] {
                         "SpecFlow",
-                        "5"});
+                        "1"});
 #line 9
  testRunner.Given("the following Vendor Add input", ((string)(null)), table1, "Given ");
 #line 12
@@ -132,7 +132,7 @@ this.ScenarioSetup(scenarioInfo);
                         "OrgId"});
             table2.AddRow(new string[] {
                         "SpecFlowTest",
-                        "12"});
+                        "2"});
 #line 25
  testRunner.Given("the following Vendor Add input", ((string)(null)), table2, "Given ");
 #line 28

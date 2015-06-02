@@ -70,12 +70,12 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.Features
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Add a person")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Person--Add, Check, GetById, Update and Delete Person")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Person")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Person")]
-        public virtual void AddAPerson()
+        public virtual void Person_AddCheckGetByIdUpdateAndDeletePerson()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add a person", new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Person--Add, Check, GetById, Update and Delete Person", new string[] {
                         "Person"});
 #line 8
 this.ScenarioSetup(scenarioInfo);
@@ -93,135 +93,60 @@ this.ScenarioSetup(scenarioInfo);
 #line 9
  testRunner.Given("the following Person Add input", ((string)(null)), table1, "Given ");
 #line 12
- testRunner.When("I call the add Person Post api endpoint to add a person", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I call the add Person Post api endpoint to add a Person it checks if exists pulls" +
+                    " item edits it and deletes it", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 13
- testRunner.Then("the add result should be a Person Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the add result should be a Person Id check exists get by id edit and delete with " +
+                    "http response returns", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Retrieve all people")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Person--Retrieve all People")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Person")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Persons")]
-        public virtual void RetrieveAllPeople()
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("People")]
+        public virtual void Person_RetrieveAllPeople()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve all people", new string[] {
-                        "Persons"});
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Person--Retrieve all People", new string[] {
+                        "People"});
 #line 17
 this.ScenarioSetup(scenarioInfo);
 #line 19
  testRunner.When("I call the Person Get api endpoint", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 20
- testRunner.Then("the get result should be a list of people", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the get result should be a list of People", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Retrieve a person by Id")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Add a Person")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Person")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Person")]
-        public virtual void RetrieveAPersonById()
+        public virtual void AddAPerson()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve a person by Id", new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add a Person", new string[] {
                         "Person"});
 #line 24
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Id"});
-            table2.AddRow(new string[] {
-                        "2"});
-#line 25
- testRunner.Given("the following Person GetById input", ((string)(null)), table2, "Given ");
-#line 28
- testRunner.When("I call the Person Get api endpoint by Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 29
- testRunner.Then("the get by id result should be a Person", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Update a person")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Person")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Person")]
-        public virtual void UpdateAPerson()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update a person", new string[] {
-                        "Person"});
-#line 33
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Id",
                         "FirstName",
                         "LastName",
                         "Email",
                         "MobileNumber"});
-            table3.AddRow(new string[] {
-                        "2",
+            table2.AddRow(new string[] {
                         "Spec",
                         "Flow",
                         "x@y.com",
                         "800-555-1212"});
-#line 34
- testRunner.Given("the following Person Edit input", ((string)(null)), table3, "Given ");
-#line 37
- testRunner.When("I call the edit Person Put api endpoint to edit a person", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 38
- testRunner.Then("the edit result should be an updated Person", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete a person")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Person")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Person")]
-        public virtual void DeleteAPerson()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete a person", new string[] {
-                        "Person"});
-#line 42
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Id"});
-            table4.AddRow(new string[] {
-                        "0"});
-#line 43
- testRunner.Given("the following Person Delete input", ((string)(null)), table4, "Given ");
-#line 47
- testRunner.When("I call the delete Person Post api endpoint to delete a person", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 48
- testRunner.Then("the delete result should be an deleted Person", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Check if a person exists")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Person")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Person")]
-        public virtual void CheckIfAPersonExists()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Check if a person exists", new string[] {
-                        "Person"});
-#line 52
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Id"});
-            table5.AddRow(new string[] {
-                        "2"});
-#line 53
- testRunner.Given("the following Person Id input", ((string)(null)), table5, "Given ");
-#line 56
- testRunner.When("I call the Person Exists Get api endpoint by Id to verify if it exists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 57
- testRunner.Then("the Person exists result should be bool true or false", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 25
+ testRunner.Given("the following Person Add input", ((string)(null)), table2, "Given ");
+#line 28
+ testRunner.When("I call the add Person Post api endpoint to add a Person", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 29
+ testRunner.Then("the add result should be a Person Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

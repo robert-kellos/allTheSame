@@ -3,30 +3,30 @@
 	As a Community Administrator
 	I want to load a list of Users
 
-@User 
-#[C]RUD - [Post] :: Create, Check, GetById, Update and Delete User, by passing a newly populated User
-Scenario: User--Add, Check, GetById, Update and Delete User
-	Given the following User Add input
-		| Name		  | 
-		| SpecFlow    | 
-	When I call the add User Post api endpoint to add a User it checks if exists pulls item edits it and deletes it
-	Then the add result should be a User Id check exists get by id edit and delete with http response returns
-
-@Users 
-#C[R]UD - [Get] :: Retrieve all Users, without passing anything
-Scenario: User--Retrieve all Users
-	#Given I am an authenticated user
-	When I call the User Get api endpoint
-	Then the get result should be a list of Users
-
-@User 
-#[C]RUD - [Post] :: Create a new User, by passing a newly populated User
-Scenario: Add a User
-	Given the following User Add input
-		| Name			| 
-		| SpecFlowTest  | 
-	When I call the add User Post api endpoint to add a User
-	Then the add result should be a User Id
+#@User 
+##[C]RUD - [Post] :: Create, Check, GetById, Update and Delete User, by passing a newly populated User
+#Scenario: User--Add, Check, GetById, Update and Delete User
+#	Given the following User Add input
+#		| PersonId	| Username	  |
+#		| 1			| SpecFlow    | 
+#	When I call the add User Post api endpoint to add a User it checks if exists pulls item edits it and deletes it
+#	Then the add result should be a User Id check exists get by id edit and delete with http response returns
+#
+#@Users 
+##C[R]UD - [Get] :: Retrieve all Users, without passing anything
+#Scenario: User--Retrieve all Users
+#	#Given I am an authenticated user
+#	When I call the User Get api endpoint
+#	Then the get result should be a list of Users
+#
+#@User 
+##[C]RUD - [Post] :: Create a new User, by passing a newly populated User
+#Scenario: Add a User
+#	Given the following User Add input
+#		| PersonId	| Username		  |
+#		| 2			| SpecFlowTest    | 
+#	When I call the add User Post api endpoint to add a User
+#	Then the add result should be a User Id
 
 #@User 
 ##[C]RUD - [Post] :: Create a new user, by passing a newly populated user

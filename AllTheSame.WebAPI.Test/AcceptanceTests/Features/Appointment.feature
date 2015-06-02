@@ -8,7 +8,7 @@
 Scenario: Appointment--Add, Check, GetById, Update and Delete Appointment
 	Given the following Appointment Add input
 		| Description	| AppointmentTypeId |
-		| SpecFlow Test	| 1                 |
+		| SpecFlow		| 1                 |
 	When I call the add Appointment Post api endpoint to add a Appointment it checks if exists pulls item edits it and deletes it
 	Then the add result should be a Appointment Id check exists get by id edit and delete with http response returns
 
@@ -24,7 +24,7 @@ Scenario: Appointment--Retrieve all Appointments
 Scenario: Add a Appointment
 	Given the following Appointment Add input
 		| Description   | AppointmentTypeId |
-		| SpecFlow Test | 1                 |
+		| SpecFlow Test | 2                 |
 	When I call the add Appointment Post api endpoint to add a Appointment
 	Then the add result should be a Appointment Id
 

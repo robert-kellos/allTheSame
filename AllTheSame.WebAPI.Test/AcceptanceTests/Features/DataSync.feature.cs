@@ -70,33 +70,6 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.Features
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("DataSync--Add, Check, GetById, Update and Delete DataSync")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSync")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DataSync")]
-        public virtual void DataSync_AddCheckGetByIdUpdateAndDeleteDataSync()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("DataSync--Add, Check, GetById, Update and Delete DataSync", new string[] {
-                        "DataSync"});
-#line 8
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
-                        "KioskId"});
-            table1.AddRow(new string[] {
-                        "2"});
-#line 9
- testRunner.Given("the following DataSync Add input", ((string)(null)), table1, "Given ");
-#line 12
- testRunner.When("I call the add DataSync Post api endpoint to add a DataSync it checks if exists p" +
-                    "ulls item edits it and deletes it", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 13
- testRunner.Then("the add result should be a DataSync Id check exists get by id edit and delete wit" +
-                    "h http response returns", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("DataSync--Retrieve all DataSyncs")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSync")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DataSyncs")]
@@ -115,26 +88,26 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Add a DataSync")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Retrieve a dataSync by Id")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSync")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DataSync")]
-        public virtual void AddADataSync()
+        public virtual void RetrieveADataSyncById()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add a DataSync", new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve a dataSync by Id", new string[] {
                         "DataSync"});
-#line 24
+#line 49
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
-                        "KioskId"});
-            table2.AddRow(new string[] {
-                        "2"});
-#line 25
- testRunner.Given("the following DataSync Add input", ((string)(null)), table2, "Given ");
-#line 28
- testRunner.When("I call the add DataSync Post api endpoint to add a DataSync", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 29
- testRunner.Then("the add result should be a DataSync Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Id"});
+            table1.AddRow(new string[] {
+                        "22"});
+#line 50
+ testRunner.Given("the following DataSync GetById input", ((string)(null)), table1, "Given ");
+#line 53
+ testRunner.When("I call the DataSync Get api endpoint by Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 54
+ testRunner.Then("the get by id result should be a DataSync", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

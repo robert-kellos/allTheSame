@@ -67,12 +67,12 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         private int _existsIdValue = -1;
         /*
         [Id] [int] IDENTITY(1,1) NOT NULL,
-	    [CommunityId] [int] NOT NULL,//17
+	    [CommunityId] [int] NOT NULL,//1
 	    [PersonId] [int] NOT NULL,//1
 	    [CreatedOn] [datetime] NULL DEFAULT (getutcdate()),
 	    [UpdatedOn] [datetime] NULL,
         */
-        private int _communityid = 17;
+        private int _communityid = 1;
         private readonly int _personId = 1;
         //
 

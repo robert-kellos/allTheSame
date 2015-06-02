@@ -85,7 +85,7 @@ this.ScenarioSetup(scenarioInfo);
                         "KioskStatusId",
                         "Name"});
             table1.AddRow(new string[] {
-                        "17",
+                        "1",
                         "1",
                         "SpecFlowTest"});
 #line 9
@@ -134,7 +134,7 @@ this.ScenarioSetup(scenarioInfo);
                         "KioskStatusId",
                         "Name"});
             table2.AddRow(new string[] {
-                        "17",
+                        "2",
                         "2",
                         "Test"});
 #line 25

@@ -3,14 +3,14 @@
 	As a Community Administrator
 	I want to load a list of CommunityWorker_Alerts
 
-@CommunityWorker_Alert 
-#[C]RUD - [Post] :: Create, Check, GetById, Update and Delete CommunityType, by passing a newly populated CommunityWorker_Alert
-Scenario: CommunityWorker_Alert--Add, Check, GetById, Update and Delete CommunityType
-	Given the following CommunityWorker_Alert Add input
-		| IsRead	| 
-		| true		| 
-	When I call the add CommunityWorker_Alert Post api endpoint to add a CommunityWorker_Alert it checks if exists pulls item edits it and deletes it
-	Then the add result should be a CommunityWorker_Alert Id check exists get by id edit and delete with http response returns
+#@CommunityWorker_Alert 
+##[C]RUD - [Post] :: Create, Check, GetById, Update and Delete CommunityType, by passing a newly populated CommunityWorker_Alert
+#Scenario: CommunityWorker_Alert--Add, Check, GetById, Update and Delete CommunityType
+#	Given the following CommunityWorker_Alert Add input
+#		| IsRead	| 
+#		| true		| 
+#	When I call the add CommunityWorker_Alert Post api endpoint to add a CommunityWorker_Alert it checks if exists pulls item edits it and deletes it
+#	Then the add result should be a CommunityWorker_Alert Id check exists get by id edit and delete with http response returns
 
 @CommunityWorker_Alerts 
 #C[R]UD - [Get] :: Retrieve all CommunityWorker_Alerts, without passing anything
@@ -19,14 +19,14 @@ Scenario: CommunityWorker_Alert--Retrieve all CommunityWorker_Alerts
 	When I call the CommunityWorker_Alert Get api endpoint
 	Then the get result should be a list of CommunityWorker_Alerts
 
-@CommunityWorker_Alert 
-#[C]RUD - [Post] :: Create a new CommunityWorker_Alert, by passing a newly populated CommunityWorker_Alert
-Scenario: Add a CommunityWorker_Alert
-	Given the following CommunityWorker_Alert Add input
-		| IsRead	| 
-		| true		| 
-	When I call the add CommunityWorker_Alert Post api endpoint to add a CommunityWorker_Alert
-	Then the add result should be a CommunityWorker_Alert Id
+#@CommunityWorker_Alert 
+##[C]RUD - [Post] :: Create a new CommunityWorker_Alert, by passing a newly populated CommunityWorker_Alert
+#Scenario: Add a CommunityWorker_Alert
+#	Given the following CommunityWorker_Alert Add input
+#		| IsRead	| 
+#		| true		| 
+#	When I call the add CommunityWorker_Alert Post api endpoint to add a CommunityWorker_Alert
+#	Then the add result should be a CommunityWorker_Alert Id
 
 #@CommunityWorker_Alert 
 ##[C]RUD - [Post] :: Create a new communityWorker_Alert, by passing a newly populated communityWorker_Alert

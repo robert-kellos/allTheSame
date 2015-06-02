@@ -85,7 +85,7 @@ this.ScenarioSetup(scenarioInfo);
                         "RequirementTypeId",
                         "Description"});
             table1.AddRow(new string[] {
-                        "17",
+                        "1",
                         "1",
                         "SpecFlowTest"});
 #line 9
@@ -134,8 +134,8 @@ this.ScenarioSetup(scenarioInfo);
                         "RequirementTypeId",
                         "Description"});
             table2.AddRow(new string[] {
-                        "17",
-                        "1",
+                        "2",
+                        "2",
                         "SpecTest"});
 #line 25
  testRunner.Given("the following Requirement Add input", ((string)(null)), table2, "Given ");

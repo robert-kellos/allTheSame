@@ -84,7 +84,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Description",
                         "AppointmentTypeId"});
             table1.AddRow(new string[] {
-                        "SpecFlow Test",
+                        "SpecFlow",
                         "1"});
 #line 9
  testRunner.Given("the following Appointment Add input", ((string)(null)), table1, "Given ");
@@ -130,7 +130,7 @@ this.ScenarioSetup(scenarioInfo);
                         "AppointmentTypeId"});
             table2.AddRow(new string[] {
                         "SpecFlow Test",
-                        "1"});
+                        "2"});
 #line 25
  testRunner.Given("the following Appointment Add input", ((string)(null)), table2, "Given ");
 #line 28

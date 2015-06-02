@@ -189,9 +189,9 @@ namespace AllTheSame.ServiceTests.Common
         [TestMethod()]
         public void UpdateManyTest()
         {
-            var p1 = new Person() { Id = 26, FirstName = "Person1_First", LastName = "UpdateMany", Email = "person1@repos.com", UpdatedOn = DateTime.UtcNow };
-            var p2 = new Person() { Id = 27, FirstName = "Person2_First", LastName = "UpdateMany", Email = "person2@repos.com", UpdatedOn = DateTime.UtcNow };
-            var p3 = new Person() { Id = 28, FirstName = "Person3_First", LastName = "UpdateMany", Email = "person3@repos.com", UpdatedOn = DateTime.UtcNow };
+            var p1 = new Person() { Id = 4, FirstName = "Person1_First", LastName = "UpdateMany", Email = "person1@repos.com", UpdatedOn = DateTime.UtcNow };
+            var p2 = new Person() { Id = 5, FirstName = "Person2_First", LastName = "UpdateMany", Email = "person2@repos.com", UpdatedOn = DateTime.UtcNow };
+            var p3 = new Person() { Id = 6, FirstName = "Person3_First", LastName = "UpdateMany", Email = "person3@repos.com", UpdatedOn = DateTime.UtcNow };
 
             var pList = new List<Person>() { p1, p2, p3 };
 

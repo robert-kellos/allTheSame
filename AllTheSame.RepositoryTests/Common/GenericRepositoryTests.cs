@@ -179,24 +179,29 @@ namespace AllTheSame.RepositoryTests.Common
         [TestMethod()]
         public void DeleteTest()
         {
-            var p1 = new Person() { FirstName = "Person1_First", LastName = "Delete", Email = "person1@repos.com" };
-
+            var p1 = new Person() { FirstName = "Person1_First", LastName = "Delete", Email = "person1@repos.com", CreatedOn = DateTime.UtcNow };
+            Person added;
             using (_context = new AllTheSameDbContext())
             {
                 using (_personRepository = new PersonRepository(_context))
                 {
                     //add so we can delete
-                    var added = _personRepository.Add(p1);
+                    added = _personRepository.Add(p1);
 
                     Assert.IsNotNull(added);
                     Assert.IsTrue((p1.FirstName == added.FirstName && (p1.LastName == added.LastName)));
+                }
+            }
 
+            using (_context = new AllTheSameDbContext())
+            {
+                using (_personRepository = new PersonRepository(_context))
+                {
                     //now delete
-                    _personRepository.Delete(added);
-                    _context.SaveChanges();
+                    var deleted = _personRepository.Delete(added);
+                    //_context.SaveChanges();
 
-                    //var found = _personRepository.FindBy(p => p.Id == deleted.Id).Count();
-                    //Assert.IsTrue(found == 0);//should be missing, returning a null on find
+                    Assert.IsNotNull(deleted);
                 }
             }
         }
@@ -279,9 +284,9 @@ namespace AllTheSame.RepositoryTests.Common
         [TestMethod()]
         public void UpdateManyTest()
         {
-            var p1 = new Person() { Id = 26, FirstName = "Person1_First", LastName = "UpdateMany", Email = "person1@repos.com", UpdatedOn = DateTime.UtcNow };
-            var p2 = new Person() { Id = 27, FirstName = "Person2_First", LastName = "UpdateMany", Email = "person2@repos.com", UpdatedOn = DateTime.UtcNow };
-            var p3 = new Person() { Id = 28, FirstName = "Person3_First", LastName = "UpdateMany", Email = "person3@repos.com", UpdatedOn = DateTime.UtcNow };
+            var p1 = new Person() { Id = 4, FirstName = "Person1_First", LastName = "UpdateMany", Email = "person1@repos.com", UpdatedOn = DateTime.UtcNow };
+            var p2 = new Person() { Id = 5, FirstName = "Person2_First", LastName = "UpdateMany", Email = "person2@repos.com", UpdatedOn = DateTime.UtcNow };
+            var p3 = new Person() { Id = 6, FirstName = "Person3_First", LastName = "UpdateMany", Email = "person3@repos.com", UpdatedOn = DateTime.UtcNow };
 
             var pList = new List<Person>() { p1, p2, p3 };
 
@@ -295,7 +300,7 @@ namespace AllTheSame.RepositoryTests.Common
                     _personRepository.UpdateMany(pList.ToArray());
 
                     //Thread.Sleep(2000);
-                    var list = _personRepository.FindBy(p => (p.Id == 26 || p.Id == 27 || p.Id == 28));
+                    var list = _personRepository.FindBy(p => (p.Id == 4 || p.Id == 5 || p.Id == 6));
                     list = list.ToList();
 
                     var found = list.Count() >= 3;

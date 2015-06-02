@@ -50,15 +50,15 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         private DateTime _endTime;
         private string _description = "";
         private int _appointmentTypeId;
-        private readonly int _residentId = 20;
-        private readonly int _vendorWorkerId = 13;
+        private readonly int _residentId = 1;
+        private readonly int _vendorWorkerId = 2;
         private bool _remindVendor;
         private bool _alertOnVendorSignIn;
         private bool _alertOnVendorSignOut;
         /*
         [Id] [int] IDENTITY(1,1) NOT NULL,
-	    [ResidentId] [int] NOT NULL, //20
-	    [VendorWorkerId] [int] NOT NULL, //13
+	    [ResidentId] [int] NOT NULL, //1
+	    [VendorWorkerId] [int] NOT NULL, //1
 	    [AppointmentTypeId] [int] NOT NULL, //1
 	    [StartTime] [datetime] NOT NULL,
 	    [EndTime] [datetime] NOT NULL,
@@ -179,6 +179,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
                 RemindVendor = _remindVendor,
                 AlertOnVendorSignIn = _alertOnVendorSignIn,
                 AlertOnVendorSignOut = _alertOnVendorSignOut,
+
                 CreatedOn = DateTime.UtcNow
             };
         }

@@ -8,7 +8,7 @@
 Scenario: VendorWorker--Add, Check, GetById, Update and Delete VendorWorker
 	Given the following VendorWorker Add input
 		| PersonId | VendorId | VendorTypeId |
-		| 2        | 1        | 1            | 
+		| 1        | 1        | 1            | 
 	When I call the add VendorWorker Post api endpoint to add a VendorWorker it checks if exists pulls item edits it and deletes it
 	Then the add result should be a VendorWorker Id check exists get by id edit and delete with http response returns
 

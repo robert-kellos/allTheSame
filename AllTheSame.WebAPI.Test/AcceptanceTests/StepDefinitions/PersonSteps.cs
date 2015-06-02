@@ -57,6 +57,71 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
 
         #endregion Local Properties/Fields
 
+        #region CRUD Tests
+
+        //
+
+        [When(
+            @"I call the add Person Post api endpoint to add a Person it checks if exists pulls item edits it and deletes it"
+            )]
+        public void WhenICallTheAddPersonPostApiEndpointToAddAPersonItChecksIfExistsPullsItemEditsItAndDeletesIt()
+        {
+            HttpResponseMessage response;
+
+            _addItem = Add(_addItem, out response);
+
+            Assert.IsNotNull(response);
+            ScenarioContext.Current[AddItemKey] = response;
+        }
+
+        [Then(@"the add result should be a Person Id check exists get by id edit and delete with http response returns")
+        ]
+        public void ThenTheAddResultShouldBeAPersonIdCheckExistsGetByIdEditAndDeleteWithHttpResponseReturns()
+        {
+            //did we get a good result
+            Assert.IsTrue(_addItem != null && _addItem.Id > 0);
+
+            //set the returned AddID to current Get
+            _addedIdValue = _addItem.Id;
+            _getIdValue = _addedIdValue;
+            _existsIdValue = _getIdValue;
+
+            //check that the item exists
+            var itemReturned = Exists(_existsIdValue);
+            Assert.IsTrue(itemReturned);
+
+            //use the value used in exists check
+            _getIdValue = _addItem.Id;
+            Assert.IsTrue(_getIdValue == _addedIdValue);
+
+            //pull the item by Id
+            var resultGet = GetById<Person>(_getIdValue);
+            Assert.IsNotNull(resultGet);
+            _getIdValue = resultGet.Id;
+            Assert.IsTrue(_getIdValue == _addedIdValue);
+
+            //Now, let's Edit the newly added item
+            _editIdValue = _getIdValue;
+            _editItem = resultGet;
+            Assert.IsTrue(_editIdValue == _addedIdValue);
+
+            //do an update
+            var updateResponse = Update(_editIdValue, _editItem);
+            Assert.IsNotNull(updateResponse);
+
+            //pass the item just updated
+            _deletedIdValue = _editIdValue;
+            Assert.IsTrue(_deletedIdValue == _addedIdValue);
+
+            //delete this same item
+            var deleteResponse = Delete(_deletedIdValue);
+            Assert.IsNotNull(deleteResponse);
+        }
+
+        //
+
+        #endregion CRUD Tests
+
         #region Post - add a new item by a populated item
 
         //
@@ -87,7 +152,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             };
         }
 
-        [When(@"I call the add Person Post api endpoint to add a person")]
+        [When(@"I call the add Person Post api endpoint to add a Person")]
         public void WhenICallTheAddPersonPostApiEndpointToAddAPerson()
         {
             var response = default(HttpResponseMessage);
@@ -139,7 +204,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             ScenarioContext.Current[GetListKey] = GetResponse<IList<Person>>();
         }
 
-        [Then(@"the get result should be a list of people")]
+        [Then(@"the get result should be a list of People")]
         public void ThenTheGetResultShouldBeAListOfPeople()
         {
             var list = ScenarioContext.Current[GetListKey];
@@ -227,7 +292,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             };
         }
 
-        [When(@"I call the edit Person Put api endpoint to edit a person")]
+        [When(@"I call the edit Person Put api endpoint to edit a Person")]
         public void WhenICallTheEditPersonPutApiEndpointToEditAPerson()
         {
             var response = default(HttpResponseMessage);
@@ -286,12 +351,12 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
 
             Assert.IsTrue(_deletedIdValue > -1);
 
-            var last = GetResponse<List<Person>>();
-            var l = last[last.Count - 1];
-            _deletedIdValue = l.Id;
+            //var last = GetResponse<List<Person>>();
+            //var l = last[last.Count - 1];
+            //_deletedIdValue = l.Id;
         }
 
-        [When(@"I call the delete Person Post api endpoint to delete a person")]
+        [When(@"I call the delete Person Post api endpoint to delete a Person")]
         public void WhenICallTheDeletePersonPostApiEndpointToDeleteAPerson()
         {
             var response = default(HttpResponseMessage);

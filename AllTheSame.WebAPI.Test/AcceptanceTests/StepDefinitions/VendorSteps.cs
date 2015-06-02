@@ -69,7 +69,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         private int _existsIdValue = -1;
 
         private string _name = "";
-        private int _orgId = 5;
+        private int _orgId = 1;
         //
 
         #endregion Local Properties/Fields

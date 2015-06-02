@@ -3,14 +3,14 @@
 	As a Community Administrator
 	I want to load a list of SignOuts
 
-@SignOut 
-#[C]RUD - [Post] :: Create, Check, GetById, Update and Delete SignOut, by passing a newly populated SignOut
-Scenario: SignOut--Add, Check, GetById, Update and Delete SignOut
-	Given the following SignOut Add input
-		| Name		  | 
-		| SpecFlow    | 
-	When I call the add SignOut Post api endpoint to add a SignOut it checks if exists pulls item edits it and deletes it
-	Then the add result should be a SignOut Id check exists get by id edit and delete with http response returns
+#@SignOut 
+##[C]RUD - [Post] :: Create, Check, GetById, Update and Delete SignOut, by passing a newly populated SignOut
+#Scenario: SignOut--Add, Check, GetById, Update and Delete SignOut
+#	Given the following SignOut Add input
+#		| Name		  | 
+#		| SpecFlow    | 
+#	When I call the add SignOut Post api endpoint to add a SignOut it checks if exists pulls item edits it and deletes it
+#	Then the add result should be a SignOut Id check exists get by id edit and delete with http response returns
 
 @SignOuts 
 #C[R]UD - [Get] :: Retrieve all SignOuts, without passing anything
@@ -19,14 +19,14 @@ Scenario: SignOut--Retrieve all SignOuts
 	When I call the SignOut Get api endpoint
 	Then the get result should be a list of SignOuts
 
-@SignOut 
-#[C]RUD - [Post] :: Create a new SignOut, by passing a newly populated SignOut
-Scenario: Add a SignOut
-	Given the following SignOut Add input
-		| Name			| 
-		| SpecFlowTest  | 
-	When I call the add SignOut Post api endpoint to add a SignOut
-	Then the add result should be a SignOut Id
+#@SignOut 
+##[C]RUD - [Post] :: Create a new SignOut, by passing a newly populated SignOut
+#Scenario: Add a SignOut
+#	Given the following SignOut Add input
+#		| Name			| 
+#		| SpecFlowTest  | 
+#	When I call the add SignOut Post api endpoint to add a SignOut
+#	Then the add result should be a SignOut Id
 
 #@SignOut 
 ##[C]RUD - [Post] :: Create a new signOut, by passing a newly populated signOut

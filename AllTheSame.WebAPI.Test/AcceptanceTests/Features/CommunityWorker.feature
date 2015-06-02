@@ -8,7 +8,7 @@
 Scenario: CommunityWorker--Add, Check, GetById, Update and Delete CommunityWorker
 	Given the following CommunityWorker Add input
 		| CommunityId	| 
-		| 17			|
+		| 1			|
 	When I call the add CommunityWorker Post api endpoint to add a CommunityWorker it checks if exists pulls item edits it and deletes it
 	Then the add result should be a CommunityWorker Id check exists get by id edit and delete with http response returns
 

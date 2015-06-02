@@ -15,22 +15,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
     {
         public override string Uri => "/api/AppointmentType";
         //
-
-        #region helpers
-
-        //
-        public int ConvertToIntValue(string value)
-        {
-            var result = -1;
-
-            int.TryParse(value, out result);
-
-            return result;
-        }
-
-        //
-
-        #endregion helpers
+        
 
         #region Local Properties/Fields
 
@@ -160,11 +145,13 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
                 break;
             }
             Assert.IsNotNull(_code);
+            _code = _code + DateTime.UtcNow.Millisecond;
 
             _addItem = new AppointmentType
             {
                 Code = _code,
                 Label = _label,
+
                 CreatedOn = DateTime.UtcNow
             };
         }
@@ -173,23 +160,10 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         public void WhenICallTheAddAppointmentTypePostApiEndpointToAddAAppointmentType()
         {
             var response = default(HttpResponseMessage);
-            var error = default(AggregateException);
+            AggregateException error;
 
             PostAsync(_addItem).ContinueWith(
-                t =>
-                {
-                    if (t.IsCompleted)
-                    {
-                        if (t.Result != null)
-                            response = t.Result;
-                    }
-
-                    if (t.IsFaulted)
-                    {
-                        error = t.Exception;
-                        Audit.Log.Error("POST Task Exception ::", error);
-                    }
-                }
+                t => { response = ActionResponse(t, out error); }
                 ).Wait();
 
             Assert.IsNotNull(response);
@@ -200,23 +174,10 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         public void ThenTheAddResultShouldBeAAppointmentTypeId()
         {
             var response = default(HttpResponseMessage);
-            var error = default(AggregateException);
+            AggregateException error;
 
             PostAsync(_addItem).ContinueWith(
-                t =>
-                {
-                    if (t.IsCompleted)
-                    {
-                        if (t.Result != null)
-                            response = t.Result;
-                    }
-
-                    if (t.IsFaulted)
-                    {
-                        error = t.Exception;
-                        Audit.Log.Error("POST Task Exception ::", error);
-                    }
-                }
+                t => { response = ActionResponse(t, out error); }
                 ).Wait();
 
             Assert.IsNotNull(response);
@@ -350,23 +311,10 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         public void WhenICallTheEditAppointmentTypePutApiEndpointToEditAAppointmentType()
         {
             var response = default(HttpResponseMessage);
-            var error = default(AggregateException);
+            AggregateException error;
 
             PutAsync(_editItem.Id, _editItem).ContinueWith(
-                t =>
-                {
-                    if (t.IsCompleted)
-                    {
-                        if (t.Result != null)
-                            response = t.Result;
-                    }
-
-                    if (t.IsFaulted)
-                    {
-                        error = t.Exception;
-                        Audit.Log.Error("PUT Task Exception ::", error);
-                    }
-                }
+                t => { response = ActionResponse(t, out error); }
                 ).Wait();
 
             Assert.IsNotNull(response);
@@ -417,9 +365,9 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
 
             Assert.IsTrue(_deletedIdValue > -1);
 
-            var last = GetResponse<List<AppointmentType>>();
-            var l = last[last.Count - 1];
-            _deletedIdValue = l.Id;
+            //var last = GetResponse<List<AppointmentType>>();
+            //var l = last[last.Count - 1];
+            //_deletedIdValue = l.Id;
         }
 
         [When(@"I call the delete AppointmentType Post api endpoint to delete a appointmentType")]
@@ -436,23 +384,10 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             _deletedIdValue = result.Id;
 
             var response = default(HttpResponseMessage);
-            var error = default(AggregateException);
+            AggregateException error;
 
             DeleteAsync(_deletedIdValue).ContinueWith(
-                t =>
-                {
-                    if (t.IsCompleted)
-                    {
-                        if (t.Result != null)
-                            response = t.Result;
-                    }
-
-                    if (t.IsFaulted)
-                    {
-                        error = t.Exception;
-                        Audit.Log.Error("POST Task Exception ::", error);
-                    }
-                }
+                t => { response = ActionResponse(t, out error); }
                 ).Wait();
 
             Assert.IsNotNull(response);

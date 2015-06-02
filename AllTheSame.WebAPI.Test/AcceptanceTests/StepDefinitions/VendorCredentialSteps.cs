@@ -68,7 +68,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         private string _existsId = "-1";
         private int _existsIdValue = -1;
 
-        private readonly int _vendorWorkerId = 13;
+        private readonly int _vendorWorkerId = 2;
         private readonly int _requirementId = 1;
         private bool _isAttested = true;
         private bool _isConfirmed = true;

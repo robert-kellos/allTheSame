@@ -8,7 +8,7 @@
 Scenario: Visit--Add, Check, GetById, Update and Delete Visit
 	Given the following Visit Add input
 		| ResidentId | VendorWorkerId | VisitorId | TimeIn                  | TimeOut                 |
-		| 20         | 13             | 1         | 2015-06-01 12:00:00.000 | 2015-06-01 01:00:00.000 |
+		| 1			 | 2            | 1         | 2015-06-01 12:00:00.000 | 2015-06-01 01:00:00.000 |
 	When I call the add Visit Post api endpoint to add a Visit it checks if exists pulls item edits it and deletes it
 	Then the add result should be a Visit Id check exists get by id edit and delete with http response returns
 
@@ -24,7 +24,7 @@ Scenario: Visit--Retrieve all Visits
 Scenario: Add a Visit
 	Given the following Visit Add input
 		| ResidentId | VendorWorkerId | VisitorId | TimeIn                  | TimeOut                 |
-		| 20         | 13             | 1         | 2015-06-01 1:00:00.000	| 2015-06-01 02:00:00.000 |
+		| 4         | 4             | 1         | 2015-06-01 1:00:00.000	| 2015-06-01 02:00:00.000 |
 	When I call the add Visit Post api endpoint to add a Visit
 	Then the add result should be a Visit Id
 

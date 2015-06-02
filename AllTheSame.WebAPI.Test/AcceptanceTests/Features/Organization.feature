@@ -24,7 +24,7 @@ Scenario: Retrieve all organizations
 Scenario: Retrieve a organization by Id
 	Given the following Organization GetById input
 		| Id |
-		| 5  |
+		| 2  |
 	When I call the Organization Get api endpoint by Id
 	Then the get by id result should be a Organization
 
@@ -33,7 +33,7 @@ Scenario: Retrieve a organization by Id
 Scenario: Update a organization
 	Given the following Organization Edit input
 		| Id | Level |
-		| 12  | 3	 |
+		| 3  | 3	 |
 	When I call the edit Organization Put api endpoint to edit a organization
 	Then the edit result should be an updated Organization
 
@@ -52,6 +52,6 @@ Scenario: Delete a organization
 Scenario: Check if a organization exists
 	Given the following Organization Id input
 		| Id | 
-		| 12  | 
+		| 1  | 
 	When I call the Organization Exists Get api endpoint by Id to verify if it exists
 	Then the Organization exists result should be bool true or false

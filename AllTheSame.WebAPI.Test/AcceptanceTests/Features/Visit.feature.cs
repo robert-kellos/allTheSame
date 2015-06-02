@@ -87,8 +87,8 @@ this.ScenarioSetup(scenarioInfo);
                         "TimeIn",
                         "TimeOut"});
             table1.AddRow(new string[] {
-                        "20",
-                        "13",
+                        "1",
+                        "2",
                         "1",
                         "2015-06-01 12:00:00.000",
                         "2015-06-01 01:00:00.000"});
@@ -140,8 +140,8 @@ this.ScenarioSetup(scenarioInfo);
                         "TimeIn",
                         "TimeOut"});
             table2.AddRow(new string[] {
-                        "20",
-                        "13",
+                        "4",
+                        "4",
                         "1",
                         "2015-06-01 1:00:00.000",
                         "2015-06-01 02:00:00.000"});

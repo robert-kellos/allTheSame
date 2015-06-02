@@ -68,7 +68,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         private string _existsId = "-1";
         private int _existsIdValue = -1;
 
-        private readonly int _vendorCredId = 41;
+        private readonly int _vendorCredId = 4;
         private string _title = "";
         private string _url = "";
         private string _text = "";

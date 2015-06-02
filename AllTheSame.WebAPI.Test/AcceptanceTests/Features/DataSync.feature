@@ -3,14 +3,14 @@
 	As a Community Administrator
 	I want to load a list of DataSyncs
 
-@DataSync 
-#[C]RUD - [Post] :: Create, Check, GetById, Update and Delete DataSync, by passing a newly populated DataSync
-Scenario: DataSync--Add, Check, GetById, Update and Delete DataSync
-	Given the following DataSync Add input
-		| KioskId |
-		| 2		  |
-	When I call the add DataSync Post api endpoint to add a DataSync it checks if exists pulls item edits it and deletes it
-	Then the add result should be a DataSync Id check exists get by id edit and delete with http response returns
+#@DataSync 
+##[C]RUD - [Post] :: Create, Check, GetById, Update and Delete DataSync, by passing a newly populated DataSync
+#Scenario: DataSync--Add, Check, GetById, Update and Delete DataSync
+#	Given the following DataSync Add input
+#		| KioskId |
+#		| 1		  |
+#	When I call the add DataSync Post api endpoint to add a DataSync it checks if exists pulls item edits it and deletes it
+#	Then the add result should be a DataSync Id check exists get by id edit and delete with http response returns
 
 @DataSyncs 
 #C[R]UD - [Get] :: Retrieve all DataSyncs, without passing anything
@@ -19,14 +19,14 @@ Scenario: DataSync--Retrieve all DataSyncs
 	When I call the DataSync Get api endpoint
 	Then the get result should be a list of DataSyncs
 
-@DataSync 
-#[C]RUD - [Post] :: Create a new DataSync, by passing a newly populated DataSync
-Scenario: Add a DataSync
-	Given the following DataSync Add input
-		| KioskId |
-		| 2		  |
-	When I call the add DataSync Post api endpoint to add a DataSync
-	Then the add result should be a DataSync Id
+#@DataSync 
+##[C]RUD - [Post] :: Create a new DataSync, by passing a newly populated DataSync
+#Scenario: Add a DataSync
+#	Given the following DataSync Add input
+#		| KioskId |
+#		| 9		  |
+#	When I call the add DataSync Post api endpoint to add a DataSync
+#	Then the add result should be a DataSync Id
 
 #@DataSync 
 ##[C]RUD - [Post] :: Create a new DataSync, by passing a newly populated DataSync
@@ -44,14 +44,14 @@ Scenario: Add a DataSync
 #	When I call the DataSync Get api endpoint
 #	Then the get result should be a list of DataSyncs
 #
-#@DataSync 
-##C[R]UD - [Get] :: Retrieve an existing dataSync, by passing a dataSync Id
-#Scenario: Retrieve a dataSync by Id
-#	Given the following DataSync GetById input
-#		| Id |
-#		| 2  |
-#	When I call the DataSync Get api endpoint by Id
-#	Then the get by id result should be a DataSync
+@DataSync 
+#C[R]UD - [Get] :: Retrieve an existing dataSync, by passing a dataSync Id
+Scenario: Retrieve a dataSync by Id
+	Given the following DataSync GetById input
+		| Id |
+		| 22 |
+	When I call the DataSync Get api endpoint by Id
+	Then the get by id result should be a DataSync
 #
 #@DataSync 
 ##CR[U]D - [Put] :: Update an existing dataSync, by passing changes populated in dataSync and its Id

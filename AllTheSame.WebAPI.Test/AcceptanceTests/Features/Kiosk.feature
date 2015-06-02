@@ -8,7 +8,7 @@
 Scenario: Kiosk--Add, Check, GetById, Update and Delete Kiosk
 	Given the following Kiosk Add input
 		| CommunityId | KioskStatusId | Name         |
-		| 17          | 1             | SpecFlowTest |
+		| 1          | 1             | SpecFlowTest |
 	When I call the add Kiosk Post api endpoint to add a Kiosk it checks if exists pulls item edits it and deletes it
 	Then the add result should be a Kiosk Id check exists get by id edit and delete with http response returns
 
@@ -24,7 +24,7 @@ Scenario: Kiosk--Retrieve all Kiosks
 Scenario: Add a Kiosk
 	Given the following Kiosk Add input
 		| CommunityId | KioskStatusId | Name         |
-		| 17          | 2             | Test |
+		| 2          | 2             | Test |
 	When I call the add Kiosk Post api endpoint to add a Kiosk
 	Then the add result should be a Kiosk Id
 

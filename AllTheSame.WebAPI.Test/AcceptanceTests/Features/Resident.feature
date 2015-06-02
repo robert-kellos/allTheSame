@@ -8,7 +8,7 @@
 Scenario: Resident--Add, Check, GetById, Update and Delete Resident
 	Given the following Resident Add input
 		| CommunityId | PersonId |
-		| 17          | 1        | 
+		| 1          | 1        | 
 	When I call the add Resident Post api endpoint to add a Resident it checks if exists pulls item edits it and deletes it
 	Then the add result should be a Resident Id check exists get by id edit and delete with http response returns
 
@@ -24,7 +24,7 @@ Scenario: Resident--Retrieve all Residents
 Scenario: Add a Resident
 	Given the following Resident Add input
 		| CommunityId | PersonId |
-		| 17          | 2        |
+		| 2          | 2        |
 	When I call the add Resident Post api endpoint to add a Resident
 	Then the add result should be a Resident Id
 

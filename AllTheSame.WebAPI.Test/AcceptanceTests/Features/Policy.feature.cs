@@ -84,7 +84,7 @@ this.ScenarioSetup(scenarioInfo);
                         "CommunityId",
                         "Description"});
             table1.AddRow(new string[] {
-                        "17",
+                        "1",
                         "SpecFlow"});
 #line 9
  testRunner.Given("the following Policy Add input", ((string)(null)), table1, "Given ");
@@ -131,7 +131,7 @@ this.ScenarioSetup(scenarioInfo);
                         "CommunityId",
                         "Description"});
             table2.AddRow(new string[] {
-                        "17",
+                        "2",
                         "SpecFlowTest"});
 #line 25
  testRunner.Given("the following Policy Add input", ((string)(null)), table2, "Given ");

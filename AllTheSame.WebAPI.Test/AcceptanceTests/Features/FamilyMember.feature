@@ -8,7 +8,7 @@
 Scenario: FamilyMember--Add, Check, GetById, Update and Delete FamilyMember
 	Given the following FamilyMember Add input
 		| PersonId		| ResidentId	| 
-		| 1				| 20			|
+		| 1				| 1			|
 	When I call the add FamilyMember Post api endpoint to add a FamilyMember it checks if exists pulls item edits it and deletes it
 	Then the add result should be a FamilyMember Id check exists get by id edit and delete with http response returns
 
@@ -24,7 +24,7 @@ Scenario: FamilyMember--Retrieve all FamilyMembers
 Scenario: Add a FamilyMember
 	Given the following FamilyMember Add input
 		| PersonId		| ResidentId	| 
-		| 2				| 21			|
+		| 2				| 4			|
 	When I call the add FamilyMember Post api endpoint to add a FamilyMember
 	Then the add result should be a FamilyMember Id
 

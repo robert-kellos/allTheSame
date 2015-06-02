@@ -71,8 +71,8 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
 
         //      | ResidentId | VendorWorkerId | VisitorId | TimeIn                  | TimeOut                 |
         //| 20         | 13             | 1         | 2015-06-01 12:00:00.000 | 2015-06-01 01:00:00.000 |
-        private int _residentId = 20;
-        private int _vendorWorkerId = 1;
+        private int _residentId = 1;
+        private int _vendorWorkerId = 2;
         private readonly DateTime _timeIn = DateTime.UtcNow;
         private readonly DateTime _timeOut = DateTime.UtcNow.AddHours(4);
         //

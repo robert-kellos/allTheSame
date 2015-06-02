@@ -15,22 +15,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
     {
         public override string Uri => "/api/AlertType";
         //
-
-        #region helpers
-
-        //
-        public int ConvertToIntValue(string value)
-        {
-            var result = -1;
-
-            int.TryParse(value, out result);
-
-            return result;
-        }
-
-        //
-
-        #endregion helpers
+        
 
         #region Local Properties/Fields
 
@@ -174,18 +159,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             AggregateException error;
 
             PostAsync(_addItem).ContinueWith(
-                t =>
-                {
-                    if (t.IsCompleted)
-                    {
-                        if (t.Result != null)
-                            response = t.Result;
-                    }
-
-                    if (!t.IsFaulted) return;
-                    error = t.Exception;
-                    Audit.Log.Error("POST Task Exception ::", error);
-                }
+                t => { response = ActionResponse(t, out error); }
                 ).Wait();
 
             Assert.IsNotNull(response);
@@ -319,23 +293,10 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         public void WhenICallTheEditAlertTypePutApiEndpointToEditAAlertType()
         {
             var response = default(HttpResponseMessage);
-            var error = default(AggregateException);
+            AggregateException error;
 
             PutAsync(_editItem.Id, _editItem).ContinueWith(
-                t =>
-                {
-                    if (t.IsCompleted)
-                    {
-                        if (t.Result != null)
-                            response = t.Result;
-                    }
-
-                    if (t.IsFaulted)
-                    {
-                        error = t.Exception;
-                        Audit.Log.Error("PUT Task Exception ::", error);
-                    }
-                }
+                t => { response = ActionResponse(t, out error); }
                 ).Wait();
 
             Assert.IsNotNull(response);
@@ -406,23 +367,10 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             _deletedIdValue = result.Id;
 
             var response = default(HttpResponseMessage);
-            var error = default(AggregateException);
+            AggregateException error;
 
             DeleteAsync(_deletedIdValue).ContinueWith(
-                t =>
-                {
-                    if (t.IsCompleted)
-                    {
-                        if (t.Result != null)
-                            response = t.Result;
-                    }
-
-                    if (t.IsFaulted)
-                    {
-                        error = t.Exception;
-                        Audit.Log.Error("POST Task Exception ::", error);
-                    }
-                }
+                t => { response = ActionResponse(t, out error); }
                 ).Wait();
 
             Assert.IsNotNull(response);

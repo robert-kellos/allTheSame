@@ -68,7 +68,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         private string _existsId = "-1";
         private int _existsIdValue = -1;
 
-        private readonly int _communityId = 17;
+        private readonly int _communityId = 1;
         private string _description = "";
         private readonly string _documentUrl = "www.google.com";
         //

@@ -47,7 +47,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         private int _existsIdValue = -1;
         /*
     [Id] [int] IDENTITY(1,1) NOT NULL,
-    [OrgId] [int] NOT NULL, //5
+    [OrgId] [int] NOT NULL, //1
     [CommunityTypeId] [int] NULL, //1
     [IndustryId] [int] NULL, //1
     [Name] [nvarchar](100) NOT NULL,
@@ -58,7 +58,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
     [CreatedOn] [datetime] NULL DEFAULT(getutcdate()),
     [UpdatedOn] [datetime] NULL,
         */
-        private readonly int _orgId = 5;
+        private readonly int _orgId = 1;
         private readonly int _communityTypeId = 1;
         private readonly int _industryId = 1;
         private string _name = "";
@@ -184,7 +184,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         public void ThenTheAddResultShouldBeACommunityId()
         {
             var response = default(HttpResponseMessage);
-            var error = default(AggregateException);
+            AggregateException error;
 
             PostAsync(_addItem).ContinueWith(
                 t => { response = ActionResponse(t, out error); }

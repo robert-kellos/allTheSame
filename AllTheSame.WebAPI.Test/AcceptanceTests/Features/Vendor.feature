@@ -8,7 +8,7 @@
 Scenario: Vendor--Add, Check, GetById, Update and Delete Vendor
 	Given the following Vendor Add input
 		| Name     | OrgId |
-		| SpecFlow | 5     |
+		| SpecFlow | 1     |
 	When I call the add Vendor Post api endpoint to add a Vendor it checks if exists pulls item edits it and deletes it
 	Then the add result should be a Vendor Id check exists get by id edit and delete with http response returns
 
@@ -24,7 +24,7 @@ Scenario: Vendor--Retrieve all Vendors
 Scenario: Add a Vendor
 	Given the following Vendor Add input
 		| Name			| OrgId		|
-		| SpecFlowTest	| 12		| 
+		| SpecFlowTest	| 2		| 
 	When I call the add Vendor Post api endpoint to add a Vendor
 	Then the add result should be a Vendor Id
 

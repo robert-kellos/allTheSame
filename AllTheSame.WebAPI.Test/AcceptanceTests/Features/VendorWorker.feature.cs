@@ -85,7 +85,7 @@ this.ScenarioSetup(scenarioInfo);
                         "VendorId",
                         "VendorTypeId"});
             table1.AddRow(new string[] {
-                        "2",
+                        "1",
                         "1",
                         "1"});
 #line 9

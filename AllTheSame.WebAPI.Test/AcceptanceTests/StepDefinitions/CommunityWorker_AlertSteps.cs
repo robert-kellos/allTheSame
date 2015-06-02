@@ -67,15 +67,15 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         private int _existsIdValue = -1;
         /*
         [Id] [int] IDENTITY(1,1) NOT NULL,
-	    [CommunityWorkerId] [int] NOT NULL,//23
-	    [AlertId] [int] NOT NULL,//17
+	    [CommunityWorkerId] [int] NOT NULL,//1
+	    [AlertId] [int] NOT NULL,//1
 	    [IsRead] [bit] NOT NULL,//1
 	    [CreatedOn] [datetime] NULL,
 	    [UpdatedOn] [datetime] NULL,
             
         */
-        private readonly int _communityWorkId = 24;
-        private readonly int _alertId = 17;
+        private readonly int _communityWorkId = 4;
+        private readonly int _alertId = 1;
         private bool _isRead = true;
         //
 
@@ -220,7 +220,6 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
             //
             var list = ScenarioContext.Current[GetListKey];
             Assert.IsNotNull(list);
-            Assert.IsNotNull(list as IList<CommunityWorker_Alert>);
         }
 
         //

@@ -84,7 +84,7 @@ this.ScenarioSetup(scenarioInfo);
                         "CommunityId",
                         "PersonId"});
             table1.AddRow(new string[] {
-                        "17",
+                        "1",
                         "1"});
 #line 9
  testRunner.Given("the following Resident Add input", ((string)(null)), table1, "Given ");
@@ -131,7 +131,7 @@ this.ScenarioSetup(scenarioInfo);
                         "CommunityId",
                         "PersonId"});
             table2.AddRow(new string[] {
-                        "17",
+                        "2",
                         "2"});
 #line 25
  testRunner.Given("the following Resident Add input", ((string)(null)), table2, "Given ");

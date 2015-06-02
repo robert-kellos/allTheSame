@@ -85,7 +85,7 @@ this.ScenarioSetup(scenarioInfo);
                         "ResidentId"});
             table1.AddRow(new string[] {
                         "1",
-                        "20"});
+                        "1"});
 #line 9
  testRunner.Given("the following FamilyMember Add input", ((string)(null)), table1, "Given ");
 #line 12
@@ -132,7 +132,7 @@ this.ScenarioSetup(scenarioInfo);
                         "ResidentId"});
             table2.AddRow(new string[] {
                         "2",
-                        "21"});
+                        "4"});
 #line 25
  testRunner.Given("the following FamilyMember Add input", ((string)(null)), table2, "Given ");
 #line 28

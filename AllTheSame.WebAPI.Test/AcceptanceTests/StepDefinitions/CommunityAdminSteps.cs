@@ -22,23 +22,10 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         public void GivenTheFollowingCommunityAdminGetByIdInput(Table table)
         {
             var response = default(HttpResponseMessage);
-            var error = default(AggregateException);
+            AggregateException error;
 
             PostAsync(_addItem).ContinueWith(
-                t =>
-                {
-                    if (t.IsCompleted)
-                    {
-                        if (t.Result != null)
-                            response = t.Result;
-                    }
-
-                    if (t.IsFaulted)
-                    {
-                        error = t.Exception;
-                        Audit.Log.Error("POST Task Exception ::", error);
-                    }
-                }
+                t => { response = ActionResponse(t, out error); }
                 ).Wait();
 
             Assert.IsNotNull(response);
@@ -48,24 +35,6 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         //
 
         #endregion Post - add a new item by a populated item
-
-        //
-
-        #region helpers
-
-        //
-        public int ConvertToIntValue(string value)
-        {
-            var result = -1;
-
-            int.TryParse(value, out result);
-
-            return result;
-        }
-
-        //
-
-        #endregion helpers
 
         #region Local Properties/Fields
 
@@ -205,7 +174,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
                 //State = _state,
                 //Country = _country,
                 //PostalCode = _postalCode,
-
+                
                 CreatedOn = DateTime.UtcNow
             };
         }
@@ -214,23 +183,10 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         public void WhenICallTheAddCommunityAdminPostApiEndpointToAddACommunityAdmin()
         {
             var response = default(HttpResponseMessage);
-            var error = default(AggregateException);
+            AggregateException error;
 
             PostAsync(_addItem).ContinueWith(
-                t =>
-                {
-                    if (t.IsCompleted)
-                    {
-                        if (t.Result != null)
-                            response = t.Result;
-                    }
-
-                    if (t.IsFaulted)
-                    {
-                        error = t.Exception;
-                        Audit.Log.Error("POST Task Exception ::", error);
-                    }
-                }
+                t => { response = ActionResponse(t, out error); }
                 ).Wait();
 
             Assert.IsNotNull(response);
@@ -241,23 +197,10 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         public void ThenTheAddResultShouldBeACommunityAdminId()
         {
             var response = default(HttpResponseMessage);
-            var error = default(AggregateException);
+            AggregateException error;
 
             PostAsync(_addItem).ContinueWith(
-                t =>
-                {
-                    if (t.IsCompleted)
-                    {
-                        if (t.Result != null)
-                            response = t.Result;
-                    }
-
-                    if (t.IsFaulted)
-                    {
-                        error = t.Exception;
-                        Audit.Log.Error("POST Task Exception ::", error);
-                    }
-                }
+                t => { response = ActionResponse(t, out error); }
                 ).Wait();
 
             Assert.IsNotNull(response);

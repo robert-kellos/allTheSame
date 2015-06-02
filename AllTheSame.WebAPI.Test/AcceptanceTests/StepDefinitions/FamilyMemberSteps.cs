@@ -47,7 +47,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
         private int _existsIdValue = -1;
 
         private int _personId = 1;
-        private int _residentId = 20;
+        private int _residentId = 1;
         //
 
         #endregion Local Properties/Fields
@@ -332,9 +332,9 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
 
             Assert.IsTrue(_deletedIdValue > -1);
 
-            var last = GetResponse<List<FamilyMember>>();
-            var l = last[last.Count - 1];
-            _deletedIdValue = l.Id;
+            //var last = GetResponse<List<FamilyMember>>();
+            //var l = last[last.Count - 1];
+            //_deletedIdValue = l.Id;
         }
 
         [When(@"I call the delete FamilyMember Post api endpoint to delete a familyMember")]

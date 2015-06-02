@@ -70,7 +70,7 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.StepDefinitions
 
         private string _description = "";
         private readonly int _requirementTypeId = 1;
-        private readonly int _communityId = 17;
+        private readonly int _communityId = 1;
         //
 
         #endregion Local Properties/Fields

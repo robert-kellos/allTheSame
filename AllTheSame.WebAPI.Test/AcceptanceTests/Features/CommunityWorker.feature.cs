@@ -83,7 +83,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
                         "CommunityId"});
             table1.AddRow(new string[] {
-                        "17"});
+                        "1"});
 #line 9
  testRunner.Given("the following CommunityWorker Add input", ((string)(null)), table1, "Given ");
 #line 12

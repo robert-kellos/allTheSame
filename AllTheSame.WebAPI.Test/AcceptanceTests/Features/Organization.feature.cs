@@ -101,7 +101,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id"});
             table1.AddRow(new string[] {
-                        "5"});
+                        "2"});
 #line 25
  testRunner.Given("the following Organization GetById input", ((string)(null)), table1, "Given ");
 #line 28
@@ -127,7 +127,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Id",
                         "Level"});
             table2.AddRow(new string[] {
-                        "12",
+                        "3",
                         "3"});
 #line 34
  testRunner.Given("the following Organization Edit input", ((string)(null)), table2, "Given ");
@@ -178,7 +178,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id"});
             table4.AddRow(new string[] {
-                        "12"});
+                        "1"});
 #line 53
  testRunner.Given("the following Organization Id input", ((string)(null)), table4, "Given ");
 #line 56

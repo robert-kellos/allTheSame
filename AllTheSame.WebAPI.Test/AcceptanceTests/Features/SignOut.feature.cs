@@ -70,33 +70,6 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.Features
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("SignOut--Add, Check, GetById, Update and Delete SignOut")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SignOut")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SignOut")]
-        public virtual void SignOut_AddCheckGetByIdUpdateAndDeleteSignOut()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("SignOut--Add, Check, GetById, Update and Delete SignOut", new string[] {
-                        "SignOut"});
-#line 8
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Name"});
-            table1.AddRow(new string[] {
-                        "SpecFlow"});
-#line 9
- testRunner.Given("the following SignOut Add input", ((string)(null)), table1, "Given ");
-#line 12
- testRunner.When("I call the add SignOut Post api endpoint to add a SignOut it checks if exists pul" +
-                    "ls item edits it and deletes it", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 13
- testRunner.Then("the add result should be a SignOut Id check exists get by id edit and delete with" +
-                    " http response returns", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("SignOut--Retrieve all SignOuts")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SignOut")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SignOuts")]
@@ -110,31 +83,6 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.When("I call the SignOut Get api endpoint", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 20
  testRunner.Then("the get result should be a list of SignOuts", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Add a SignOut")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SignOut")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SignOut")]
-        public virtual void AddASignOut()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add a SignOut", new string[] {
-                        "SignOut"});
-#line 24
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Name"});
-            table2.AddRow(new string[] {
-                        "SpecFlowTest"});
-#line 25
- testRunner.Given("the following SignOut Add input", ((string)(null)), table2, "Given ");
-#line 28
- testRunner.When("I call the add SignOut Post api endpoint to add a SignOut", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 29
- testRunner.Then("the add result should be a SignOut Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

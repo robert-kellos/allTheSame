@@ -14,11 +14,11 @@ namespace AllTheSame.Common.Extensions.Tests
         [TestMethod()]
         public void GetDateTimeStringTest()
         {
-            string expected = "1/1/2001 4:25:00 PM";
-            DateTime dt = DateTime.Parse("01/01/2001 4:25 PM");
+            const string expected = "1/1/01 4:25:00 PM";
+            var dt = DateTime.Parse("01/01/2001 4:25:00 PM");
 
             string actual = dt.GetDateTimeString();
-            Assert.AreEqual(expected, actual);
+            Assert.IsTrue(expected == actual);
         }
 
         [TestMethod()]
@@ -28,7 +28,7 @@ namespace AllTheSame.Common.Extensions.Tests
             DateTime dt2 = DateTime.Parse("04/01/2001").Date;
             DateTime dt3 = DateTime.Parse("08/01/2001").Date;
 
-            Assert.IsTrue(dt2.IsBetween(dt1, dt3) == true);
+            Assert.IsTrue(dt2.IsBetween(dt1, dt3));
             Assert.IsTrue(dt3.IsBetween(dt1, dt2) == false);
         }
 

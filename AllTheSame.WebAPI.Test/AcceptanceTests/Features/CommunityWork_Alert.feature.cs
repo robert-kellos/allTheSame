@@ -70,33 +70,6 @@ namespace AllTheSame.WebAPI.Test.AcceptanceTests.Features
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("CommunityWorker_Alert--Add, Check, GetById, Update and Delete CommunityType")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "CommunityWorker_Alert")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("CommunityWorker_Alert")]
-        public virtual void CommunityWorker_Alert_AddCheckGetByIdUpdateAndDeleteCommunityType()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("CommunityWorker_Alert--Add, Check, GetById, Update and Delete CommunityType", new string[] {
-                        "CommunityWorker_Alert"});
-#line 8
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
-                        "IsRead"});
-            table1.AddRow(new string[] {
-                        "true"});
-#line 9
- testRunner.Given("the following CommunityWorker_Alert Add input", ((string)(null)), table1, "Given ");
-#line 12
- testRunner.When("I call the add CommunityWorker_Alert Post api endpoint to add a CommunityWorker_A" +
-                    "lert it checks if exists pulls item edits it and deletes it", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 13
- testRunner.Then("the add result should be a CommunityWorker_Alert Id check exists get by id edit a" +
-                    "nd delete with http response returns", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("CommunityWorker_Alert--Retrieve all CommunityWorker_Alerts")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "CommunityWorker_Alert")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("CommunityWorker_Alerts")]
@@ -110,32 +83,6 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.When("I call the CommunityWorker_Alert Get api endpoint", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 20
  testRunner.Then("the get result should be a list of CommunityWorker_Alerts", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Add a CommunityWorker_Alert")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "CommunityWorker_Alert")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("CommunityWorker_Alert")]
-        public virtual void AddACommunityWorker_Alert()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add a CommunityWorker_Alert", new string[] {
-                        "CommunityWorker_Alert"});
-#line 24
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
-                        "IsRead"});
-            table2.AddRow(new string[] {
-                        "true"});
-#line 25
- testRunner.Given("the following CommunityWorker_Alert Add input", ((string)(null)), table2, "Given ");
-#line 28
- testRunner.When("I call the add CommunityWorker_Alert Post api endpoint to add a CommunityWorker_A" +
-                    "lert", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 29
- testRunner.Then("the add result should be a CommunityWorker_Alert Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
